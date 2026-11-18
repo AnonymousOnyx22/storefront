@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Basalt - Rust External by Slate</title>
-<meta name="description" content="Basalt is an external overlay for Rust by Slate. ESP, aimbot, movement features on a capture-excluded DX11 overlay. No injection. Currently in development.">
+<meta name="description" content="Basalt is an external Rust cheat by Slate. Player and NPC ESP, silent aim, recoil/spread control, movement hacks, bright night and more on a capture-excluded DX11 overlay. No injection.">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://useslate.net/basalt.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://useslate.net/basalt.html">
 <meta property="og:title" content="Basalt - Rust External by Slate">
-<meta property="og:description" content="External Rust cheat with ESP, aimbot and movement. Capture-proof overlay, no injection. In development.">
+<meta property="og:description" content="External Rust cheat with player/NPC ESP, silent aim, weapon mods, movement hacks. Capture-proof DX11 overlay, no injection.">
 <meta property="og:site_name" content="Slate">
 <meta property="og:image" content="https://useslate.net/assets/og.svg">
 <meta name="twitter:card" content="summary_large_image">
@@ -100,11 +100,15 @@
 
       <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ features</h2>
       <ul class="specs" data-rise>
-        <li><span class="k">ESP</span><span class="v">player boxes, skeletons, health bars, name tags, distance, item ESP</span></li>
-        <li><span class="k">aimbot</span><span class="v">smooth aim with bone selection, FOV circle, visibility checks</span></li>
-        <li><span class="k">movement</span><span class="v">speed adjustments and movement enhancements</span></li>
-        <li><span class="k">overlay</span><span class="v">DX11 capture-excluded window, invisible to OBS, Discord, anti-cheat screenshots</span></li>
-        <li><span class="k">menu</span><span class="v">full ImGui menu, toggle with INSERT, configure everything live</span></li>
+        <li><span class="k">player ESP</span><span class="v">boxes, skeletons, health bars, names, distance, held item, flags. separate colours for visible/hidden, configurable render distance</span></li>
+        <li><span class="k">NPC ESP</span><span class="v">scientists and animals with boxes, skeletons, names, distance. independent toggle and render distance</span></li>
+        <li><span class="k">aimbot</span><span class="v">silent aim (no mouse movement), bone selection (head/chest/leg), FOV circle, visibility check, dynamic FOV, target filtering (wounded, scientists, sleepers, teammates, safezone)</span></li>
+        <li><span class="k">weapons</span><span class="v">recoil control, spread control, no shotgun spread, fast bullets, force auto, instant eoka, reload indicator</span></li>
+        <li><span class="k">movement</span><span class="v">speed multiplier, bunny hop, spiderman, noclip, infinite jump, omni sprint, air control, gravity control, no fall damage</span></li>
+        <li><span class="k">misc</span><span class="v">bright night, custom time of day, enemy alerts, battle indicator, instant loot, instant revive, custom sky colours</span></li>
+        <li><span class="k">overlay</span><span class="v">DX11 capture-excluded window (WDA_EXCLUDEFROMCAPTURE), invisible to OBS, Discord, anti-cheat screenshots</span></li>
+        <li><span class="k">menu</span><span class="v">5-tab ImGui menu (visuals, combat, movement, misc, config). INSERT to toggle. everything configurable live, settings saved to INI</span></li>
+        <li><span class="k">crosshair</span><span class="v">custom crosshair with style, size and colour options. optional rainbow mode</span></li>
         <li><span class="k">offsets</span><span class="v">auto-updated after each Rust patch via Il2CppDumper pass</span></li>
       </ul>
 
@@ -115,32 +119,32 @@
   |   <span class="ok">[+]</span> player_032  187m   |
   |   <span class="ok">+-+</span>                    |
   |   <span class="ok">|X|</span>  <span class="warn">hp ████░░</span> 67%    |
-  |   <span class="ok">/ \</span>                    |
-  |   <span class="ok">|</span>   <span class="ok">|</span>   AK-47          |
+  |   <span class="ok">/ \</span>  AK-47             |
+  |   <span class="ok">|</span>   <span class="ok">|</span>                  |
   |   <span class="ok">/</span>   <span class="ok">\</span>                  |
   |                          |
-  |   <span class="ok">[+]</span> player_108   54m   |
+  |   <span class="ok">[+]</span> scientist    54m   |
   |   <span class="ok">+-+</span>                    |
   |   <span class="ok">|X|</span>  <span class="ok">hp ██████</span> 100%   |
   |   <span class="ok">/ \</span>                    |
   +--------------------------+
-  box ESP + skeleton + items</pre>
+  player + NPC ESP combined</pre>
         <pre class="feat-visual">  <b>menu</b>  [INSERT to toggle]
   +--------------------------+
   | basalt                   |
+  |  visuals  combat  move   |
+  |  misc     config         |
   |--------------------------|
-  | <span class="ok">[x]</span> ESP                  |
-  |   <span class="ok">[x]</span> box             |
-  |   <span class="ok">[x]</span> skeleton        |
-  |   <span class="ok">[x]</span> health bar      |
-  |   [ ] snaplines        |
-  |   distance: <b>500m</b>       |
-  |--------------------------|
-  | <span class="ok">[x]</span> aimbot               |
+  | <span class="ok">[x]</span> silent aim           |
   |   bone: <b>head</b>           |
-  |   smooth: <b>3.5</b>          |
-  |   fov: <b>90</b>              |
-  |   <span class="ok">[x]</span> visible only    |
+  |   fov: <b>120</b>             |
+  |   chance: <b>80%</b>          |
+  |   <span class="ok">[x]</span> vis check       |
+  |--------------------------|
+  | <span class="ok">[x]</span> recoil control       |
+  | <span class="ok">[x]</span> spread control       |
+  | <span class="ok">[x]</span> no shotgun spread    |
+  | <span class="ok">[x]</span> reload indicator     |
   +--------------------------+</pre>
       </div>
 
@@ -149,11 +153,17 @@
 
   basalt.exe                              RustClient.exe
   +------------------+                    +------------------+
-  | read memory  ----+----- <span class="ok">ReadProcess</span> ---+--&gt; game state     |
-  | resolve offsets  |   (external, no    |                  |
-  | entity cache     |    injection)      |   Il2Cpp runtime |
-  +--------+---------+                    +------------------+
-           |
+  | resolve offsets  |                    |                  |
+  | entity cache     |                    |   Il2Cpp runtime |
+  | feature layer    |                    |   game state     |
+  +--------+---------+                    +--------+---------+
+           |                                       ^
+           |  <span class="ok">DeviceIoControl</span>                       |
+           v                                       |
+  +------------------+   ring-0 read    +----------+-------+
+  | driver client    +------------------+ mapped driver    |
+  +--------+---------+  no handle on    | (already signed) |
+           |             the game       +------------------+
            v
   +------------------+
   | DX11 overlay     |     <span class="warn">WDA_EXCLUDEFROMCAPTURE</span>
@@ -164,10 +174,11 @@
 
       <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ how it works</h2>
       <ul class="blocks" data-rise>
-        <li><span class="d">01</span> <b>external read.</b> basalt reads the game's memory from a separate process. nothing is loaded into Rust, no DLL injection, no hooks inside the game.</li>
-        <li><span class="d">02</span> <b>offset resolution.</b> after each Rust update, offsets are re-derived from an Il2CppDumper pass and pushed. the client loads them from config on start.</li>
-        <li><span class="d">03</span> <b>capture-proof overlay.</b> a DX11 window composited with WDA_EXCLUDEFROMCAPTURE. screen recordings, streams and screenshots see the game, not the overlay.</li>
-        <li><span class="d">04</span> <b>one exe, no install.</b> run basalt.exe, open Rust, press INSERT. close it when you are done. nothing persists on the system.</li>
+        <li><span class="d">01</span> <b>external read.</b> basalt reads game memory through a mapped driver via DeviceIoControl. no handle on the game process, no DLL injection, no hooks inside Rust.</li>
+        <li><span class="d">02</span> <b>offset resolution.</b> after each Rust update, offsets are re-derived from an Il2CppDumper pass and pushed. the client loads them from config on start, with compiled fallbacks.</li>
+        <li><span class="d">03</span> <b>capture-proof overlay.</b> a DX11 window composited with DirectComposition and WDA_EXCLUDEFROMCAPTURE. per-pixel alpha transparency. screen recordings, streams and screenshots see the game, not the overlay.</li>
+        <li><span class="d">04</span> <b>silent aim.</b> no mouse movement. basalt computes the direction to the target bone and rewrites the shot vector before the server sees it. the anti-cheat sees a normal shot.</li>
+        <li><span class="d">05</span> <b>one exe, no install.</b> run basalt.exe, open Rust, press INSERT. close it when you are done. settings save to an INI beside the exe.</li>
       </ul>
 
       <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ requirements</h2>
@@ -212,7 +223,7 @@
         <span class="badge">in development</span>
       </div>
       <div class="bb-price">$9.99 <span class="bb-per">/ day</span></div>
-      <div class="bb-sub">Rust external with ESP, aimbot and movement</div>
+      <div class="bb-sub">Rust external with ESP, silent aim, weapon mods, movement and misc</div>
       <div class="bb-tiers">
         <a href="checkout.html?tier=basalt-day">1 day &middot; $9.99</a>
         <a href="checkout.html?tier=basalt-week">7 days &middot; $24.99</a>
@@ -243,7 +254,7 @@
   <div class="foot-grid">
     <div class="foot-brand">
       <a href="index.html" class="brand"><span class="d">slate/</span>basalt<span class="cur">_</span></a>
-      <p>External Rust cheat by Slate. Capture-proof DX11 overlay with ESP, aimbot and movement. In development.</p>
+      <p>External Rust cheat by Slate. Capture-proof DX11 overlay with player/NPC ESP, silent aim, weapon mods, movement hacks and misc. In development.</p>
       <div class="pay" aria-label="Accepted payment methods">
         <span>visa</span><span>mastercard</span><span>paypal</span><span>crypto</span><span>cash app</span><span>apple pay</span>
       </div>
