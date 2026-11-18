@@ -958,4 +958,156 @@ per key     $${(PRICE[plan] * disc).toFixed(2)}`;
     btn.textContent = 'check again';
   });
 })();
+
+/* ============ BASALT INTERACTIVE MENU DEMO ============ */
+(function basaltMenuDemo() {
+  const root = $('#basaltHud'); if (!root) return;
+
+  const TABS = [
+    {
+      name: 'visuals',
+      sections: [
+        { title: 'player visuals', rows: [
+          { type: 'toggle', label: 'player ESP', on: true, bold: true },
+          { type: 'opt', key: 'box type', val: '2D' },
+          { type: 'toggle', label: 'skeleton', on: true },
+          { type: 'toggle', label: 'health bar', on: true },
+          { type: 'toggle', label: 'name + distance', on: true },
+          { type: 'toggle', label: 'held item', on: true },
+          { type: 'toggle', label: 'flags', on: false },
+          { type: 'opt', key: 'max distance', val: '400m' },
+        ]},
+        { title: 'npc visuals', rows: [
+          { type: 'toggle', label: 'NPC ESP', on: true, bold: true },
+          { type: 'toggle', label: 'scientists', on: true },
+          { type: 'toggle', label: 'animals', on: false },
+          { type: 'opt', key: 'max distance', val: '200m' },
+        ]},
+      ],
+    },
+    {
+      name: 'combat',
+      sections: [
+        { title: 'aimbot', rows: [
+          { type: 'toggle', label: 'silent aim', on: true, bold: true },
+          { type: 'opt', key: 'bone', val: 'head' },
+          { type: 'opt', key: 'fov', val: '120' },
+          { type: 'opt', key: 'chance', val: '80%' },
+          { type: 'toggle', label: 'vis check', on: true },
+          { type: 'toggle', label: 'target wounded', on: false },
+        ]},
+        { title: 'weapons', rows: [
+          { type: 'toggle', label: 'recoil control', on: true, bold: true },
+          { type: 'toggle', label: 'spread control', on: true, bold: true },
+          { type: 'toggle', label: 'no shotgun spread', on: true },
+          { type: 'toggle', label: 'fast bullets', on: false },
+          { type: 'toggle', label: 'force auto', on: false },
+          { type: 'toggle', label: 'instant eoka', on: true },
+          { type: 'toggle', label: 'reload indicator', on: true },
+        ]},
+      ],
+    },
+    {
+      name: 'movement',
+      sections: [
+        { title: 'movement', rows: [
+          { type: 'toggle', label: 'speed multiplier', on: false, bold: true },
+          { type: 'opt', key: 'speed', val: '1.2x' },
+          { type: 'toggle', label: 'bunny hop', on: true },
+          { type: 'toggle', label: 'spiderman', on: false },
+          { type: 'toggle', label: 'noclip', on: false },
+          { type: 'toggle', label: 'infinite jump', on: false },
+          { type: 'toggle', label: 'omni sprint', on: true },
+          { type: 'toggle', label: 'no fall damage', on: true },
+        ]},
+      ],
+    },
+    {
+      name: 'misc',
+      sections: [
+        { title: 'utility', rows: [
+          { type: 'toggle', label: 'enemy alerts', on: true, bold: true },
+          { type: 'toggle', label: 'battle indicator', on: true },
+          { type: 'toggle', label: 'instant loot', on: false },
+          { type: 'toggle', label: 'instant revive', on: false },
+        ]},
+        { title: 'environment', rows: [
+          { type: 'toggle', label: 'bright night', on: true, bold: true },
+          { type: 'toggle', label: 'custom time', on: false },
+          { type: 'opt', key: 'time', val: '12:00' },
+          { type: 'toggle', label: 'custom sky', on: false },
+        ]},
+      ],
+    },
+    {
+      name: 'config',
+      sections: [
+        { title: 'interface', rows: [
+          { type: 'opt', key: 'menu key', val: 'INSERT' },
+          { type: 'opt', key: 'theme', val: 'dark' },
+          { type: 'toggle', label: 'save on close', on: true },
+        ]},
+        { title: 'crosshair', rows: [
+          { type: 'toggle', label: 'custom crosshair', on: true, bold: true },
+          { type: 'opt', key: 'style', val: 'cross' },
+          { type: 'opt', key: 'size', val: '6' },
+          { type: 'opt', key: 'colour', val: '#35D06A' },
+          { type: 'toggle', label: 'rainbow mode', on: false },
+        ]},
+      ],
+    },
+  ];
+
+  let activeTab = 0;
+
+  function rowHtml(r) {
+    if (r.type === 'toggle') {
+      const cls = r.on ? 'on' : '';
+      const b = r.bold ? `<b>${r.label}</b>` : r.label;
+      return `<div class="bv-row"><span class="bv-check ${cls}"></span>${b}</div>`;
+    }
+    return `<div class="bv-row bv-indent"><span class="d">${r.key}:</span> <b>${r.val}</b></div>`;
+  }
+
+  function render() {
+    const tab = TABS[activeTab];
+    const tabsHtml = TABS.map((t, i) =>
+      `<span class="bv-tab${i === activeTab ? ' bv-tab-active' : ''}" data-tab="${i}">${t.name}</span>`
+    ).join('');
+
+    let bodyHtml = '';
+    tab.sections.forEach((sec, si) => {
+      if (si > 0) bodyHtml += '<div class="bv-divider"></div>';
+      bodyHtml += '<div class="bv-section">';
+      bodyHtml += `<div class="bv-row" style="margin-bottom:2px"><span class="d">// ${sec.title}</span></div>`;
+      sec.rows.forEach(r => { bodyHtml += rowHtml(r); });
+      bodyHtml += '</div>';
+    });
+
+    root.innerHTML = `
+      <div class="hud-chrome">
+        <span><strong>basalt</strong> &middot; menu</span>
+        <span>INSERT to toggle</span>
+      </div>
+      <div class="bv-menu">
+        <div class="bv-tabs">${tabsHtml}</div>
+        ${bodyHtml}
+      </div>
+      <div class="hud-foot" style="margin:0;padding:10px 16px;border-top:1px solid var(--faint)">
+        <span>GAME: <b>RUST</b></span>
+        <span>OVERLAY: <b>DX11</b></span>
+        <span>STATUS: <b>RUNNING</b></span>
+      </div>
+    `;
+  }
+
+  root.addEventListener('click', e => {
+    const tab = e.target.closest('[data-tab]');
+    if (tab) { activeTab = +tab.dataset.tab; render(); return; }
+    const check = e.target.closest('.bv-check');
+    if (check) { check.classList.toggle('on'); }
+  });
+
+  render();
+})();
 })();

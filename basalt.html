@@ -17,7 +17,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='4' y='4' width='24' height='24' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='8' y='8' width='7' height='7' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <script>document.documentElement.className='js';try{if(localStorage.getItem('slate:still')==='1')document.documentElement.classList.add('still')}catch(e){}</script>
 </head>
@@ -83,193 +83,130 @@
 </div>
 
 <main>
-  <section class="wrap" style="padding-top:48px">
-    <div class="shop-head">
-      <div>
-        <h1>basalt</h1>
-        <p class="sub">External overlay for Rust. In development.</p>
+  <section class="hero wrap">
+<pre class="logo" id="logo" aria-label="basalt" data-load-scramble="1100">██████╗  █████╗ ███████╗ █████╗ ██╗  ████████╗
+██╔══██╗██╔══██╗██╔════╝██╔══██╗██║  ╚══██╔══╝
+██████╔╝███████║███████╗███████║██║     ██║
+██╔══██╗██╔══██║╚════██║██╔══██║██║     ██║
+██████╔╝██║  ██║███████║██║  ██║███████╗██║
+╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝</pre>
+
+    <div class="hero-row">
+      <div data-rise>
+        <h1 class="h1">See everything.<br>Hit everything.</h1>
+        <p class="subhead">basalt reads Rust from outside and renders ESP, aimbot and movement features on a capture-excluded overlay. Nothing is injected into the game.<br><span class="dim">external read via mapped driver &middot; DX11 overlay &middot; no injection</span></p>
+        <div class="badge-row">
+          <span class="badge">in development</span>
+          <span class="badge">external only</span>
+          <span class="badge">capture-proof overlay</span>
+        </div>
+        <div class="install">
+          <span class="btn disabled">coming soon</span>
+          <a href="#features" class="btn ghost">see features</a>
+        </div>
+        <p class="ticker">rust external by slate<br>DX11 overlay &middot; ImGui menu &middot; auto offset updates</p>
       </div>
-      <span class="badge">in development</span>
+      <div class="hud-stage hero-hud" id="basaltDemo" data-rise aria-label="Basalt menu demo">
+        <div class="hud-window" id="basaltHud"></div>
+      </div>
+    </div>
+
+    <ul class="blocks" data-rise>
+      <li><span class="d">//</span> <b>external read.</b> basalt reads game memory through a mapped driver. no handle on the game process, no DLL injection.</li>
+      <li><span class="d">//</span> <b>invisible overlay.</b> DX11 window with WDA_EXCLUDEFROMCAPTURE. screen recordings, streams and screenshots see the game, not you.</li>
+      <li><span class="d">//</span> <b>one exe, no install.</b> run basalt.exe, open Rust, press INSERT. close it when done. settings save to INI.</li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="features" aria-labelledby="featTitle">
+    <h2 class="prompt-head" id="featTitle" data-reveal data-scramble>$ features</h2>
+    <p class="sub" data-reveal>Everything basalt ships with. All features are toggleable and configurable from the in-game menu.</p>
+    <ul class="specs" data-rise>
+      <li><span class="k">player ESP</span><span class="v">boxes, skeletons, health bars, names, distance, held item, flags. separate colours for visible/hidden, configurable render distance</span></li>
+      <li><span class="k">NPC ESP</span><span class="v">scientists and animals with boxes, skeletons, names, distance. independent toggle and render distance</span></li>
+      <li><span class="k">aimbot</span><span class="v">silent aim (no mouse movement), bone selection (head/chest/leg), FOV circle, visibility check, dynamic FOV, target filtering (wounded, scientists, sleepers, teammates, safezone)</span></li>
+      <li><span class="k">weapons</span><span class="v">recoil control, spread control, no shotgun spread, fast bullets, force auto, instant eoka, reload indicator</span></li>
+      <li><span class="k">movement</span><span class="v">speed multiplier, bunny hop, spiderman, noclip, infinite jump, omni sprint, air control, gravity control, no fall damage</span></li>
+      <li><span class="k">misc</span><span class="v">bright night, custom time of day, enemy alerts, battle indicator, instant loot, instant revive, custom sky colours</span></li>
+      <li><span class="k">overlay</span><span class="v">DX11 capture-excluded window (WDA_EXCLUDEFROMCAPTURE), invisible to OBS, Discord, anti-cheat screenshots</span></li>
+      <li><span class="k">menu</span><span class="v">5-tab ImGui menu (visuals, combat, movement, misc, config). INSERT to toggle. everything configurable live, settings saved to INI</span></li>
+      <li><span class="k">crosshair</span><span class="v">custom crosshair with style, size and colour options. optional rainbow mode</span></li>
+      <li><span class="k">offsets</span><span class="v">auto-updated after each Rust patch via Il2CppDumper pass</span></li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="how" aria-labelledby="howTitle">
+    <h2 class="prompt-head" id="howTitle" data-reveal data-scramble>$ how it works</h2>
+    <p class="sub" data-reveal>Five layers from driver to screen. Nothing touches the game process.</p>
+    <ul class="blocks" data-rise>
+      <li><span class="d">01</span> <b>external read.</b> basalt reads game memory through a mapped driver via DeviceIoControl. no handle on the game process, no DLL injection, no hooks inside Rust.</li>
+      <li><span class="d">02</span> <b>offset resolution.</b> after each Rust update, offsets are re-derived from an Il2CppDumper pass and pushed. the client loads them from config on start, with compiled fallbacks.</li>
+      <li><span class="d">03</span> <b>capture-proof overlay.</b> a DX11 window composited with DirectComposition and WDA_EXCLUDEFROMCAPTURE. per-pixel alpha transparency. screen recordings, streams and screenshots see the game, not the overlay.</li>
+      <li><span class="d">04</span> <b>silent aim.</b> no mouse movement. basalt computes the direction to the target bone and rewrites the shot vector before the server sees it. the anti-cheat sees a normal shot.</li>
+      <li><span class="d">05</span> <b>one exe, no install.</b> run basalt.exe, open Rust, press INSERT. close it when you are done. settings save to an INI beside the exe.</li>
+    </ul>
+
+    <div class="bv-flow" data-rise>
+      <div class="bv-title">architecture</div>
+      <div class="bv-flow-row">
+        <div class="bv-node">
+          <div class="bv-node-head">basalt.exe</div>
+          <div class="bv-node-body">
+            <span>resolve offsets</span>
+            <span>entity cache</span>
+            <span>feature layer</span>
+          </div>
+        </div>
+        <div class="bv-arrow">
+          <span class="bv-arrow-label ok">DeviceIoControl</span>
+          <svg width="80" height="24" viewBox="0 0 80 24"><path d="M0 12h68" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M62 6l12 6-12 6" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
+        </div>
+        <div class="bv-node">
+          <div class="bv-node-head">mapped driver</div>
+          <div class="bv-node-body">
+            <span>ring-0 read</span>
+            <span>no game handle</span>
+            <span>already signed</span>
+          </div>
+        </div>
+        <div class="bv-arrow">
+          <span class="bv-arrow-label d">physical read</span>
+          <svg width="80" height="24" viewBox="0 0 80 24"><path d="M0 12h68" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M62 6l12 6-12 6" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
+        </div>
+        <div class="bv-node">
+          <div class="bv-node-head">RustClient.exe</div>
+          <div class="bv-node-body">
+            <span>Il2Cpp runtime</span>
+            <span>game state</span>
+            <span>entity data</span>
+          </div>
+        </div>
+      </div>
+      <div class="bv-flow-down">
+        <svg width="24" height="32" viewBox="0 0 24 32"><path d="M12 0v20" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M6 14l6 12 6-12" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
+      </div>
+      <div class="bv-flow-row bv-flow-bottom">
+        <div class="bv-node bv-node-wide">
+          <div class="bv-node-head">DX11 overlay</div>
+          <div class="bv-node-body bv-node-row">
+            <span>ImGui renderer</span>
+            <span>ESP + aimbot draw</span>
+            <span class="warn">WDA_EXCLUDEFROMCAPTURE</span>
+          </div>
+          <div class="bv-node-note">invisible to OBS, Discord, anti-cheat screenshots</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="wrap">
-      <h2 class="prompt-head" data-reveal data-scramble>$ what it is</h2>
-      <p class="lede" data-rise>Basalt is an external engine for Rust. It reads the game process from outside, resolves live offsets, and renders ESP, aimbot and movement features on a capture-excluded DX11 overlay. Nothing is injected into the game.</p>
-      <p class="lede" data-rise style="margin-top:12px">The overlay sits on top of the game but is invisible to screen capture, streaming software and anti-cheat screenshots. The menu opens with INSERT and everything is configurable in real time.</p>
-
-      <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ features</h2>
-      <ul class="specs" data-rise>
-        <li><span class="k">player ESP</span><span class="v">boxes, skeletons, health bars, names, distance, held item, flags. separate colours for visible/hidden, configurable render distance</span></li>
-        <li><span class="k">NPC ESP</span><span class="v">scientists and animals with boxes, skeletons, names, distance. independent toggle and render distance</span></li>
-        <li><span class="k">aimbot</span><span class="v">silent aim (no mouse movement), bone selection (head/chest/leg), FOV circle, visibility check, dynamic FOV, target filtering (wounded, scientists, sleepers, teammates, safezone)</span></li>
-        <li><span class="k">weapons</span><span class="v">recoil control, spread control, no shotgun spread, fast bullets, force auto, instant eoka, reload indicator</span></li>
-        <li><span class="k">movement</span><span class="v">speed multiplier, bunny hop, spiderman, noclip, infinite jump, omni sprint, air control, gravity control, no fall damage</span></li>
-        <li><span class="k">misc</span><span class="v">bright night, custom time of day, enemy alerts, battle indicator, instant loot, instant revive, custom sky colours</span></li>
-        <li><span class="k">overlay</span><span class="v">DX11 capture-excluded window (WDA_EXCLUDEFROMCAPTURE), invisible to OBS, Discord, anti-cheat screenshots</span></li>
-        <li><span class="k">menu</span><span class="v">5-tab ImGui menu (visuals, combat, movement, misc, config). INSERT to toggle. everything configurable live, settings saved to INI</span></li>
-        <li><span class="k">crosshair</span><span class="v">custom crosshair with style, size and colour options. optional rainbow mode</span></li>
-        <li><span class="k">offsets</span><span class="v">auto-updated after each Rust patch via Il2CppDumper pass</span></li>
-      </ul>
-
-      <div class="bv-grid" data-rise>
-        <div class="bv-panel">
-          <div class="bv-title">ESP overlay</div>
-          <div class="bv-viewport">
-            <div class="bv-entity" style="top:12%;left:28%">
-              <div class="bv-box" style="height:100px">
-                <span class="bv-name">player_032 <span class="d">187m</span></span>
-                <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
-                <div class="bv-bar"><div class="bv-hp" style="width:67%;background:#E8A838"></div></div>
-                <span class="bv-item">AK-47</span>
-              </div>
-            </div>
-            <div class="bv-entity" style="top:48%;left:62%">
-              <div class="bv-box bv-npc" style="height:72px">
-                <span class="bv-name">scientist <span class="d">54m</span></span>
-                <div class="bv-bar"><div class="bv-hp" style="width:100%;background:var(--ok)"></div></div>
-              </div>
-            </div>
-            <div class="bv-entity" style="top:68%;left:18%">
-              <div class="bv-box bv-hidden" style="height:60px">
-                <span class="bv-name">player_108 <span class="d">312m</span></span>
-                <div class="bv-bar"><div class="bv-hp" style="width:41%;background:#E8A838"></div></div>
-                <span class="bv-item">Thompson</span>
-              </div>
-            </div>
-            <div class="bv-crosshair"></div>
-            <div class="bv-fov"></div>
-            <span class="bv-label">player + NPC ESP combined</span>
-          </div>
-        </div>
-
-        <div class="bv-panel">
-          <div class="bv-title">menu <span class="d">[INSERT to toggle]</span></div>
-          <div class="bv-menu">
-            <div class="bv-tabs">
-              <span>visuals</span>
-              <span class="bv-tab-active">combat</span>
-              <span>move</span>
-              <span>misc</span>
-              <span>config</span>
-            </div>
-            <div class="bv-section">
-              <div class="bv-row"><span class="bv-check on"></span><b>silent aim</b></div>
-              <div class="bv-row bv-indent"><span class="d">bone:</span> <b>head</b></div>
-              <div class="bv-row bv-indent"><span class="d">fov:</span> <b>120</b></div>
-              <div class="bv-row bv-indent"><span class="d">chance:</span> <b>80%</b></div>
-              <div class="bv-row bv-indent"><span class="bv-check on"></span>vis check</div>
-              <div class="bv-row bv-indent"><span class="bv-check"></span>target wounded</div>
-            </div>
-            <div class="bv-divider"></div>
-            <div class="bv-section">
-              <div class="bv-row"><span class="bv-check on"></span><b>recoil control</b></div>
-              <div class="bv-row"><span class="bv-check on"></span><b>spread control</b></div>
-              <div class="bv-row"><span class="bv-check on"></span>no shotgun spread</div>
-              <div class="bv-row"><span class="bv-check"></span>fast bullets</div>
-              <div class="bv-row"><span class="bv-check on"></span>reload indicator</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="bv-flow" data-rise>
-        <div class="bv-title">architecture</div>
-        <div class="bv-flow-row">
-          <div class="bv-node">
-            <div class="bv-node-head">basalt.exe</div>
-            <div class="bv-node-body">
-              <span>resolve offsets</span>
-              <span>entity cache</span>
-              <span>feature layer</span>
-            </div>
-          </div>
-          <div class="bv-arrow">
-            <span class="bv-arrow-label ok">DeviceIoControl</span>
-            <svg width="80" height="24" viewBox="0 0 80 24"><path d="M0 12h68" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M62 6l12 6-12 6" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
-          </div>
-          <div class="bv-node">
-            <div class="bv-node-head">mapped driver</div>
-            <div class="bv-node-body">
-              <span>ring-0 read</span>
-              <span>no game handle</span>
-              <span>already signed</span>
-            </div>
-          </div>
-          <div class="bv-arrow">
-            <span class="bv-arrow-label d">physical read</span>
-            <svg width="80" height="24" viewBox="0 0 80 24"><path d="M0 12h68" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M62 6l12 6-12 6" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
-          </div>
-          <div class="bv-node">
-            <div class="bv-node-head">RustClient.exe</div>
-            <div class="bv-node-body">
-              <span>Il2Cpp runtime</span>
-              <span>game state</span>
-              <span>entity data</span>
-            </div>
-          </div>
-        </div>
-        <div class="bv-flow-down">
-          <svg width="24" height="32" viewBox="0 0 24 32"><path d="M12 0v20" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M6 14l6 12 6-12" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
-        </div>
-        <div class="bv-flow-row bv-flow-bottom">
-          <div class="bv-node bv-node-wide">
-            <div class="bv-node-head">DX11 overlay</div>
-            <div class="bv-node-body bv-node-row">
-              <span>ImGui renderer</span>
-              <span>ESP + aimbot draw</span>
-              <span class="warn">WDA_EXCLUDEFROMCAPTURE</span>
-            </div>
-            <div class="bv-node-note">invisible to OBS, Discord, anti-cheat screenshots</div>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ how it works</h2>
-      <ul class="blocks" data-rise>
-        <li><span class="d">01</span> <b>external read.</b> basalt reads game memory through a mapped driver via DeviceIoControl. no handle on the game process, no DLL injection, no hooks inside Rust.</li>
-        <li><span class="d">02</span> <b>offset resolution.</b> after each Rust update, offsets are re-derived from an Il2CppDumper pass and pushed. the client loads them from config on start, with compiled fallbacks.</li>
-        <li><span class="d">03</span> <b>capture-proof overlay.</b> a DX11 window composited with DirectComposition and WDA_EXCLUDEFROMCAPTURE. per-pixel alpha transparency. screen recordings, streams and screenshots see the game, not the overlay.</li>
-        <li><span class="d">04</span> <b>silent aim.</b> no mouse movement. basalt computes the direction to the target bone and rewrites the shot vector before the server sees it. the anti-cheat sees a normal shot.</li>
-        <li><span class="d">05</span> <b>one exe, no install.</b> run basalt.exe, open Rust, press INSERT. close it when you are done. settings save to an INI beside the exe.</li>
-      </ul>
-
-      <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ requirements</h2>
-      <ul class="specs" data-rise>
-        <li><span class="k">os</span><span class="v">Windows 10 or Windows 11, 64-bit</span></li>
-        <li><span class="k">game</span><span class="v">Rust (Steam)</span></li>
-        <li><span class="k">gpu</span><span class="v">any DirectX 11 capable GPU</span></li>
-        <li><span class="k">rights</span><span class="v">administrator</span></li>
-      </ul>
-
-      <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ status</h2>
-      <p class="lede" data-rise>Basalt is in active development. The overlay, menu and feature layer are built. We are testing against live servers before release. Pricing and availability will be announced when it is ready.</p>
-      <p class="lede" data-rise style="margin-top:12px">Join the Discord for updates and early access announcements.</p>
-
-      <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ questions</h2>
-      <div class="faq" data-rise>
-        <details open>
-          <summary>When does it release?</summary>
-          <p>No fixed date. It ships when testing is done. Join the Discord for announcements.</p>
-        </details>
-        <details>
-          <summary>Is it detected?</summary>
-          <p>External tools have a different detection surface than injected ones. Basalt reads memory externally and renders on a separate, capture-excluded window. Detection status will be tracked on the status page once it goes live.</p>
-        </details>
-        <details>
-          <summary>Does it work with EAC?</summary>
-          <p>Rust uses Easy Anti-Cheat. Basalt is designed around that. Specific compatibility is verified during testing.</p>
-        </details>
-        <details>
-          <summary>Can I use it with slate?</summary>
-          <p>Yes. Slate changes your hardware identity, basalt provides in-game features. They are separate products with separate keys but designed to work together.</p>
-        </details>
-        <details>
-          <summary>How much will it cost?</summary>
-          <p>Starts at $9.99 for a day pass. 7 days is $24.99, 30 days $44.99, 90 days $89.99, permanent $149.99.</p>
-        </details>
-      </div>
-
+  <section class="wrap" id="reqs" aria-labelledby="reqTitle">
+    <h2 class="prompt-head" id="reqTitle" data-reveal data-scramble>$ requirements</h2>
+    <ul class="specs" data-rise>
+      <li><span class="k">os</span><span class="v">Windows 10 or Windows 11, 64-bit</span></li>
+      <li><span class="k">game</span><span class="v">Rust (Steam)</span></li>
+      <li><span class="k">gpu</span><span class="v">any DirectX 11 capable GPU</span></li>
+      <li><span class="k">rights</span><span class="v">administrator</span></li>
+    </ul>
   </section>
 
   <section class="wrap" id="pricing" aria-labelledby="basaltPriceTitle">
@@ -322,6 +259,32 @@
       </ul>
     </div>
     <p class="note" data-rise style="margin-top:16px">basalt is in active development. join the discord for release announcements. <a href="products.html">all products &rarr;</a></p>
+  </section>
+
+  <section class="wrap" id="faq" aria-labelledby="faqTitle">
+    <h2 class="prompt-head" id="faqTitle" data-reveal data-scramble>$ questions</h2>
+    <div class="faq" data-rise>
+      <details open>
+        <summary>When does it release?</summary>
+        <p>No fixed date. It ships when testing is done. Join the Discord for announcements.</p>
+      </details>
+      <details>
+        <summary>Is it detected?</summary>
+        <p>External tools have a different detection surface than injected ones. Basalt reads memory externally and renders on a separate, capture-excluded window. Detection status will be tracked on the status page once it goes live.</p>
+      </details>
+      <details>
+        <summary>Does it work with EAC?</summary>
+        <p>Rust uses Easy Anti-Cheat. Basalt is designed around that. Specific compatibility is verified during testing.</p>
+      </details>
+      <details>
+        <summary>Can I use it with slate?</summary>
+        <p>Yes. Slate changes your hardware identity, basalt provides in-game features. They are separate products with separate keys but designed to work together.</p>
+      </details>
+      <details>
+        <summary>How much will it cost?</summary>
+        <p>Starts at $9.99 for a day pass. 7 days is $24.99, 30 days $44.99, 90 days $89.99, permanent $149.99.</p>
+      </details>
+    </div>
   </section>
 
   <section class="wrap" style="padding-bottom:64px">
