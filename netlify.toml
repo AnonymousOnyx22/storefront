@@ -1,0 +1,128 @@
+# slate storefront on netlify
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# ---------- pretty urls ----------
+[[redirects]]
+  from = "/my-key"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/keys"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/checkout"
+  to = "/checkout.html"
+  status = 200
+
+[[redirects]]
+  from = "/games"
+  to = "/games.html"
+  status = 200
+
+[[redirects]]
+  from = "/status"
+  to = "/status.html"
+  status = 200
+
+[[redirects]]
+  from = "/reviews"
+  to = "/reviews.html"
+  status = 200
+
+[[redirects]]
+  from = "/install"
+  to = "/guide.html"
+  status = 200
+
+[[redirects]]
+  from = "/guide"
+  to = "/guide.html"
+  status = 200
+
+[[redirects]]
+  from = "/help"
+  to = "/help.html"
+  status = 200
+
+[[redirects]]
+  from = "/pricing"
+  to = "/pricing.html"
+  status = 200
+
+[[redirects]]
+  from = "/updates"
+  to = "/changelog.html"
+  status = 200
+
+[[redirects]]
+  from = "/changelog"
+  to = "/changelog.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/products"
+  to = "/products.html"
+  status = 200
+
+[[redirects]]
+  from = "/basalt"
+  to = "/basalt.html"
+  status = 200
+
+[[redirects]]
+  from = "/docs"
+  to = "/help.html"
+  status = 301
+
+# seller console. noindex, nofollow, and no link anywhere on the storefront.
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+  force = true
+
+# ---------- headers ----------
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    cache-control = "public, max-age=3600, must-revalidate"
+
+# the installer. unguessable path, never indexed, never cached by a proxy.
+[[headers]]
+  for = "/dl/*"
+  [headers.values]
+    cache-control = "no-store"
+    x-robots-tag = "noindex, nofollow"
+    content-disposition = "attachment"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    x-content-type-options = "nosniff"
+    referrer-policy = "strict-origin-when-cross-origin"
+    x-frame-options = "DENY"
+    content-security-policy = "default-src 'self'; script-src 'self' 'sha256-196RCn54MQjqQB1KB9oP/KH7IsBBhp/c/AW0E4nu6iQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    cache-control = "no-store"

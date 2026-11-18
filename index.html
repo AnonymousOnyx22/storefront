@@ -1,0 +1,355 @@
+﻿<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-site-verification" content="NwfS1hUO8HG8qtu44_TABambVVnYWeugtec3cqP96vs">
+<title>Slate - A New PC Identity in One Click</title>
+<meta name="description" content="slate changes the hardware identifiers your PC broadcasts, then keeps them changed across reboots and game updates. Windows 10 and 11. Key delivered by email.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://useslate.net/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://useslate.net/">
+<meta property="og:title" content="Slate - A New PC Identity in One Click">
+<meta property="og:description" content="Private HWID spoofer for Windows 10 and 11. Changes your hardware identity in one click, survives reboots and updates. Key by email.">
+<meta property="og:site_name" content="Slate">
+<meta property="og:image" content="https://useslate.net/assets/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='4' y='4' width='24' height='24' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='8' y='8' width='7' height='7' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.className='js';try{if(localStorage.getItem('slate:still')==='1')document.documentElement.classList.add('still')}catch(e){}</script>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+
+<div class="topbar">
+  <div class="topbar-in wrap">
+    <span class="live"><i></i><b id="onlineCount">24</b> online</span>
+    <span class="tb-sep">/</span>
+    <span>instant delivery</span>
+    <span class="tb-sep">/</span>
+    <span>24/7 support</span>
+    <span class="tb-right">
+      <a href="reviews.html">reviews</a>
+      <a href="status.html">status</a>
+      <span class="tb-sep">|</span>
+      <span class="d">existing user?</span>
+      <a href="login.html">sign in</a>
+      <a href="checkout.html" class="tb-cta">get a key &rarr;</a>
+    </span>
+  </div>
+</div>
+
+<header class="nav-wrap">
+  <nav class="nav wrap" aria-label="Main">
+    <div class="brand-wrap">
+      <a href="index.html" class="brand"><span class="d">slate/</span>slate<span class="cur">_</span></a>
+      <div class="brand-menu">
+        <p class="bm-head">slate projects</p>
+        <a class="bm-item" href="index.html"><b>slate</b><span>hwid spoofer</span><em class="bm-live">live</em></a>
+        <a class="bm-item" href="basalt.html"><b>basalt</b><span>rust external</span><em>in development</em></a>
+      </div>
+    </div>
+    <ul class="links dots">
+      <li><a href="index.html" aria-current="page">~/</a></li>
+      <li><a href="products.html">products</a></li>
+      <li><a href="games.html">games</a></li>
+      <li><a href="pricing.html">pricing</a></li>
+      <li><a href="status.html">status</a></li>
+      <li><a href="guide.html">install</a></li>
+      <li><a href="help.html">help</a></li>
+      <li><a href="login.html">my key</a></li>
+    </ul>
+    <button class="kbd motion" data-motion aria-pressed="false">&#9632; stop animations</button>
+    <button class="kbd" data-pal aria-label="Open command palette"><b>/</b> jump</button>
+    <button class="kbd menu-btn" aria-expanded="false" aria-controls="mmenu">[menu]</button>
+  </nav>
+</header>
+<div class="mmenu" id="mmenu">
+  <button class="kbd close">[close]</button>
+  <a href="index.html"><span class="d">cd</span> ~/</a>
+  <a href="products.html"><span class="d">cd</span> ~/products</a>
+  <a href="games.html"><span class="d">cd</span> ~/games</a>
+  <a href="pricing.html"><span class="d">cd</span> ~/pricing</a>
+  <a href="status.html"><span class="d">cd</span> ~/status</a>
+  <a href="guide.html"><span class="d">cd</span> ~/install</a>
+  <a href="help.html"><span class="d">cd</span> ~/help</a>
+  <a href="login.html"><span class="d">cd</span> ~/my-key</a>
+  <a href="reviews.html"><span class="d">cd</span> ~/reviews</a>
+  <a href="privacy.html"><span class="d">cd</span> ~/privacy</a>
+  <a href="terms.html"><span class="d">cd</span> ~/terms</a>
+</div>
+
+<main>
+  <section class="hero wrap">
+<pre class="logo" id="logo" aria-label="slate" data-load-scramble="1100">███████╗██╗      █████╗ ████████╗███████╗
+██╔════╝██║     ██╔══██╗╚══██╔══╝██╔════╝
+███████╗██║     ███████║   ██║   █████╗
+╚════██║██║     ██╔══██║   ██║   ██╔══╝
+███████║███████╗██║  ██║   ██║   ███████╗
+╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝</pre>
+
+    <div class="hero-row">
+      <div data-rise>
+        <h1 class="h1">A new PC.<br>Same PC.</h1>
+        <p class="subhead">slate gives your computer a fresh hardware identity — the details games and apps use to recognise it. One click, then it stays that way.<br><span class="dim">windows 10 &amp; 11 · permanent until you undo it · key by email</span></p>
+        <div class="badge-row">
+          <span class="badge on"><span class="dot"></span>undetected</span>
+          <span class="badge">instant delivery</span>
+          <span class="badge">640+ keys sold</span>
+        </div>
+        <div class="install">
+          <a href="checkout.html?tier=month" class="btn">get a key -&gt;</a>
+          <a href="guide.html" class="btn ghost">how to install</a>
+        </div>
+        <p class="ticker" id="status">identities changed <b id="idCount">1,478</b><br>version 1.2.0 · windows 10 &amp; 11 · 64-bit</p>
+      </div>
+      <div class="hud-stage hero-hud" id="demo" data-rise aria-label="Live slate demo">
+        <div class="hud-window" id="cliHud"></div>
+      </div>
+    </div>
+
+    <ul class="blocks" data-rise>
+      <li><span class="d">//</span> <b>one click.</b> no scripts, no config files, no command line. press the button and wait a minute.</li>
+      <li><span class="d">//</span> <b>it stays put.</b> your new identity survives reboots, game updates and windows updates.</li>
+      <li><span class="d">//</span> <b>it's yours to undo.</b> restore your real details whenever you want, from the same window.</li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="what" aria-labelledby="whatTitle">
+    <h2 class="prompt-head" id="whatTitle" data-reveal data-scramble>$ what it does</h2>
+    <p class="sub" data-reveal>Everything a game, a launcher or a website can learn about your machine — replaced with a believable one, all at once.</p>
+    <ul class="blocks" data-rise>
+      <li><span class="d">01</span> <b>new machine identity</b><br>the name, serial and system id your PC reports are swapped for a clean set that matches a real manufacturer.</li>
+      <li><span class="d">02</span> <b>new disk identity</b><br>your drive's serial and volume id change too, so storage can't be used to link you back.</li>
+      <li><span class="d">03</span> <b>new network identity</b><br>a fresh hardware address, from the same vendor as the rest of the profile, so nothing looks pasted on.</li>
+      <li><span class="d">04</span> <b>leftovers cleaned</b><br>the traces windows keeps about your old setup are cleared, so the previous identity stops showing up.</li>
+      <li><span class="d">05</span> <b>one coherent set</b><br>board, disk and network are generated together as one believable machine — not three random strings.</li>
+      <li><span class="d">06</span> <b>undo any time</b><br>every original value is saved. restore puts your machine back exactly as it was.</li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="how" aria-labelledby="howTitle">
+    <h2 class="prompt-head" id="howTitle" data-reveal data-scramble>$ how it works</h2>
+    <p class="sub" data-reveal>Three steps, about five minutes. No technical knowledge needed.</p>
+    <ol class="blocks steps-plain" data-rise>
+      <li><span class="d">01</span> <b>buy a key</b><br>pick a tier and enter your email. the key arrives in under a minute. that email and key are your account — no password.</li>
+      <li><span class="d">02</span> <b>install and activate</b><br>run the installer, paste your key once. it binds to this PC and remembers it.</li>
+      <li><span class="d">03</span> <b>press spoof</b><br>one click in the app, then restart. that's it — your new identity is live.</li>
+    </ol>
+    <div class="install" data-rise style="margin-top:24px">
+      <a href="guide.html" class="btn ghost">full install guide -&gt;</a>
+    </div>
+  </section>
+
+  <section class="wrap" id="games" aria-labelledby="gamesTitle">
+    <h2 class="prompt-head" id="gamesTitle" data-reveal data-scramble>$ supported games</h2>
+    <p class="sub" data-reveal>slate works at the hardware layer, so the game does not matter. These are the ones customers ask about most.</p>
+    <ul class="games-grid" data-rise>
+      <li><b>Fortnite</b><span>EAC</span></li>
+      <li><b>Rust</b><span>EAC</span></li>
+      <li><b>Apex Legends</b><span>EAC</span></li>
+      <li><b>Rainbow Six Siege</b><span>BattlEye</span></li>
+      <li><b>Escape from Tarkov</b><span>BattlEye</span></li>
+      <li><b>DayZ</b><span>BattlEye</span></li>
+      <li><b>Valorant</b><span>Vanguard</span></li>
+      <li><b>Call of Duty</b><span>Ricochet</span></li>
+      <li><b>Delta Force</b><span>ACE</span></li>
+      <li><b>PUBG</b><span>BattlEye</span></li>
+      <li><b>War Thunder</b><span>EAC</span></li>
+      <li><b>FiveM</b><span>custom</span></li>
+    </ul>
+    <p class="note"><a href="games.html">see every supported title -&gt;</a> &nbsp;·&nbsp; <a href="status.html">live detection status -&gt;</a></p>
+  </section>
+
+  <section class="wrap" id="pricing" aria-labelledby="priceTitle">
+    <h2 class="prompt-head" id="priceTitle" data-reveal data-scramble>$ pricing</h2>
+    <div class="tiers" data-rise>
+      <ul class="tier">
+        <li class="tier-name">1 day</li>
+        <li class="tier-price">$6.99</li>
+        <li>1 PC</li>
+        <li>unlimited spoofs</li>
+        <li>all updates</li>
+        <li>instant email</li>
+        <li class="tier-buy"><a class="btn ghost" href="checkout.html?tier=day">buy 1 day -&gt;</a></li>
+      </ul>
+      <ul class="tier featured">
+        <li class="tier-name">7 days <span class="dim">// most popular</span></li>
+        <li class="tier-price">$14.99</li>
+        <li>1 PC</li>
+        <li>unlimited spoofs</li>
+        <li>all updates</li>
+        <li>instant email</li>
+        <li class="tier-buy"><a class="btn" href="checkout.html?tier=week">buy 7 days -&gt;</a></li>
+      </ul>
+      <ul class="tier">
+        <li class="tier-name">30 days</li>
+        <li class="tier-price">$29.99</li>
+        <li>1 PC</li>
+        <li>unlimited spoofs</li>
+        <li>all updates</li>
+        <li>instant email</li>
+        <li class="tier-buy"><a class="btn ghost" href="checkout.html?tier=month">buy 30 days -&gt;</a></li>
+      </ul>
+      <ul class="tier">
+        <li class="tier-name">90 days</li>
+        <li class="tier-price">$59.99</li>
+        <li>1 PC</li>
+        <li>unlimited spoofs</li>
+        <li>all updates</li>
+        <li>instant email</li>
+        <li class="tier-buy"><a class="btn ghost" href="checkout.html?tier=quarter">buy 90 days -&gt;</a></li>
+      </ul>
+      <ul class="tier">
+        <li class="tier-name">permanent <span class="dim">// best value</span></li>
+        <li class="tier-price">$99.99</li>
+        <li>1 PC</li>
+        <li>unlimited spoofs</li>
+        <li>all updates, forever</li>
+        <li>instant email</li>
+        <li class="tier-buy"><a class="btn ghost" href="checkout.html?tier=life">buy permanent -&gt;</a></li>
+      </ul>
+    </div>
+    <p class="note" data-reveal>every tier gets unlimited spoofs. a reset moves the key to another PC. <a href="pricing.html">compare tiers -&gt;</a></p>
+  </section>
+
+  <section class="wrap" aria-labelledby="revTitle">
+    <h2 class="prompt-head" id="revTitle" data-reveal data-scramble>$ customer reviews</h2>
+    <p class="rating" data-reveal><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <b>4.7</b> &middot; 46+ verified reviews</p>
+    <ul class="reviews" data-rise>
+      <li class="review">
+        <div class="who"><span class="av">M</span><span><span class="nm">Mys*****</span><br><span class="vf">&#10003; verified buyer</span></span></div>
+        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <p>Amazing spoofer and a huge range of services. Best around.</p>
+        <p class="meta">purchased lifetime &middot; nov 2, 2026</p>
+      </li>
+      <li class="review">
+        <div class="who"><span class="av">J</span><span><span class="nm">Jam*****</span><br><span class="vf">&#10003; verified buyer</span></span></div>
+        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <p>Worked first time on a machine I had given up on. Forty seconds and done.</p>
+        <p class="meta">purchased 7 days &middot; nov 2, 2026</p>
+      </li>
+      <li class="review">
+        <div class="who"><span class="av">D</span><span><span class="nm">Dyl*****</span><br><span class="vf">&#10003; verified buyer</span></span></div>
+        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <p>Works amazing. 10/10, will be buying again.</p>
+        <p class="meta">purchased lifetime &middot; nov 5, 2026</p>
+      </li>
+      <li class="review">
+        <div class="who"><span class="av">K</span><span><span class="nm">Kai*****</span><br><span class="vf">&#10003; verified buyer</span></span></div>
+        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <p>Rebuilt my pc and had to move the key over. Used a reset, back up in under a minute.</p>
+        <p class="meta">purchased 30 days &middot; nov 9, 2026</p>
+      </li>
+    </ul>
+    <p class="note"><a href="reviews.html">read all 46+ reviews -&gt;</a></p>
+  </section>
+
+  <section class="wrap faq" id="faq" aria-labelledby="faqTitle">
+    <h2 class="prompt-head" id="faqTitle" data-reveal data-scramble>$ questions</h2>
+    <details>
+      <summary>how do I get my key?</summary>
+      <p>It's emailed to the address you enter at checkout, usually within a minute. Nothing appears on screen, so keep that email — it's also how you sign in later.</p>
+    </details>
+    <details>
+      <summary>do I need an account?</summary>
+      <p>No. Your email and your key are the account. Sign in on the <a href="login.html">my key</a> page with those two things. There's no password to forget.</p>
+    </details>
+    <details>
+      <summary>does it need to be running all the time?</summary>
+      <p>No. You run it once, press spoof, and restart. It doesn't sit in the background or start with Windows.</p>
+    </details>
+    <details>
+      <summary>will it survive game updates?</summary>
+      <p>Yes. Game and anticheat updates don't undo it. A major Windows feature update occasionally does, and then you just run it again.</p>
+    </details>
+    <details>
+      <summary>can I move my key to a new PC?</summary>
+      <p>Yes, using a reset from your <a href="login.html">my key</a> page. 1 day is unlimited spoofs for 24 hours, 7 days includes one reset, 30 days includes three, 90 days includes six, and permanent is unlimited.</p>
+    </details>
+    <details>
+      <summary>my antivirus complains. is that normal?</summary>
+      <p>Yes, and it's expected. Anything that changes hardware identity looks suspicious to antivirus. Add the install folder to your exclusions before running. A new installer gets this treatment whether it is signed or not.</p>
+    </details>
+    <details>
+      <summary>what do I need?</summary>
+      <p>Windows 10 or 11, 64-bit, UEFI. Any reasonably modern PC. Not supported on 32-bit, ARM, or legacy BIOS machines.</p>
+    </details>
+    <details>
+      <summary>refunds?</summary>
+      <p>24 hours, and only if the key hasn't been used on a machine yet. Once it's bound, it's spent. Full details in the <a href="terms.html">terms</a>.</p>
+    </details>
+  </section>
+
+  <section class="wrap" aria-labelledby="newTitle">
+    <h2 class="prompt-head" id="newTitle" data-reveal data-scramble>$ what's new</h2>
+    <pre class="clog" data-rise><span class="d">2026-11-09 · version 1.2.0</span>
++ new identity profiles for more hardware brands
++ faster spoof — about 40 seconds on a typical PC
++ restore now puts everything back in one step
+~ fixed a case where a Windows update could reset your profile
+
+<a href="changelog.html">full update history -&gt;</a></pre>
+  </section>
+
+  <section class="wrap">
+    <div class="cta">
+      <h2>Five minutes from now, it's a different PC.</h2>
+      <div class="install">
+        <a href="checkout.html?tier=life" class="btn">buy permanent -&gt;</a>
+        <a href="guide.html" class="btn ghost">install guide</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a href="index.html" class="brand"><span class="d">slate/</span>slate<span class="cur">_</span></a>
+      <p>Private HWID spoofer for Windows 10 and 11. A new hardware identity in one click, instant delivery, key by email.</p>
+      <div class="pay" aria-label="Accepted payment methods">
+        <span>visa</span><span>mastercard</span><span>paypal</span><span>crypto</span><span>cash app</span><span>apple pay</span>
+      </div>
+    </div>
+    <nav class="foot-col" aria-label="Store">
+      <p>store</p>
+      <a href="pricing.html">pricing</a>
+      <a href="checkout.html">buy a key</a>
+      <a href="games.html">supported games</a>
+      <a href="status.html">status</a>
+      <a href="reviews.html">reviews</a>
+      <a href="changelog.html">updates</a>
+    </nav>
+    <nav class="foot-col" aria-label="Support">
+      <p>support</p>
+      <a href="guide.html">install guide</a>
+      <a href="help.html">help &amp; faq</a>
+      <a href="help.html#refunds">refunds</a>
+      <a href="help.html#contact">contact</a>
+      <a href="terms.html">terms</a>
+      <a href="privacy.html">privacy</a>
+    </nav>
+    <nav class="foot-col" aria-label="Account">
+      <p>account</p>
+      <a href="login.html">my key</a>
+      <a href="checkout.html">new order</a>
+      <a href="help.html#refunds">resend key</a>
+      <a href="help.html#contact">open a ticket</a>
+    </nav>
+  </div>
+  <div class="foot-meta">
+    <p class="foot-legal">&copy; 2026 slate. Independent provider of gaming software, not affiliated with or endorsed by any game publisher or anti-cheat. All trademarks belong to their respective owners.</p>
+    <nav class="footline" aria-label="Legal"><a href="terms.html">terms</a> &middot; <a href="privacy.html">privacy</a> &middot; <a href="help.html#refunds">refunds</a> &middot; <a href="help.html#contact">support</a></nav>
+  </div>
+</footer>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<script src="assets/ascii3d.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

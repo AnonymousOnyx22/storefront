@@ -1,0 +1,267 @@
+﻿<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slate - Install Guide</title>
+<meta name="description" content="How to install slate: buy a key, run the installer, paste your key, press spoof, restart. Six steps with a progress checklist.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://useslate.net/guide.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://useslate.net/guide.html">
+<meta property="og:title" content="Slate - Install Guide">
+<meta property="og:description" content="How to install Slate: buy a key, run the installer, paste your key, press spoof, restart.">
+<meta property="og:site_name" content="Slate">
+<meta property="og:image" content="https://useslate.net/assets/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='4' y='4' width='24' height='24' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='8' y='8' width='7' height='7' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.className='js';try{if(localStorage.getItem('slate:still')==='1')document.documentElement.classList.add('still')}catch(e){}</script>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+
+<div class="topbar">
+  <div class="topbar-in wrap">
+    <span class="live"><i></i><b id="onlineCount">24</b> online</span>
+    <span class="tb-sep">/</span>
+    <span>instant delivery</span>
+    <span class="tb-sep">/</span>
+    <span>24/7 support</span>
+    <span class="tb-right">
+      <a href="reviews.html">reviews</a>
+      <a href="status.html">status</a>
+      <span class="tb-sep">|</span>
+      <span class="d">existing user?</span>
+      <a href="login.html">sign in</a>
+      <a href="checkout.html" class="tb-cta">get a key &rarr;</a>
+    </span>
+  </div>
+</div>
+
+<header class="nav-wrap">
+  <nav class="nav wrap" aria-label="Main">
+    <div class="brand-wrap">
+      <a href="index.html" class="brand"><span class="d">slate/</span>slate<span class="cur">_</span></a>
+      <div class="brand-menu">
+        <p class="bm-head">slate projects</p>
+        <a class="bm-item" href="index.html"><b>slate</b><span>hwid spoofer</span><em class="bm-live">live</em></a>
+        <a class="bm-item" href="basalt.html"><b>basalt</b><span>rust external</span><em>in development</em></a>
+      </div>
+    </div>
+    <ul class="links dots">
+      <li><a href="index.html">~/</a></li>
+      <li><a href="products.html">products</a></li>
+      <li><a href="games.html">games</a></li>
+      <li><a href="pricing.html">pricing</a></li>
+      <li><a href="status.html">status</a></li>
+      <li><a href="guide.html" aria-current="page">install</a></li>
+      <li><a href="help.html">help</a></li>
+      <li><a href="login.html">my key</a></li>
+    </ul>
+    <button class="kbd motion" data-motion aria-pressed="false">&#9632; stop animations</button>
+    <button class="kbd" data-pal aria-label="Open command palette"><b>/</b> jump</button>
+    <button class="kbd menu-btn" aria-expanded="false" aria-controls="mmenu">[menu]</button>
+  </nav>
+</header>
+<div class="mmenu" id="mmenu">
+  <button class="kbd close">[close]</button>
+  <a href="index.html"><span class="d">cd</span> ~/</a>
+  <a href="products.html"><span class="d">cd</span> ~/products</a>
+  <a href="games.html"><span class="d">cd</span> ~/games</a>
+  <a href="pricing.html"><span class="d">cd</span> ~/pricing</a>
+  <a href="status.html"><span class="d">cd</span> ~/status</a>
+  <a href="guide.html"><span class="d">cd</span> ~/install</a>
+  <a href="help.html"><span class="d">cd</span> ~/help</a>
+  <a href="login.html"><span class="d">cd</span> ~/my-key</a>
+  <a href="reviews.html"><span class="d">cd</span> ~/reviews</a>
+  <a href="privacy.html"><span class="d">cd</span> ~/privacy</a>
+  <a href="terms.html"><span class="d">cd</span> ~/terms</a>
+</div>
+
+<main>
+  <div class="page-head wrap">
+<pre aria-label="install" data-load-scramble="900"> ██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗
+ ██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║
+ ██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║
+ ██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║
+ ██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗
+ ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝</pre>
+    <p data-rise>Seven steps, about five minutes, no technical knowledge needed. Work down the list — the sidebar on the left jumps to any step.</p>
+  </div>
+
+  <div class="docs wrap guide">
+    <aside class="side" aria-label="Steps">
+      <p>steps</p>
+      <ul>
+        <li><a href="#before">before you start</a></li>
+        <li><a href="#buy">buy a key</a></li>
+        <li><a href="#install">install</a></li>
+        <li><a href="#activate">activate</a></li>
+        <li><a href="#spoof">spoof</a></li>
+        <li><a href="#restart">restart</a></li>
+        <li><a href="#after">after it's done</a></li>
+      </ul>
+      <p style="margin-top:16px">Stuck on a step? <a href="help.html">Help &amp; FAQ</a>.</p>
+    </aside>
+
+    <ol class="doc gsteps">
+      <li class="gstep" id="before" data-rise>
+        <span class="gnum">01</span>
+        <div>
+          <h2>Check your PC is supported</h2>
+          <p>slate runs on <b>Windows 10 or 11, 64-bit, on a UEFI machine</b>. That is nearly every PC built since 2012. It does not run on 32-bit Windows, Windows on ARM, or older machines that still boot in legacy BIOS mode.</p>
+          <p>Not sure? Press <b>Win + R</b>, type <b>msinfo32</b> and press enter. Look at <b>System Type</b> and <b>BIOS Mode</b>. You want <b>x64-based PC</b> and <b>UEFI</b>.</p>
+          <p>You will need administrator rights on the PC — the same permission you need to install any program. If it is a work or school machine, ask before installing.</p>
+          <div class="pc-check" id="pc">
+            <div class="pc-head">
+              <span>does this PC meet the requirements?</span>
+              <span class="pc-live" id="pcLive" role="status" aria-live="polite"></span>
+              <button class="btn ghost" id="pcCheck" type="button">check my pc</button>
+            </div>
+            <div class="pc-bar" id="pcBar" hidden aria-hidden="true"><i></i></div>
+            <div class="pc-rows" id="pcOut"></div>
+            <div class="pc-verdict" id="pcVerdict">Not checked yet. Press <b>check my pc</b> &mdash; it reads what this browser already knows, installs nothing and sends nothing.</div>
+          </div>
+        </div>
+      </li>
+
+      <li class="gstep" id="buy" data-rise>
+        <span class="gnum">02</span>
+        <div>
+          <h2>Buy a key</h2>
+          <p>Pick a tier on the <a href="pricing.html">pricing page</a> and enter your email at checkout. The key is emailed to that address, usually within a minute. Nothing appears on screen, so check your spam folder if it has not arrived after five minutes.</p>
+          <p>That email plus the key is your account. There is no password to create or forget. Keep the email — you will need it if you ever sign in on a different PC or ask for a reset.</p>
+          <div class="code"><pre>subject   your slate key
+
+          SLT-4K2P-9WQ1-M7RT-8XZ3
+          tier: 30 days · 1 PC · unlimited spoofs
+
+          install:  the link in this email
+          your key: /login</pre></div>
+          <p class="note">Lost the email? Enter your address on the <a href="login.html">my key</a> page and it will be sent again.</p>
+        </div>
+      </li>
+
+      <li class="gstep" id="install" data-rise>
+        <span class="gnum">03</span>
+        <div>
+          <h2>Install the app</h2>
+          <p>Download the installer from the link in your order email and run it. Windows will ask for permission — say yes. It installs to your user folder and puts a shortcut on the desktop.</p>
+          <p>Your antivirus will almost certainly flag it. That is normal for anything that changes hardware details, and it is not a sign of a problem. Before you run the installer, add the install folder to your antivirus exclusions, or choose <b>Keep anyway</b> if Windows Defender quarantines it.</p>
+          <div class="code"><pre>slate setup
+
+  [+] installing to  %LOCALAPPDATA%\Programs\slate
+  [+] shortcut       desktop
+  [+] version        1.2.0
+  [+] ready — open slate from the desktop</pre></div>
+          <p class="note">Blocked by SmartScreen? Click <b>More info</b>, then <b>Run anyway</b>. That prompt shows up for any new installer, signed or not.</p>
+        </div>
+      </li>
+
+      <li class="gstep" id="activate" data-rise>
+        <span class="gnum">04</span>
+        <div>
+          <h2>Paste your key</h2>
+          <p>Open slate. It asks for your key the first time. Paste the whole thing from your email, including the dashes, and press enter. You only do this once — after that the key is tied to this PC and the app remembers it.</p>
+          <div class="code"><pre>welcome to slate
+
+  paste your key   SLT-4K2P-9WQ1-M7RT-8XZ3
+
+  [+] key valid
+  [+] tier        30 days · unlimited spoofs
+  [+] bound to    this PC
+  [+] next        press SPOOF MY PC</pre></div>
+          <p>If it says the key is already in use, it has been activated on another PC. Use a reset from <a href="login.html">my key</a> to free it, then paste it here again.</p>
+        </div>
+      </li>
+
+      <li class="gstep" id="spoof" data-rise>
+        <span class="gnum">05</span>
+        <div>
+          <h2>Press spoof</h2>
+          <p>That is the whole job. Choose a profile — or leave it on the one slate picked for you — and press <b>SPOOF MY PC</b>. It takes about forty seconds. Do not close the window while it runs.</p>
+          <div class="code"><pre>spoofing
+
+  [####........]  38%   changing disk identity
+  [###########.]  92%   clearing old setup traces
+  [############] 100%
+
+  [+] protected — 12 of 12 identifiers changed
+  [+] reboot to finish</pre></div>
+          <p>Want a different identity? On the confirm screen, <b>GENERATE A DIFFERENT ONE</b> rolls a fresh set before you apply it. <b>RESTORE ORIGINAL</b> puts your real details back, and you can spoof again afterwards as many times as you like.</p>
+        </div>
+      </li>
+
+      <li class="gstep" id="restart" data-rise>
+        <span class="gnum">06</span>
+        <div>
+          <h2>Restart</h2>
+          <p>One restart finishes the job. Everything is saved before you reboot, so nothing is lost if you restart later — just do not skip it, because the last few details only take effect at boot.</p>
+          <p>After the restart, open slate and press <b>CHECK STATUS</b>. It should say <b>PROTECTED — 12 of 12 changed</b>. That is it, you are done.</p>
+        </div>
+      </li>
+
+      <li class="gstep" id="after" data-rise>
+        <span class="gnum">07</span>
+        <div>
+          <h2>Keep it that way</h2>
+          <p>slate does not need to stay open, and it does not run in the background. Your new identity stays until you undo it. Game updates and normal Windows updates do not affect it.</p>
+          <p>Two things can undo it: a major Windows feature update, and cloning your drive to a new disk. If either happens, open slate and press <b>SPOOF MY PC</b> again. It takes forty seconds.</p>
+          <p>Moving to a new PC? Use a reset from <a href="login.html">my key</a> first, then activate there. Reinstalling on the same PC does not use a reset.</p>
+          <p style="margin-top:16px">Anything unclear? The <a href="help.html">help page</a> covers activation problems, resets, refunds and how to reach us.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</main>
+
+<footer class="foot wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a href="index.html" class="brand"><span class="d">slate/</span>slate<span class="cur">_</span></a>
+      <p>Private HWID spoofer for Windows 10 and 11. A new hardware identity in one click, instant delivery, key by email.</p>
+      <div class="pay" aria-label="Accepted payment methods">
+        <span>visa</span><span>mastercard</span><span>paypal</span><span>crypto</span><span>cash app</span><span>apple pay</span>
+      </div>
+    </div>
+    <nav class="foot-col" aria-label="Store">
+      <p>store</p>
+      <a href="pricing.html">pricing</a>
+      <a href="checkout.html">buy a key</a>
+      <a href="games.html">supported games</a>
+      <a href="status.html">status</a>
+      <a href="reviews.html">reviews</a>
+      <a href="changelog.html">updates</a>
+    </nav>
+    <nav class="foot-col" aria-label="Support">
+      <p>support</p>
+      <a href="guide.html">install guide</a>
+      <a href="help.html">help &amp; faq</a>
+      <a href="help.html#refunds">refunds</a>
+      <a href="help.html#contact">contact</a>
+      <a href="terms.html">terms</a>
+      <a href="privacy.html">privacy</a>
+    </nav>
+    <nav class="foot-col" aria-label="Account">
+      <p>account</p>
+      <a href="login.html">my key</a>
+      <a href="checkout.html">new order</a>
+      <a href="help.html#refunds">resend key</a>
+      <a href="help.html#contact">open a ticket</a>
+    </nav>
+  </div>
+  <div class="foot-meta">
+    <p class="foot-legal">&copy; 2026 slate. Independent provider of gaming software, not affiliated with or endorsed by any game publisher or anti-cheat. All trademarks belong to their respective owners.</p>
+    <nav class="footline" aria-label="Legal"><a href="terms.html">terms</a> &middot; <a href="privacy.html">privacy</a> &middot; <a href="help.html#refunds">refunds</a> &middot; <a href="help.html#contact">support</a></nav>
+  </div>
+</footer>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<script src="assets/ascii3d.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

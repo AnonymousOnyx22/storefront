@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /.netlify/
+
+Sitemap: https://useslate.net/sitemap.xml

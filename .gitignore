@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+bot/node_modules/
+
+# Secrets
+.env
+.env.local
+
+# Netlify local
+.netlify
+
+# Installer payload
+dl/
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Agent specs
+AGENTS.md
