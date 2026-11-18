@@ -112,64 +112,117 @@
         <li><span class="k">offsets</span><span class="v">auto-updated after each Rust patch via Il2CppDumper pass</span></li>
       </ul>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:32px" data-rise>
-        <pre class="feat-visual">  <b>ESP overlay</b>
-  +--------------------------+
-  |                          |
-  |   <span class="ok">[+]</span> player_032  187m   |
-  |   <span class="ok">+-+</span>                    |
-  |   <span class="ok">|X|</span>  <span class="warn">hp ████░░</span> 67%    |
-  |   <span class="ok">/ \</span>  AK-47             |
-  |   <span class="ok">|</span>   <span class="ok">|</span>                  |
-  |   <span class="ok">/</span>   <span class="ok">\</span>                  |
-  |                          |
-  |   <span class="ok">[+]</span> scientist    54m   |
-  |   <span class="ok">+-+</span>                    |
-  |   <span class="ok">|X|</span>  <span class="ok">hp ██████</span> 100%   |
-  |   <span class="ok">/ \</span>                    |
-  +--------------------------+
-  player + NPC ESP combined</pre>
-        <pre class="feat-visual">  <b>menu</b>  [INSERT to toggle]
-  +--------------------------+
-  | basalt                   |
-  |  visuals  combat  move   |
-  |  misc     config         |
-  |--------------------------|
-  | <span class="ok">[x]</span> silent aim           |
-  |   bone: <b>head</b>           |
-  |   fov: <b>120</b>             |
-  |   chance: <b>80%</b>          |
-  |   <span class="ok">[x]</span> vis check       |
-  |--------------------------|
-  | <span class="ok">[x]</span> recoil control       |
-  | <span class="ok">[x]</span> spread control       |
-  | <span class="ok">[x]</span> no shotgun spread    |
-  | <span class="ok">[x]</span> reload indicator     |
-  +--------------------------+</pre>
+      <div class="bv-grid" data-rise>
+        <div class="bv-panel">
+          <div class="bv-title">ESP overlay</div>
+          <div class="bv-viewport">
+            <div class="bv-entity" style="top:12%;left:28%">
+              <div class="bv-box" style="height:100px">
+                <span class="bv-name">player_032 <span class="d">187m</span></span>
+                <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+                <div class="bv-bar"><div class="bv-hp" style="width:67%;background:#E8A838"></div></div>
+                <span class="bv-item">AK-47</span>
+              </div>
+            </div>
+            <div class="bv-entity" style="top:48%;left:62%">
+              <div class="bv-box bv-npc" style="height:72px">
+                <span class="bv-name">scientist <span class="d">54m</span></span>
+                <div class="bv-bar"><div class="bv-hp" style="width:100%;background:var(--ok)"></div></div>
+              </div>
+            </div>
+            <div class="bv-entity" style="top:68%;left:18%">
+              <div class="bv-box bv-hidden" style="height:60px">
+                <span class="bv-name">player_108 <span class="d">312m</span></span>
+                <div class="bv-bar"><div class="bv-hp" style="width:41%;background:#E8A838"></div></div>
+                <span class="bv-item">Thompson</span>
+              </div>
+            </div>
+            <div class="bv-crosshair"></div>
+            <div class="bv-fov"></div>
+            <span class="bv-label">player + NPC ESP combined</span>
+          </div>
+        </div>
+
+        <div class="bv-panel">
+          <div class="bv-title">menu <span class="d">[INSERT to toggle]</span></div>
+          <div class="bv-menu">
+            <div class="bv-tabs">
+              <span>visuals</span>
+              <span class="bv-tab-active">combat</span>
+              <span>move</span>
+              <span>misc</span>
+              <span>config</span>
+            </div>
+            <div class="bv-section">
+              <div class="bv-row"><span class="bv-check on"></span><b>silent aim</b></div>
+              <div class="bv-row bv-indent"><span class="d">bone:</span> <b>head</b></div>
+              <div class="bv-row bv-indent"><span class="d">fov:</span> <b>120</b></div>
+              <div class="bv-row bv-indent"><span class="d">chance:</span> <b>80%</b></div>
+              <div class="bv-row bv-indent"><span class="bv-check on"></span>vis check</div>
+              <div class="bv-row bv-indent"><span class="bv-check"></span>target wounded</div>
+            </div>
+            <div class="bv-divider"></div>
+            <div class="bv-section">
+              <div class="bv-row"><span class="bv-check on"></span><b>recoil control</b></div>
+              <div class="bv-row"><span class="bv-check on"></span><b>spread control</b></div>
+              <div class="bv-row"><span class="bv-check on"></span>no shotgun spread</div>
+              <div class="bv-row"><span class="bv-check"></span>fast bullets</div>
+              <div class="bv-row"><span class="bv-check on"></span>reload indicator</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div style="margin-top:24px" data-rise>
-        <pre class="feat-visual">  <b>architecture</b>
-
-  basalt.exe                              RustClient.exe
-  +------------------+                    +------------------+
-  | resolve offsets  |                    |                  |
-  | entity cache     |                    |   Il2Cpp runtime |
-  | feature layer    |                    |   game state     |
-  +--------+---------+                    +--------+---------+
-           |                                       ^
-           |  <span class="ok">DeviceIoControl</span>                       |
-           v                                       |
-  +------------------+   ring-0 read    +----------+-------+
-  | driver client    +------------------+ mapped driver    |
-  +--------+---------+  no handle on    | (already signed) |
-           |             the game       +------------------+
-           v
-  +------------------+
-  | DX11 overlay     |     <span class="warn">WDA_EXCLUDEFROMCAPTURE</span>
-  | ImGui renderer   |     invisible to OBS, Discord,
-  | ESP + aimbot     |     anti-cheat screenshots
-  +------------------+</pre>
+      <div class="bv-flow" data-rise>
+        <div class="bv-title">architecture</div>
+        <div class="bv-flow-row">
+          <div class="bv-node">
+            <div class="bv-node-head">basalt.exe</div>
+            <div class="bv-node-body">
+              <span>resolve offsets</span>
+              <span>entity cache</span>
+              <span>feature layer</span>
+            </div>
+          </div>
+          <div class="bv-arrow">
+            <span class="bv-arrow-label ok">DeviceIoControl</span>
+            <svg width="80" height="24" viewBox="0 0 80 24"><path d="M0 12h68" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M62 6l12 6-12 6" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
+          </div>
+          <div class="bv-node">
+            <div class="bv-node-head">mapped driver</div>
+            <div class="bv-node-body">
+              <span>ring-0 read</span>
+              <span>no game handle</span>
+              <span>already signed</span>
+            </div>
+          </div>
+          <div class="bv-arrow">
+            <span class="bv-arrow-label d">physical read</span>
+            <svg width="80" height="24" viewBox="0 0 80 24"><path d="M0 12h68" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M62 6l12 6-12 6" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
+          </div>
+          <div class="bv-node">
+            <div class="bv-node-head">RustClient.exe</div>
+            <div class="bv-node-body">
+              <span>Il2Cpp runtime</span>
+              <span>game state</span>
+              <span>entity data</span>
+            </div>
+          </div>
+        </div>
+        <div class="bv-flow-down">
+          <svg width="24" height="32" viewBox="0 0 24 32"><path d="M12 0v20" stroke="#8C8C8C" stroke-width="1" fill="none"/><path d="M6 14l6 12 6-12" stroke="#8C8C8C" stroke-width="1" fill="none"/></svg>
+        </div>
+        <div class="bv-flow-row bv-flow-bottom">
+          <div class="bv-node bv-node-wide">
+            <div class="bv-node-head">DX11 overlay</div>
+            <div class="bv-node-body bv-node-row">
+              <span>ImGui renderer</span>
+              <span>ESP + aimbot draw</span>
+              <span class="warn">WDA_EXCLUDEFROMCAPTURE</span>
+            </div>
+            <div class="bv-node-note">invisible to OBS, Discord, anti-cheat screenshots</div>
+          </div>
+        </div>
       </div>
 
       <h2 class="prompt-head" data-reveal data-scramble style="margin-top:44px">$ how it works</h2>
