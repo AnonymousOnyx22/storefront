@@ -5,7 +5,7 @@
 //   node scripts/preflight.mjs --live     also validate keys against their apis
 //   node scripts/preflight.mjs --json     machine readable, for a deploy hook
 //
-// reads storefront/.env.local then storefront/.env, then process.env. later
+// reads .env.local then .env, then process.env. later
 // wins. never prints a secret, only whether it is present and shaped right.
 //
 // exit 0 = a sale can complete end to end
@@ -17,7 +17,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const STOREFRONT = resolve(HERE, '..', 'storefront');
+const STOREFRONT = resolve(HERE, '..');
 
 const args = new Set(process.argv.slice(2));
 const LIVE = args.has('--live');
@@ -66,6 +66,11 @@ const masked = v => (v.length <= 8 ? '*'.repeat(v.length) : `${v.slice(0, 3)}…
 
 // ---- payments: at least one complete provider --------------------------
 const PROVIDERS = [
+  {
+    id: 'paypal',
+    label: 'PayPal REST',
+    vars: ['PAYPAL_CLIENT_ID', 'PAYPAL_SECRET', 'PAYPAL_WEBHOOK_ID'],
+  },
   {
     id: 'nowpayments',
     label: 'crypto, no approval, no chargebacks',

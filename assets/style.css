@@ -184,6 +184,7 @@ main,footer{position:relative;z-index:1}
 }
 .btn.ghost{background:var(--black);color:var(--white)}
 .btn:active{transform:scale(.97)}
+.btn.disabled{opacity:.35;pointer-events:none;cursor:default}
 @media (hover:hover) and (pointer:fine){
   .btn:hover{background:var(--black);color:var(--white)}
   .btn.ghost:hover{background:var(--white);color:var(--black)}
