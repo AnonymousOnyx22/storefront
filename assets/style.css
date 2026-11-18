@@ -250,6 +250,7 @@ section{padding:clamp(48px,8vh,88px) 0}
   box-shadow:8px 8px 0 rgba(255,255,255,0.12);
   position:relative;
   z-index:2;
+  user-select:none;-webkit-user-select:none;cursor:default;
 }
 .hud-chrome{
   display:flex;
@@ -791,7 +792,7 @@ a.prod-card:hover{border-color:var(--white);background:rgba(255,255,255,.02)}
 .bv-label{position:absolute;bottom:8px;left:12px;font-size:10px;color:var(--dim)}
 
 /* -- menu mock -- */
-.bv-menu{padding:0;font-size:13px}
+.bv-menu{padding:0;font-size:13px;user-select:none;-webkit-user-select:none;cursor:default}
 .bv-tabs{display:flex;gap:0;border-bottom:1px solid var(--faint);font-size:12px}
 .bv-tabs span{padding:8px 12px;color:var(--dim);cursor:pointer;transition:color .15s}
 .bv-tabs span:hover{color:var(--white)}
