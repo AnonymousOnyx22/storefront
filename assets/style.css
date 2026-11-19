@@ -832,6 +832,38 @@ a.prod-card:hover{border-color:var(--white);background:rgba(255,255,255,.02)}
   .bv-node{width:100%;min-width:0}
   .bv-node-wide{max-width:100%}
 }
+/* basalt feature visuals */
+.bv-grid-full{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.bv-flag{font-size:9px;color:var(--dim);display:block;margin-top:1px;text-transform:uppercase;letter-spacing:.5px}
+.bv-flag-warn{color:#E8A838}
+.bv-flag-team{color:#4A9EFF}
+.bv-box.bv-team{border-color:#4A9EFF}
+.bv-name-team{color:#4A9EFF}
+.bv-skel-team span{background:#4A9EFF!important}
+.bv-skel-npc span{background:var(--dim)!important}
+.bv-animal{border-style:dotted}
+.bv-aim-target{border-color:#D04035;box-shadow:0 0 8px rgba(208,64,53,.3)}
+.bv-bone-dot{position:absolute;top:6px;left:50%;width:6px;height:6px;background:#D04035;border-radius:50%;transform:translateX(-50%);box-shadow:0 0 6px #D04035}
+.bv-target-line{position:absolute;bottom:-40px;left:50%;width:1px;height:40px;background:linear-gradient(to bottom,#D04035,transparent)}
+.bv-fov-aim{border-color:rgba(208,64,53,.25);width:180px;height:180px}
+.bv-aim-info{position:absolute;top:12px;right:12px;font-size:10px;color:var(--dim);text-align:right;line-height:1.6}
+.bv-aim-info span{display:block}
+.bv-aim-lock{color:#D04035;font-weight:700;margin-top:2px}
+.bv-vp-aim{background:linear-gradient(170deg,rgba(30,15,15,.6) 0%,rgba(10,10,10,.9) 100%)}
+.bv-vp-overlay{background:linear-gradient(170deg,rgba(15,20,30,.6) 0%,rgba(10,10,10,.9) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px}
+.bv-overlay-demo{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:360px}
+.bv-overlay-label{grid-column:1/-1;font-size:10px;color:var(--dim);text-align:center}
+.bv-overlay-box{border:1px solid var(--ok);padding:16px 12px;text-align:center}
+.bv-overlay-inner span{display:block;font-size:11px}
+.bv-overlay-inner span:first-child{color:var(--ok);font-weight:700}
+.bv-overlay-obs{border:1px solid var(--faint);padding:16px 12px;text-align:center}
+.bv-obs-head{font-size:10px;color:var(--dim);margin-bottom:6px}
+.bv-obs-body span{display:block;font-size:11px}
+.bv-obs-x{color:#D04035;font-weight:700}
+.bv-crosshair-custom::before{background:var(--ok)}
+.bv-crosshair-custom::after{background:var(--ok)}
+.bv-ch-label{text-align:center;font-size:11px;color:var(--white);line-height:1.5;margin-top:-8px}
+
 /* basalt menu demo layout */
 .bv-layout{display:grid;grid-template-columns:140px 1fr;min-height:320px}
 .bv-sidebar{border-right:1px solid var(--faint);padding:8px 0;background:var(--black)}

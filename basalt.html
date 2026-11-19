@@ -133,6 +133,152 @@
       <li><span class="k">crosshair</span><span class="v">custom crosshair with style, size and colour options. optional rainbow mode</span></li>
       <li><span class="k">offsets</span><span class="v">auto-updated after each Rust patch via Il2CppDumper pass</span></li>
     </ul>
+
+    <div class="bv-grid bv-grid-full" data-rise>
+
+      <div class="bv-panel">
+        <div class="bv-title">player ESP <span class="d">boxes + skeleton + health + info</span></div>
+        <div class="bv-viewport">
+          <div class="bv-entity" style="top:8%;left:18%">
+            <div class="bv-box" style="height:120px;width:56px">
+              <span class="bv-name">rustplayer_041 <span class="d">87m</span></span>
+              <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:92%;background:var(--ok)"></div></div>
+              <span class="bv-item">AK-47</span>
+              <span class="bv-flag">enemy</span>
+            </div>
+          </div>
+          <div class="bv-entity" style="top:22%;left:58%">
+            <div class="bv-box bv-hidden" style="height:90px;width:48px">
+              <span class="bv-name">rustplayer_108 <span class="d">214m</span></span>
+              <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:55%;background:#E8A838"></div></div>
+              <span class="bv-item">Thompson</span>
+              <span class="bv-flag bv-flag-warn">wounded</span>
+            </div>
+          </div>
+          <div class="bv-entity" style="top:50%;left:36%">
+            <div class="bv-box bv-team" style="height:110px;width:52px">
+              <span class="bv-name bv-name-team">teammate_002 <span class="d">24m</span></span>
+              <div class="bv-skeleton bv-skel-team"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:100%;background:var(--ok)"></div></div>
+              <span class="bv-item">M249</span>
+              <span class="bv-flag bv-flag-team">team</span>
+            </div>
+          </div>
+          <div class="bv-entity" style="top:62%;left:72%">
+            <div class="bv-box" style="height:70px;width:40px">
+              <span class="bv-name">rustplayer_339 <span class="d">340m</span></span>
+              <div class="bv-bar"><div class="bv-hp" style="width:28%;background:#D04035"></div></div>
+              <span class="bv-item">Bow</span>
+            </div>
+          </div>
+          <div class="bv-crosshair"></div>
+          <div class="bv-fov"></div>
+          <span class="bv-label">visible = solid border &middot; hidden = dashed &middot; team = blue</span>
+        </div>
+      </div>
+
+      <div class="bv-panel">
+        <div class="bv-title">NPC ESP <span class="d">scientists + animals</span></div>
+        <div class="bv-viewport">
+          <div class="bv-entity" style="top:15%;left:22%">
+            <div class="bv-box bv-npc" style="height:90px;width:48px">
+              <span class="bv-name">scientist <span class="d">63m</span></span>
+              <div class="bv-skeleton bv-skel-npc"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:100%;background:var(--ok)"></div></div>
+              <span class="bv-item">MP5</span>
+            </div>
+          </div>
+          <div class="bv-entity" style="top:12%;left:60%">
+            <div class="bv-box bv-npc" style="height:85px;width:46px">
+              <span class="bv-name">heavy scientist <span class="d">128m</span></span>
+              <div class="bv-skeleton bv-skel-npc"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:80%;background:var(--ok)"></div></div>
+              <span class="bv-item">LR-300</span>
+            </div>
+          </div>
+          <div class="bv-entity" style="top:58%;left:15%">
+            <div class="bv-box bv-npc bv-animal" style="height:40px;width:60px">
+              <span class="bv-name">bear <span class="d">91m</span></span>
+              <div class="bv-bar"><div class="bv-hp" style="width:100%;background:var(--ok)"></div></div>
+            </div>
+          </div>
+          <div class="bv-entity" style="top:65%;left:55%">
+            <div class="bv-box bv-npc bv-animal" style="height:30px;width:50px">
+              <span class="bv-name">wolf <span class="d">145m</span></span>
+              <div class="bv-bar"><div class="bv-hp" style="width:70%;background:#E8A838"></div></div>
+            </div>
+          </div>
+          <div class="bv-entity" style="top:48%;left:40%">
+            <div class="bv-box bv-npc" style="height:80px;width:44px">
+              <span class="bv-name">tunnel dweller <span class="d">34m</span></span>
+              <div class="bv-skeleton bv-skel-npc"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:60%;background:#E8A838"></div></div>
+            </div>
+          </div>
+          <div class="bv-crosshair"></div>
+          <span class="bv-label">NPC = grey border &middot; independent render distance</span>
+        </div>
+      </div>
+
+      <div class="bv-panel">
+        <div class="bv-title">aimbot <span class="d">FOV circle + target lock + silent aim</span></div>
+        <div class="bv-viewport bv-vp-aim">
+          <div class="bv-entity" style="top:28%;left:42%">
+            <div class="bv-box bv-aim-target" style="height:100px;width:50px">
+              <span class="bv-name">rustplayer_077 <span class="d">112m</span></span>
+              <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:74%;background:#E8A838"></div></div>
+              <span class="bv-item">Custom SMG</span>
+            </div>
+            <div class="bv-bone-dot"></div>
+            <div class="bv-target-line"></div>
+          </div>
+          <div class="bv-entity" style="top:55%;left:68%">
+            <div class="bv-box bv-hidden" style="height:70px;width:38px">
+              <span class="bv-name">rustplayer_201 <span class="d">198m</span></span>
+              <div class="bv-bar"><div class="bv-hp" style="width:100%;background:var(--ok)"></div></div>
+            </div>
+          </div>
+          <div class="bv-crosshair"></div>
+          <div class="bv-fov bv-fov-aim"></div>
+          <div class="bv-aim-info">
+            <span>SILENT AIM</span>
+            <span>bone: head</span>
+            <span>chance: 80%</span>
+            <span class="bv-aim-lock">LOCKED</span>
+          </div>
+          <span class="bv-label">FOV circle = aim cone &middot; target line to locked bone &middot; silent = no mouse movement</span>
+        </div>
+      </div>
+
+      <div class="bv-panel">
+        <div class="bv-title">overlay + crosshair <span class="d">capture-excluded DX11 window</span></div>
+        <div class="bv-viewport bv-vp-overlay">
+          <div class="bv-overlay-demo">
+            <div class="bv-overlay-label">game window (fullscreen)</div>
+            <div class="bv-overlay-box">
+              <div class="bv-overlay-inner">
+                <span>DX11 overlay</span>
+                <span class="d">WDA_EXCLUDEFROMCAPTURE</span>
+              </div>
+            </div>
+            <div class="bv-overlay-obs">
+              <div class="bv-obs-head">OBS / Discord / screenshot</div>
+              <div class="bv-obs-body">
+                <span class="bv-obs-x">overlay not visible</span>
+                <span class="d">only the game is captured</span>
+              </div>
+            </div>
+          </div>
+          <div class="bv-crosshair bv-crosshair-custom"></div>
+          <div class="bv-ch-label">custom crosshair<br><span class="d">style: cross &middot; size: 8px &middot; colour: #35D06A</span></div>
+          <span class="bv-label">overlay sits on top but is invisible to any capture</span>
+        </div>
+      </div>
+
+    </div>
   </section>
 
   <section class="wrap" id="how" aria-labelledby="howTitle">
