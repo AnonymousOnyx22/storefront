@@ -832,5 +832,35 @@ a.prod-card:hover{border-color:var(--white);background:rgba(255,255,255,.02)}
   .bv-node{width:100%;min-width:0}
   .bv-node-wide{max-width:100%}
 }
+/* basalt menu demo layout */
+.bv-layout{display:grid;grid-template-columns:140px 1fr;min-height:320px}
+.bv-sidebar{border-right:1px solid var(--faint);padding:8px 0;background:var(--black)}
+.bv-side-item{display:flex;justify-content:space-between;padding:8px 14px;font-size:13px;color:var(--dim);cursor:pointer;transition:background .12s,color .12s}
+.bv-side-item:hover{background:rgba(14,14,17,.8)}
+.bv-side-active{background:rgba(14,14,17,1);color:var(--white);border-left:2px solid var(--white)}
+.bv-side-active .d{color:var(--dim)}
+.bv-main{display:flex;flex-direction:column;min-width:0}
+.bv-subtabs{border-bottom:1px solid var(--faint);background:rgba(7,7,9,.8)}
+.bv-content{padding:10px 14px;overflow-y:auto;max-height:360px}
+.bv-box-wrap{border:1px solid var(--faint);background:rgba(7,7,9,.6);margin-bottom:8px}
+.bv-box-head{padding:6px 12px;font-size:11px;font-weight:700;border-bottom:1px solid var(--faint);color:var(--white);background:rgba(255,255,255,.02)}
+.bv-box-wrap .bv-row{padding:3px 12px}
+.bv-desc{margin-left:auto;text-align:right;font-size:11px}
+.bv-lbl{min-width:120px;flex-shrink:0}
+.bv-sel-row{display:flex;gap:0}
+.bv-sel{padding:2px 8px;font-size:11px;border:1px solid var(--faint);color:var(--dim);cursor:pointer;transition:background .12s,color .12s}
+.bv-sel-on{background:var(--white);color:var(--black);border-color:var(--white)}
+.bv-btn{padding:4px 14px;border:1px solid var(--faint);font-size:12px;color:var(--dim);cursor:pointer;display:inline-block;margin-right:6px;transition:background .12s,color .12s}
+.bv-btn:hover{background:var(--white);color:var(--black)}
+.bv-stat{display:flex;justify-content:space-between;padding:7px 14px;font-size:11px;color:var(--dim);border-top:1px solid var(--white)}
+.bv-stat b{color:var(--white);font-weight:500}
+.bv-attached{color:var(--ok)}
+@media(max-width:600px){
+  .bv-layout{grid-template-columns:1fr}
+  .bv-sidebar{display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--faint);padding:0}
+  .bv-side-item{white-space:nowrap;padding:6px 10px;font-size:12px}
+  .bv-side-active{border-left:0;border-bottom:2px solid var(--white)}
+  .bv-content{max-height:280px}
+}
 .ok{color:var(--ok)}
 .warn{color:#E8A838}

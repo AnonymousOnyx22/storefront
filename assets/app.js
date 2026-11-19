@@ -963,147 +963,225 @@ per key     $${(PRICE[plan] * disc).toFixed(2)}`;
 (function basaltMenuDemo() {
   const root = $('#basaltHud'); if (!root) return;
 
-  const TABS = [
-    {
-      name: 'visuals',
-      sections: [
-        { title: 'player visuals', rows: [
-          { type: 'toggle', label: 'player ESP', on: true, bold: true },
-          { type: 'opt', key: 'box type', val: '2D' },
-          { type: 'toggle', label: 'skeleton', on: true },
-          { type: 'toggle', label: 'health bar', on: true },
-          { type: 'toggle', label: 'name + distance', on: true },
-          { type: 'toggle', label: 'held item', on: true },
-          { type: 'toggle', label: 'flags', on: false },
-          { type: 'opt', key: 'max distance', val: '400m' },
-        ]},
-        { title: 'npc visuals', rows: [
-          { type: 'toggle', label: 'NPC ESP', on: true, bold: true },
-          { type: 'toggle', label: 'scientists', on: true },
-          { type: 'toggle', label: 'animals', on: false },
-          { type: 'opt', key: 'max distance', val: '200m' },
-        ]},
-      ],
-    },
-    {
-      name: 'combat',
-      sections: [
-        { title: 'aimbot', rows: [
-          { type: 'toggle', label: 'silent aim', on: true, bold: true },
-          { type: 'opt', key: 'bone', val: 'head' },
-          { type: 'opt', key: 'fov', val: '120' },
-          { type: 'opt', key: 'chance', val: '80%' },
-          { type: 'toggle', label: 'vis check', on: true },
-          { type: 'toggle', label: 'target wounded', on: false },
-        ]},
-        { title: 'weapons', rows: [
-          { type: 'toggle', label: 'recoil control', on: true, bold: true },
-          { type: 'toggle', label: 'spread control', on: true, bold: true },
-          { type: 'toggle', label: 'no shotgun spread', on: true },
-          { type: 'toggle', label: 'fast bullets', on: false },
-          { type: 'toggle', label: 'force auto', on: false },
-          { type: 'toggle', label: 'instant eoka', on: true },
-          { type: 'toggle', label: 'reload indicator', on: true },
-        ]},
-      ],
-    },
-    {
-      name: 'movement',
-      sections: [
-        { title: 'movement', rows: [
-          { type: 'toggle', label: 'speed multiplier', on: false, bold: true },
-          { type: 'opt', key: 'speed', val: '1.2x' },
-          { type: 'toggle', label: 'bunny hop', on: true },
-          { type: 'toggle', label: 'spiderman', on: false },
-          { type: 'toggle', label: 'noclip', on: false },
-          { type: 'toggle', label: 'infinite jump', on: false },
-          { type: 'toggle', label: 'omni sprint', on: true },
-          { type: 'toggle', label: 'no fall damage', on: true },
-        ]},
-      ],
-    },
-    {
-      name: 'misc',
-      sections: [
-        { title: 'utility', rows: [
-          { type: 'toggle', label: 'enemy alerts', on: true, bold: true },
-          { type: 'toggle', label: 'battle indicator', on: true },
-          { type: 'toggle', label: 'instant loot', on: false },
-          { type: 'toggle', label: 'instant revive', on: false },
-        ]},
-        { title: 'environment', rows: [
-          { type: 'toggle', label: 'bright night', on: true, bold: true },
-          { type: 'toggle', label: 'custom time', on: false },
-          { type: 'opt', key: 'time', val: '12:00' },
-          { type: 'toggle', label: 'custom sky', on: false },
-        ]},
-      ],
-    },
-    {
-      name: 'config',
-      sections: [
-        { title: 'interface', rows: [
-          { type: 'opt', key: 'menu key', val: 'INSERT' },
-          { type: 'opt', key: 'theme', val: 'dark' },
-          { type: 'toggle', label: 'save on close', on: true },
-        ]},
-        { title: 'crosshair', rows: [
-          { type: 'toggle', label: 'custom crosshair', on: true, bold: true },
-          { type: 'opt', key: 'style', val: 'cross' },
-          { type: 'opt', key: 'size', val: '6' },
-          { type: 'opt', key: 'colour', val: '#35D06A' },
-          { type: 'toggle', label: 'rainbow mode', on: false },
-        ]},
-      ],
-    },
+  const CATS = [
+    { name: 'visuals',  subs: ['player visuals', 'npc visuals'] },
+    { name: 'combat',   subs: ['aimbot', 'weapons'] },
+    { name: 'movement', subs: ['movement'] },
+    { name: 'misc',     subs: ['utility', 'environment'] },
+    { name: 'config',   subs: ['interface', 'crosshair'] },
   ];
 
-  let activeTab = 0;
+  const PAGES = {
+    'visuals:player visuals': [
+      { box: 'PLAYER ESP', rows: [
+        { t: 'x', l: 'Player ESP', on: true },
+        { t: 'x', l: 'Names', on: true },
+        { t: 'x', l: 'Distance', on: true },
+        { t: 'x', l: 'Skeleton', on: false },
+        { t: 'x', l: 'Box', d: '2d bounding box', on: true },
+        { t: 'x', l: 'Status flags', d: 'wounded / safe / mounted', on: false },
+      ]},
+      { box: 'FILTERS', rows: [
+        { t: 'x', l: 'Teammate ESP', on: true },
+        { t: 'x', l: 'Enemy ESP', on: true },
+        { t: 'x', l: 'Wounded players', on: false },
+        { t: 'x', l: 'Safezone players', on: false },
+        { t: 'x', l: 'Dead players', on: false },
+        { t: 'x', l: 'Sleepers', on: true },
+      ]},
+      { box: 'STYLE', rows: [
+        { t: 's', l: 'Render distance', v: '320 m' },
+      ]},
+    ],
+    'visuals:npc visuals': [
+      { box: 'NPC ESP', rows: [
+        { t: 'x', l: 'NPC ESP', on: false },
+        { t: 'x', l: 'Names', on: true },
+        { t: 'x', l: 'Distance', on: true },
+        { t: 'x', l: 'Box', on: true },
+        { t: 'x', l: 'Skeleton', on: false },
+      ]},
+      { box: 'STYLE', rows: [
+        { t: 's', l: 'Render distance', v: '250 m' },
+      ]},
+    ],
+    'combat:aimbot': [
+      { box: 'AIMBOT & COMBAT', rows: [
+        { t: 'x', l: 'Aimbot', d: 'move the view to target', on: true },
+        { t: 'x', l: 'Silent aim', d: 'rewrite shot direction', on: true },
+        { t: 'o', l: 'Target bone', v: 'head', opts: 'head chest leg foot pelvis any' },
+        { t: 'x', l: 'Nearest bone', d: 'closest bone to crosshair', on: false },
+        { t: 's', l: 'Aim smoothing', v: '4.0' },
+        { t: 's', l: 'Silent hit chance', v: '80%' },
+        { t: 'x', l: 'Visibility check', d: 'require line of sight', on: true },
+        { t: 's', l: 'Aim FOV', v: '120 px' },
+        { t: 'x', l: 'Dynamic FOV', d: 'scale cone with distance', on: false },
+        { t: 's', l: 'Max aim distance', v: '300 m' },
+      ]},
+      { box: 'TARGET FILTERS', rows: [
+        { t: 'x', l: 'Wounded players', on: false },
+        { t: 'x', l: 'Scientists', on: false },
+        { t: 'x', l: 'Sleepers', on: false },
+        { t: 'x', l: 'Teammates', on: false },
+        { t: 'x', l: 'Safezone players', on: false },
+        { t: 'x', l: 'Helicopter aimbot', on: false },
+      ]},
+      { box: 'DISPLAY', rows: [
+        { t: 'x', l: 'FOV circle', d: 'draw the cone in game', on: true },
+        { t: 'x', l: 'Target line', d: 'line to locked target', on: false },
+      ]},
+    ],
+    'combat:weapons': [
+      { box: 'RECOIL', rows: [
+        { t: 'x', l: 'Recoil control', on: true },
+      ]},
+      { box: 'SPREAD', rows: [
+        { t: 'x', l: 'Spread control', on: true },
+        { t: 's', l: 'Weapon spread', v: '0.00' },
+        { t: 'x', l: 'No shotgun spread', on: true },
+      ]},
+      { box: 'BEHAVIOUR', rows: [
+        { t: 'x', l: 'Fast bullets', d: 'instant projectile speed', on: false },
+        { t: 'x', l: 'Force automatic', d: 'full-auto on any weapon', on: false },
+        { t: 'x', l: 'Instant Eoka', d: 'skip the strike', on: false },
+        { t: 's', l: 'Eoka success chance', v: '100%' },
+      ]},
+    ],
+    'movement:movement': [
+      { box: 'MOVEMENT', rows: [
+        { t: 'x', l: 'Spiderman', d: 'climb any surface', on: false },
+        { t: 'x', l: 'Speed hack', on: true },
+        { t: 's', l: 'Speed multiplier', v: '1.60x' },
+        { t: 'x', l: 'No jump cooldown', d: 'no landing delay', on: false },
+        { t: 'x', l: 'Noclip', d: 'fly through geometry', on: false },
+        { t: 'x', l: 'Admin + no jump cooldown', d: 'admin flag, no delay', on: false },
+        { t: 'x', l: 'Omni sprint', d: 'sprint in any direction', on: true },
+        { t: 'x', l: 'Air control', d: 'steer while airborne', on: false },
+      ]},
+      { box: 'PHYSICS', rows: [
+        { t: 'x', l: 'Gravity control', on: false },
+        { t: 's', l: 'Gravity scale', v: '0.50x' },
+        { t: 'x', l: 'Jump height', on: false },
+        { t: 's', l: 'Jump multiplier', v: '1.40x' },
+        { t: 'x', l: 'No fall damage', on: false },
+      ]},
+    ],
+    'misc:utility': [
+      { box: 'UTILITY', rows: [
+        { t: 'x', l: 'Instant loot', d: 'skip the loot animation', on: false },
+        { t: 'x', l: 'Instant revive', on: false },
+        { t: 'x', l: 'Ignore collision', on: false },
+        { t: 'x', l: 'Remove layers', d: 'strip wearables / gear', on: false },
+      ]},
+      { box: 'BATTLE INDICATOR', rows: [
+        { t: 'x', l: 'Battle mode indicator', on: true },
+        { t: 'x', l: 'Enemy proximity alerts', on: true },
+      ]},
+    ],
+    'misc:environment': [
+      { box: 'ENVIRONMENT', rows: [
+        { t: 'x', l: 'Bright night', d: 'no darkness', on: true },
+        { t: 's', l: 'Time changer', v: '12.0 h' },
+        { t: 'x', l: 'Custom day sky', on: false },
+        { t: 'x', l: 'Custom night sky', on: false },
+        { t: 'x', l: 'Custom stars', on: false },
+        { t: 's', l: 'Star brightness', v: '60%' },
+      ]},
+    ],
+    'config:interface': [
+      { box: 'INTERFACE', rows: [
+        { t: 'x', l: 'Watermark', on: false },
+      ]},
+      { box: 'WORLD DISTANCE COLOURS', rows: [
+        { t: 's', l: 'Far', v: '#8C8C8C' },
+        { t: 's', l: 'Mid', v: '#C8C8C8' },
+        { t: 's', l: 'Near', v: '#FFFFFF' },
+      ]},
+      { box: 'CONFIG', rows: [
+        { t: 'btn', l: 'save config' },
+        { t: 'btn', l: 'load config' },
+      ]},
+    ],
+    'config:crosshair': [
+      { box: 'CROSSHAIR', rows: [
+        { t: 'x', l: 'Custom crosshair', on: true },
+        { t: 'o', l: 'Style', v: 'cross', opts: 'dot cross circle t' },
+        { t: 'x', l: 'Rainbow', on: false },
+        { t: 's', l: 'Size', v: '8 px' },
+      ]},
+    ],
+  };
+
+  let cat = 0, sub = 0;
 
   function rowHtml(r) {
-    if (r.type === 'toggle') {
+    if (r.t === 'x') {
       const cls = r.on ? 'on' : '';
-      const b = r.bold ? `<b>${r.label}</b>` : r.label;
-      return `<div class="bv-row"><span class="bv-check ${cls}"></span>${b}</div>`;
+      const desc = r.d ? `<span class="d bv-desc">${r.d}</span>` : '';
+      return `<div class="bv-row"><span class="bv-check ${cls}"></span><span>${r.l}</span>${desc}</div>`;
     }
-    return `<div class="bv-row bv-indent"><span class="d">${r.key}:</span> <b>${r.val}</b></div>`;
+    if (r.t === 'o') {
+      const opts = r.opts.split(' ');
+      const btns = opts.map(o =>
+        `<span class="bv-sel${o === r.v ? ' bv-sel-on' : ''}">${o}</span>`
+      ).join('');
+      return `<div class="bv-row"><span class="d bv-lbl">${r.l}</span><span class="bv-sel-row">${btns}</span></div>`;
+    }
+    if (r.t === 'btn') {
+      return `<div class="bv-row"><span class="bv-btn">${r.l}</span></div>`;
+    }
+    return `<div class="bv-row"><span class="d bv-lbl">${r.l}</span><b>${r.v}</b></div>`;
   }
 
   function render() {
-    const tab = TABS[activeTab];
-    const tabsHtml = TABS.map((t, i) =>
-      `<span class="bv-tab${i === activeTab ? ' bv-tab-active' : ''}" data-tab="${i}">${t.name}</span>`
-    ).join('');
+    const c = CATS[cat];
+    const subName = c.subs[sub] || c.subs[0];
+    const key = `${c.name}:${subName}`;
+    const boxes = PAGES[key] || [];
 
-    let bodyHtml = '';
-    tab.sections.forEach((sec, si) => {
-      if (si > 0) bodyHtml += '<div class="bv-divider"></div>';
-      bodyHtml += '<div class="bv-section">';
-      bodyHtml += `<div class="bv-row" style="margin-bottom:2px"><span class="d">// ${sec.title}</span></div>`;
-      sec.rows.forEach(r => { bodyHtml += rowHtml(r); });
-      bodyHtml += '</div>';
+    const sideHtml = CATS.map((ct, i) => {
+      const active = i === cat;
+      return `<div class="bv-side-item${active ? ' bv-side-active' : ''}" data-cat="${i}">
+        <span>${ct.name}</span><span class="d">${i + 1}</span>
+      </div>`;
+    }).join('');
+
+    const subHtml = c.subs.length > 1 ? c.subs.map((s, i) =>
+      `<span class="bv-tab${i === sub ? ' bv-tab-active' : ''}" data-sub="${i}">${s}</span>`
+    ).join('') : `<span class="bv-tab bv-tab-active">${c.subs[0]}</span>`;
+
+    let contentHtml = '';
+    boxes.forEach(b => {
+      contentHtml += `<div class="bv-box-wrap">`;
+      contentHtml += `<div class="bv-box-head">${b.box}</div>`;
+      b.rows.forEach(r => { contentHtml += rowHtml(r); });
+      contentHtml += `</div>`;
     });
 
     root.innerHTML = `
       <div class="hud-chrome">
-        <span><strong>basalt</strong> &middot; menu</span>
-        <span>INSERT to toggle</span>
+        <span>strata/<strong>basalt</strong></span>
+        <span class="bv-attached">[attached]</span>
       </div>
-      <div class="bv-menu">
-        <div class="bv-tabs">${tabsHtml}</div>
-        ${bodyHtml}
+      <div class="bv-layout">
+        <div class="bv-sidebar">${sideHtml}</div>
+        <div class="bv-main">
+          <div class="bv-tabs bv-subtabs">${subHtml}</div>
+          <div class="bv-content">${contentHtml}</div>
+        </div>
       </div>
-      <div class="hud-foot" style="margin:0;padding:10px 16px;border-top:1px solid var(--faint)">
-        <span>GAME: <b>RUST</b></span>
-        <span>OVERLAY: <b>DX11</b></span>
-        <span>STATUS: <b>RUNNING</b></span>
+      <div class="bv-stat">
+        <span>INSERT menu &middot; 1-5 categories &middot; END close</span>
+        <span>entities <b>47</b> &middot; <b>144</b> fps</span>
       </div>
     `;
   }
 
   root.addEventListener('click', e => {
-    const tab = e.target.closest('[data-tab]');
-    if (tab) { activeTab = +tab.dataset.tab; render(); return; }
+    const ci = e.target.closest('[data-cat]');
+    if (ci) { cat = +ci.dataset.cat; sub = 0; render(); return; }
+    const si = e.target.closest('[data-sub]');
+    if (si) { sub = +si.dataset.sub; render(); return; }
     const check = e.target.closest('.bv-check');
     if (check) { check.classList.toggle('on'); }
   });
