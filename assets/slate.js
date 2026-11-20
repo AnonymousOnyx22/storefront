@@ -339,7 +339,7 @@ function say(box, html) { box.insertAdjacentHTML('beforeend', `<div>${html}</div
   <dt>since</dt><dd>${fmtDate(a.created)}</dd>
 </dl>
 <div class="acct-actions">
-  ${dead ? `<a class="btn" href="checkout.html?tier=${a.tier}">re-buy ${t.label} -&gt;</a>` : ''}
+  ${dead ? `<a class="btn" href="checkout.html?tier=${a.tier}">re-buy ${t.label} -&gt;</a>` : `<a class="btn" href="/.netlify/functions/download?key=${encodeURIComponent(a.key)}">download loader</a>`}
   ${a.machine ? `<button class="btn${dead ? ' ghost' : ''}" data-act="reset" ${canReset ? '' : 'disabled'}>move to another pc</button>` : `<button class="btn" data-act="bind">simulate activation</button>`}
   <button class="btn ghost" data-act="resend">resend key</button>
   <button class="btn ghost" data-act="out">sign out</button>

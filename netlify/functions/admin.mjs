@@ -39,9 +39,10 @@ async function ticketRows() {
 function auth(event) {
   const h = event.headers || {};
   if (!process.env.ADMIN_TOKEN) return 'no_admin_token';
-  if (!process.env.ADMIN_TOTP_SECRET) return 'no_otp_secret';
   if (!adminTokenOk(h)) return 'bad_token';
-  if (!totpOk(process.env.ADMIN_TOTP_SECRET, h['x-admin-otp'] || h['X-Admin-Otp'])) return 'bad_otp';
+  if (process.env.ADMIN_TOTP_SECRET) {
+    if (!totpOk(process.env.ADMIN_TOTP_SECRET, h['x-admin-otp'] || h['X-Admin-Otp'])) return 'bad_otp';
+  }
   return null;
 }
 
