@@ -106,6 +106,13 @@
   [headers.values]
     cache-control = "public, max-age=3600, must-revalidate"
 
+# legacy download path -> gated download function
+[[redirects]]
+  from = "/dl/*"
+  to = "/.netlify/functions/download"
+  status = 302
+  force = true
+
 # the installer. unguessable path, never indexed, never cached by a proxy.
 [[headers]]
   for = "/dl/*"
