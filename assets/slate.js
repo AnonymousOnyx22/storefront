@@ -13,12 +13,12 @@ const SPIN = ['|', '/', '-', '\\'];
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const TIERS = {
-  // slate (hwid spoofer)
-  day:     { label: '1 day',     price: 6.99,  days: 1,    resets: Infinity, product: 'slate' },
-  week:    { label: '7 days',    price: 14.99, days: 7,    resets: Infinity, product: 'slate' },
-  month:   { label: '30 days',   price: 29.99, days: 30,   resets: Infinity, product: 'slate' },
-  quarter: { label: '90 days',   price: 59.99, days: 90,   resets: Infinity, product: 'slate' },
-  life:    { label: 'permanent', price: 99.99, days: null, resets: Infinity, product: 'slate' },
+  // onyx (hwid spoofer)
+  day:     { label: '1 day',     price: 6.99,  days: 1,    resets: Infinity, product: 'onyx' },
+  week:    { label: '7 days',    price: 14.99, days: 7,    resets: Infinity, product: 'onyx' },
+  month:   { label: '30 days',   price: 29.99, days: 30,   resets: Infinity, product: 'onyx' },
+  quarter: { label: '90 days',   price: 59.99, days: 90,   resets: Infinity, product: 'onyx' },
+  life:    { label: 'permanent', price: 99.99, days: null, resets: Infinity, product: 'onyx' },
   // basalt (rust external)
   'basalt-day':     { label: '1 day',     price: 9.99,  days: 1,    resets: Infinity, product: 'basalt' },
   'basalt-week':    { label: '7 days',    price: 24.99, days: 7,    resets: Infinity, product: 'basalt' },
@@ -99,7 +99,7 @@ function say(box, html) { box.insertAdjacentHTML('beforeend', `<div>${html}</div
   const status = $('#buyStatus'), submit = $('#buySubmit'), inbox = $('#inbox'), feats = $('#tierFeats');
   const tierToggle = $('#tierToggle');
   const params = new URLSearchParams(location.search);
-  let product = 'slate';
+  let product = 'onyx';
   let tier = params.get('tier');
   if (tier && tier.startsWith('basalt-')) product = 'basalt';
   if (!TIERS[tier]) tier = product === 'basalt' ? 'basalt-month' : 'month';
@@ -170,10 +170,10 @@ function say(box, html) { box.insertAdjacentHTML('beforeend', `<div>${html}</div
 
   function inboxFor(acct, email, local) {
     const exp = expiresAt(acct);
-    const prod = (TIERS[acct.tier] && TIERS[acct.tier].product) || 'slate';
-    const prodName = prod === 'basalt' ? 'basalt' : 'slate';
+    const prod = (TIERS[acct.tier] && TIERS[acct.tier].product) || 'onyx';
+    const prodName = prod === 'basalt' ? 'basalt' : 'onyx';
     inbox.innerHTML =
-`<span class="d">from</span>     slate
+`<span class="d">from</span>     onyx
 <span class="d">to</span>       ${esc(email)}
 <span class="d">subject</span>  your ${prodName} key
 
@@ -334,7 +334,7 @@ function say(box, html) { box.insertAdjacentHTML('beforeend', `<div>${html}</div
   <dt>tier</dt><dd>${t.label}</dd>
   <dt>status</dt><dd>${dead ? 'expired <span class="d">// the app stops working, your pc keeps its identity</span>' : 'active'}</dd>
   <dt>expires</dt><dd>${exp ? `${fmtDate(exp)} <span class="d">// ${left}d left</span>` : 'never'}</dd>
-  <dt>machine</dt><dd>${a.machine ? `${esc(a.machine.name)} <span class="d">// id ${esc(a.machine.hwid)} · bound ${fmtDate(a.machine.at)}</span>` : '<span class="d">not bound yet. open slate on the pc and paste your key.</span>'}</dd>
+  <dt>machine</dt><dd>${a.machine ? `${esc(a.machine.name)} <span class="d">// id ${esc(a.machine.hwid)} · bound ${fmtDate(a.machine.at)}</span>` : '<span class="d">not bound yet. open onyx on the pc and paste your key.</span>'}</dd>
   <dt>resets</dt><dd>${resetsText(a.resets)}${a.resets === 0 ? ' <span class="d">// upgrade for resets</span>' : ''}</dd>
   <dt>since</dt><dd>${fmtDate(a.created)}</dd>
 </dl>
@@ -372,7 +372,7 @@ function say(box, html) { box.insertAdjacentHTML('beforeend', `<div>${html}</div
       case 'bind': {
         // [real] happens in the CLI; the site only reads it
         b.disabled = true; out.textContent = '';
-        await steps(out, ['opening slate', 'reading this pc', 'binding key']);
+        await steps(out, ['opening onyx', 'reading this pc', 'binding key']);
         const machine = { name: 'DESKTOP-' + rand(6), hwid: rand(8, '0123456789abcdef'), at: Date.now() };
         if (session.remote) {
           const r = await post('account', { email: a.email, key: a.key, action: 'bind', machine });
@@ -384,7 +384,7 @@ function say(box, html) { box.insertAdjacentHTML('beforeend', `<div>${html}</div
         render(); say($('#acctStatus'), 'key bound to this machine.'); break;
       }
       case 'reset': {
-        if (!confirm('move this key to another PC? it unbinds from this one and activates on the next PC you open slate on.')) return;
+        if (!confirm('move this key to another PC? it unbinds from this one and activates on the next PC you open onyx on.')) return;
         b.disabled = true; out.textContent = '';
         await steps(out, ['unbinding this pc', 'freeing the key']);
         if (session.remote) {

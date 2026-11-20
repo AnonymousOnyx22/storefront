@@ -521,7 +521,7 @@ Takes about a minute. Nothing else to do.</pre>
           </div>
           <div class="hud-box">
             <div class="hud-box-title">// note</div>
-            <pre>Restoring uses the copy slate saved before your
+            <pre>Restoring uses the copy onyx saved before your
 first spoof. It works even months later.
 
 You can spoof again at any time.</pre>
@@ -588,7 +588,7 @@ old setup traces        ${spoofed ? '[OK]' : '[--]'}</pre>
 
     root.innerHTML = `
       <div class="hud-chrome">
-        <span><strong>slate</strong> · app window</span>
+        <span><strong>onyx</strong> · app window</span>
         <span>version 1.2.0 · windows</span>
       </div>
       <div class="hud-inner">
@@ -797,7 +797,7 @@ per key     $${(PRICE[plan] * disc).toFixed(2)}`;
   }, 1300);
 })();
 
-/* ============ GUIDE: can this PC run slate ============ */
+/* ============ GUIDE: can this PC run onyx ============ */
 (function pcCheck() {
   const btn = $('#pcCheck'); if (!btn) return;
   const out = $('#pcOut'), verdict = $('#pcVerdict'), bar = $('#pcBar'), live = $('#pcLive');
@@ -853,7 +853,7 @@ per key     $${(PRICE[plan] * disc).toFixed(2)}`;
     const arch = String(he.architecture || '').toLowerCase();
     const bits = String(he.bitness || '');
     const arm = arch === 'arm' || /arm64|aarch64/i.test(ua);
-    /* windows on arm is 64-bit and still cannot run slate: arm never passes */
+    /* windows on arm is 64-bit and still cannot run onyx: arm never passes */
     if (bits === '64' || /Win64|x64|WOW64/i.test(ua)) return { v: arm ? 'arm64' : '64-bit x64', ok: !arm, bits: 64 };
     if (bits === '32' || /Win32/i.test(ua)) return { v: '32-bit', ok: false, bits: 32 };
     if (arm) return { v: 'arm64', ok: false, bits: 64 };
@@ -901,13 +901,13 @@ per key     $${(PRICE[plan] * disc).toFixed(2)}`;
   function finish(rows, pass, reason, mobile, secs) {
     verdict.className = 'pc-verdict' + (pass ? ' ok' : '');
     verdict.innerHTML = pass
-      ? `<b>YES</b> \u2014 this PC can run slate.
+      ? `<b>YES</b> \u2014 this PC can run onyx.
          <span class="pc-sub">All requirement checks passed in ${secs}s. UEFI boot and administrator rights are confirmed by the installer itself, in about a second. Nothing was read outside this tab.</span>
          <div class="pc-cta">
            <a class="btn" href="pricing.html">see pricing &rarr;</a>
            <a class="btn ghost" href="checkout.html?tier=day">start with 1 day \u00b7 $6.99</a>
          </div>`
-      : `<b>NO</b> \u2014 this PC cannot run slate.
+      : `<b>NO</b> \u2014 this PC cannot run onyx.
          <span class="pc-sub">${reason}${mobile
            ? ' You are on a phone or tablet \u2014 open this page on the Windows PC you play on and run the check again.'
            : ''}</span>
@@ -944,8 +944,8 @@ per key     $${(PRICE[plan] * disc).toFixed(2)}`;
     const failing = rows.filter(r => r.ok === false);
     const pass = failing.length === 0;
     const reason = failing.length === 1
-      ? `This PC fails the ${failing[0].k} check. slate needs Windows 10 or 11 on a 64-bit x64 desktop PC.`
-      : `This PC fails ${failing.length} checks: ${failing.map(r => r.k).join(', ')}. slate needs Windows 10 or 11 on a 64-bit x64 desktop PC.`;
+      ? `This PC fails the ${failing[0].k} check. onyx needs Windows 10 or 11 on a 64-bit x64 desktop PC.`
+      : `This PC fails ${failing.length} checks: ${failing.map(r => r.k).join(', ')}. onyx needs Windows 10 or 11 on a 64-bit x64 desktop PC.`;
 
     step(pass ? 'ready' : 'done', 100);
     const secs = ((performance.now() - t0) / 1000).toFixed(1);
