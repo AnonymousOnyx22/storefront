@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obsidian - Rust Internal by Slate</title>
+<meta name="description" content="Obsidian is an internal Rust cheat by Slate. Injected DLL with in-game ESP, aimbot, weapon mods, movement hacks and more. Direct memory access, no external overlay.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://useslate.net/obsidian.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://useslate.net/obsidian.html">
+<meta property="og:title" content="Obsidian - Rust Internal by Slate">
+<meta property="og:description" content="Internal Rust cheat with in-game ESP, aimbot, weapon mods, movement hacks. DLL injection, direct memory, in-game rendering.">
+<meta property="og:site_name" content="Slate">
+<meta property="og:image" content="https://useslate.net/assets/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='4' y='4' width='24' height='24' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='8' y='8' width='7' height='7' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.className='js';try{if(localStorage.getItem('slate:still')==='1')document.documentElement.classList.add('still')}catch(e){}</script>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+
+<div class="topbar">
+  <div class="topbar-in wrap">
+    <span class="live"><i></i><b id="onlineCount">24</b> online</span>
+    <span class="tb-sep">/</span>
+    <span>instant delivery</span>
+    <span class="tb-sep">/</span>
+    <span>24/7 support</span>
+    <span class="tb-right">
+      <a href="reviews.html">reviews</a>
+      <a href="status.html">status</a>
+      <span class="tb-sep">|</span>
+      <span class="d">existing user?</span>
+      <a href="login.html">sign in</a>
+      <a href="checkout.html" class="tb-cta">get a key &rarr;</a>
+    </span>
+  </div>
+</div>
+
+<header class="nav-wrap">
+  <nav class="nav wrap" aria-label="Main">
+    <div class="brand-wrap">
+      <a href="index.html" class="brand"><span class="d">slate/</span>obsidian<span class="cur">_</span></a>
+      <div class="brand-menu">
+        <p class="bm-head">slate projects</p>
+        <a class="bm-item" href="index.html"><b>slate</b><span>hwid spoofer</span><em class="bm-live">live</em></a>
+        <a class="bm-item" href="basalt.html"><b>basalt</b><span>rust external</span><em>in development</em></a>
+        <a class="bm-item" href="obsidian.html"><b>obsidian</b><span>rust internal</span><em>coming soon</em></a>
+      </div>
+    </div>
+    <ul class="links dots">
+      <li><a href="index.html">~/</a></li>
+      <li><a href="products.html">products</a></li>
+      <li><a href="games.html">games</a></li>
+      <li><a href="pricing.html">pricing</a></li>
+      <li><a href="status.html">status</a></li>
+      <li><a href="guide.html">install</a></li>
+      <li><a href="help.html">help</a></li>
+      <li><a href="login.html">my key</a></li>
+    </ul>
+    <button class="kbd motion" data-motion aria-pressed="false">&#9632; stop animations</button>
+    <button class="kbd" data-pal aria-label="Open command palette"><b>/</b> jump</button>
+    <button class="kbd menu-btn" aria-expanded="false" aria-controls="mmenu">[menu]</button>
+  </nav>
+</header>
+<div class="mmenu" id="mmenu">
+  <button class="kbd close">[close]</button>
+  <a href="index.html"><span class="d">cd</span> ~/</a>
+  <a href="products.html"><span class="d">cd</span> ~/products</a>
+  <a href="games.html"><span class="d">cd</span> ~/games</a>
+  <a href="pricing.html"><span class="d">cd</span> ~/pricing</a>
+  <a href="status.html"><span class="d">cd</span> ~/status</a>
+  <a href="guide.html"><span class="d">cd</span> ~/install</a>
+  <a href="help.html"><span class="d">cd</span> ~/help</a>
+  <a href="login.html"><span class="d">cd</span> ~/my-key</a>
+  <a href="reviews.html"><span class="d">cd</span> ~/reviews</a>
+  <a href="privacy.html"><span class="d">cd</span> ~/privacy</a>
+  <a href="terms.html"><span class="d">cd</span> ~/terms</a>
+</div>
+
+<main>
+  <section class="hero wrap">
+<pre class="logo" id="logo" aria-label="obsidian" data-load-scramble="1100"> ██████╗ ██████╗ ███████╗██╗██████╗ ██╗ █████╗ ███╗   ██╗
+██╔═══██╗██╔══██╗██╔════╝██║██╔══██╗██║██╔══██╗████╗  ██║
+██║   ██║██████╔╝███████╗██║██║  ██║██║███████║██╔██╗ ██║
+██║   ██║██╔══██╗╚════██║██║██║  ██║██║██╔══██║██║╚██╗██║
+╚██████╔╝██████╔╝███████║██║██████╔╝██║██║  ██║██║ ╚████║
+ ╚═════╝ ╚═════╝ ╚══════╝╚═╝╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝</pre>
+
+    <div class="hero-row">
+      <div data-rise>
+        <h1 class="h1">Inside<br>the game.</h1>
+        <p class="subhead">obsidian injects directly into Rust and renders features using the game's own engine. In-game ESP, aimbot, weapon mods and movement with zero external windows.<br><span class="dim">DLL injection &middot; direct memory &middot; in-game rendering</span></p>
+        <div class="badge-row">
+          <span class="badge">coming soon</span>
+          <span class="badge">internal injection</span>
+          <span class="badge">in-game rendering</span>
+        </div>
+        <div class="install">
+          <span class="btn disabled">coming soon</span>
+          <a href="#features" class="btn ghost">see features</a>
+        </div>
+        <p class="ticker">rust internal by slate<br>DLL injection &middot; game renderer &middot; direct memory access</p>
+      </div>
+      <div class="hud-stage hero-hud" data-rise>
+        <div class="hud-window">
+          <div class="hud-chrome">
+            <span>strata/<strong>obsidian</strong></span>
+            <span class="bv-attached">[injected]</span>
+          </div>
+          <div class="bv-menu">
+            <div class="bv-tabs">
+              <span class="bv-tab bv-tab-active">visuals</span>
+              <span class="bv-tab">combat</span>
+              <span class="bv-tab">weapons</span>
+              <span class="bv-tab">movement</span>
+              <span class="bv-tab">misc</span>
+            </div>
+            <div class="bv-section">
+              <div class="bv-row" style="margin-bottom:2px"><span class="d">// player ESP</span></div>
+              <div class="bv-row"><span class="bv-check on"></span><b>Player ESP</b></div>
+              <div class="bv-row"><span class="bv-check on"></span>Box ESP</div>
+              <div class="bv-row"><span class="bv-check on"></span>Skeleton</div>
+              <div class="bv-row"><span class="bv-check on"></span>Health bar</div>
+              <div class="bv-row"><span class="bv-check on"></span>Name + distance</div>
+              <div class="bv-row"><span class="bv-check on"></span>Held weapon</div>
+              <div class="bv-row"><span class="bv-check"></span>Chams (material override)</div>
+              <div class="bv-row"><span class="bv-check on"></span>Glow (outline)</div>
+            </div>
+            <div class="bv-divider"></div>
+            <div class="bv-section">
+              <div class="bv-row" style="margin-bottom:2px"><span class="d">// world ESP</span></div>
+              <div class="bv-row"><span class="bv-check on"></span><b>Ore nodes</b></div>
+              <div class="bv-row"><span class="bv-check on"></span>Stash ESP</div>
+              <div class="bv-row"><span class="bv-check"></span>TC ESP</div>
+              <div class="bv-row"><span class="bv-check on"></span>Supply drops</div>
+              <div class="bv-row"><span class="bv-check"></span>Traps</div>
+            </div>
+          </div>
+          <div class="hud-foot" style="margin:0;padding:10px 16px;border-top:1px solid var(--faint)">
+            <span>INJECT: <b>MANUAL MAP</b></span>
+            <span>RENDER: <b>IN-GAME</b></span>
+            <span>STATUS: <b>INJECTED</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="blocks" data-rise>
+      <li><span class="d">//</span> <b>internal injection.</b> obsidian loads as a DLL inside Rust. direct access to game memory, structures and the renderer. no external windows.</li>
+      <li><span class="d">//</span> <b>in-game rendering.</b> ESP, chams and overlays draw through the game's own render pipeline. no separate overlay to detect or capture.</li>
+      <li><span class="d">//</span> <b>world ESP.</b> ore nodes, stashes, tool cupboards, supply drops and traps. things an external can not see because they are not networked the same way.</li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="features" aria-labelledby="featTitle">
+    <h2 class="prompt-head" id="featTitle" data-reveal data-scramble>$ features</h2>
+    <p class="sub" data-reveal>Everything obsidian will ship with. Internal access unlocks features an external tool cannot reach.</p>
+    <ul class="specs" data-rise>
+      <li><span class="k">player ESP</span><span class="v">boxes, skeletons, health bars, names, distance, held weapon, flags. in-game rendered, not on a separate overlay</span></li>
+      <li><span class="k">chams</span><span class="v">material override on player models. visible through walls with custom colours for visible/hidden. per-team colouring</span></li>
+      <li><span class="k">glow</span><span class="v">outline glow on players and NPCs. configurable colour, width, and render distance</span></li>
+      <li><span class="k">world ESP</span><span class="v">ore nodes (sulfur/metal/stone), stashes, tool cupboards, supply drops, traps, hemp, loot crates. configurable per item</span></li>
+      <li><span class="k">NPC ESP</span><span class="v">scientists, heavy scientists, tunnel dwellers, animals. boxes, names, distance, health</span></li>
+      <li><span class="k">aimbot</span><span class="v">direct aim manipulation (not silent). bone selection, smoothing, FOV, visibility check, target priority, recoil compensation</span></li>
+      <li><span class="k">weapons</span><span class="v">no recoil, no spread, no sway, rapid fire, force automatic, thick bullets, long melee, fast projectiles</span></li>
+      <li><span class="k">movement</span><span class="v">speed hack, fly hack, spider climb, infinite jump, no fall damage, omni sprint, swim speed, admin flag</span></li>
+      <li><span class="k">misc</span><span class="v">bright night, custom time, instant loot, instant revive, auto farm, auto upgrade, debug camera, FOV changer, zoom</span></li>
+      <li><span class="k">injection</span><span class="v">manual map injection. no traces on disk, no loaded module list entry. injector cleans up after load</span></li>
+    </ul>
+
+    <div class="bv-grid bv-grid-full" data-rise>
+
+      <div class="bv-panel">
+        <div class="bv-title">player ESP + chams <span class="d">in-game rendered</span></div>
+        <div class="bv-viewport">
+          <div class="bv-entity" style="top:10%;left:20%">
+            <div class="bv-box" style="height:120px;width:56px">
+              <span class="bv-name">rustplayer_041 <span class="d">72m</span></span>
+              <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:88%;background:var(--ok)"></div></div>
+              <span class="bv-item">AK-47</span>
+            </div>
+            <div class="ob-chams"></div>
+          </div>
+          <div class="bv-entity" style="top:30%;left:60%">
+            <div class="bv-box bv-hidden" style="height:95px;width:50px">
+              <span class="bv-name">rustplayer_219 <span class="d">156m</span></span>
+              <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:62%;background:#E8A838"></div></div>
+              <span class="bv-item">Thompson</span>
+            </div>
+            <div class="ob-chams ob-chams-hidden"></div>
+          </div>
+          <div class="bv-entity" style="top:58%;left:38%">
+            <div class="bv-box ob-glow" style="height:110px;width:52px">
+              <span class="bv-name">rustplayer_087 <span class="d">41m</span></span>
+              <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:100%;background:var(--ok)"></div></div>
+              <span class="bv-item">Bolt Action</span>
+            </div>
+          </div>
+          <div class="bv-crosshair"></div>
+          <span class="bv-label">chams = filled model colour &middot; glow = outline &middot; both render through game engine</span>
+        </div>
+      </div>
+
+      <div class="bv-panel">
+        <div class="bv-title">world ESP <span class="d">nodes + stashes + drops</span></div>
+        <div class="bv-viewport bv-vp-world">
+          <div class="ob-world-item" style="top:12%;left:25%">
+            <div class="ob-node ob-sulfur"></div>
+            <span>sulfur <span class="d">34m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:18%;left:52%">
+            <div class="ob-node ob-metal"></div>
+            <span>metal <span class="d">67m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:15%;left:72%">
+            <div class="ob-node ob-stone"></div>
+            <span>stone <span class="d">89m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:40%;left:15%">
+            <div class="ob-node ob-sulfur"></div>
+            <span>sulfur <span class="d">112m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:35%;left:65%">
+            <div class="ob-icon ob-stash"></div>
+            <span class="ob-stash-label">stash <span class="d">28m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:55%;left:45%">
+            <div class="ob-icon ob-drop"></div>
+            <span class="ob-drop-label">supply drop <span class="d">203m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:65%;left:22%">
+            <div class="ob-icon ob-tc"></div>
+            <span class="ob-tc-label">TC <span class="d">41m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:70%;left:70%">
+            <div class="ob-icon ob-trap"></div>
+            <span class="ob-trap-label">snap trap <span class="d">12m</span></span>
+          </div>
+          <div class="ob-world-item" style="top:48%;left:30%">
+            <div class="ob-node ob-hemp"></div>
+            <span>hemp <span class="d">19m</span></span>
+          </div>
+          <div class="bv-crosshair"></div>
+          <span class="bv-label">world ESP = internal only &middot; not available on externals</span>
+        </div>
+      </div>
+
+      <div class="bv-panel">
+        <div class="bv-title">aimbot <span class="d">direct aim + recoil compensation</span></div>
+        <div class="bv-viewport bv-vp-aim">
+          <div class="bv-entity" style="top:25%;left:40%">
+            <div class="bv-box bv-aim-target" style="height:105px;width:50px">
+              <span class="bv-name">rustplayer_154 <span class="d">93m</span></span>
+              <div class="bv-skeleton"><span></span><span></span><span></span><span></span></div>
+              <div class="bv-bar"><div class="bv-hp" style="width:81%;background:var(--ok)"></div></div>
+              <span class="bv-item">LR-300</span>
+            </div>
+            <div class="bv-bone-dot"></div>
+            <div class="bv-target-line"></div>
+          </div>
+          <div class="bv-entity" style="top:50%;left:70%">
+            <div class="bv-box bv-hidden" style="height:65px;width:36px">
+              <span class="bv-name">rustplayer_302 <span class="d">221m</span></span>
+              <div class="bv-bar"><div class="bv-hp" style="width:45%;background:#E8A838"></div></div>
+            </div>
+          </div>
+          <div class="bv-crosshair"></div>
+          <div class="bv-fov bv-fov-aim"></div>
+          <div class="bv-aim-info">
+            <span>AIMBOT</span>
+            <span>bone: head</span>
+            <span>smooth: 4.0</span>
+            <span>no recoil: on</span>
+            <span>no spread: on</span>
+            <span class="bv-aim-lock">LOCKED</span>
+          </div>
+          <span class="bv-label">direct aim = mouse moves to target &middot; recoil + spread zeroed by internal hooks</span>
+        </div>
+      </div>
+
+      <div class="bv-panel">
+        <div class="bv-title">misc <span class="d">bright night + debug camera + auto farm</span></div>
+        <div class="bv-viewport bv-vp-misc">
+          <div class="ob-misc-grid">
+            <div class="ob-misc-item">
+              <div class="ob-misc-head">bright night</div>
+              <div class="ob-misc-demo ob-bright">
+                <span class="ob-sun">full visibility at any hour</span>
+              </div>
+            </div>
+            <div class="ob-misc-item">
+              <div class="ob-misc-head">debug camera</div>
+              <div class="ob-misc-demo ob-debug">
+                <span>free cam</span>
+                <span class="d">detach from player</span>
+                <span class="d">fly anywhere on map</span>
+              </div>
+            </div>
+            <div class="ob-misc-item">
+              <div class="ob-misc-head">auto farm</div>
+              <div class="ob-misc-demo ob-farm">
+                <span>auto hit nodes</span>
+                <span class="d">auto pickup</span>
+                <span class="d">auto sort inventory</span>
+              </div>
+            </div>
+            <div class="ob-misc-item">
+              <div class="ob-misc-head">FOV changer</div>
+              <div class="ob-misc-demo ob-fov">
+                <span>90 &rarr; 120</span>
+                <span class="d">wider field of view</span>
+                <span class="d">+ zoom on right click</span>
+              </div>
+            </div>
+          </div>
+          <span class="bv-label">internal hooks give access to systems an external cannot reach</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="wrap" id="compare" aria-labelledby="cmpTitle">
+    <h2 class="prompt-head" id="cmpTitle" data-reveal data-scramble>$ internal vs external</h2>
+    <p class="sub" data-reveal>obsidian (internal) and basalt (external) take different approaches. pick whichever fits.</p>
+    <ul class="specs" data-rise>
+      <li><span class="k">rendering</span><span class="v">obsidian draws through the game engine. basalt draws on a separate DX11 overlay</span></li>
+      <li><span class="k">chams + glow</span><span class="v">internal only. material overrides require access to the game's render pipeline</span></li>
+      <li><span class="k">world ESP</span><span class="v">internal only. ore nodes, stashes and traps are not in the networked entity list an external reads</span></li>
+      <li><span class="k">aimbot</span><span class="v">obsidian moves the mouse directly. basalt uses silent aim (rewrites shot direction)</span></li>
+      <li><span class="k">detection</span><span class="v">external has a smaller footprint (no code in game). internal has deeper access but more surface area</span></li>
+      <li><span class="k">capture</span><span class="v">basalt overlay is excluded from screen capture. obsidian renders in-game, so it shows in recordings unless toggled off</span></li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="how" aria-labelledby="howTitle">
+    <h2 class="prompt-head" id="howTitle" data-reveal data-scramble>$ how it works</h2>
+    <p class="sub" data-reveal>Four steps from injector to game.</p>
+    <ul class="blocks" data-rise>
+      <li><span class="d">01</span> <b>manual map injection.</b> the injector maps the DLL into the Rust process without calling LoadLibrary. no entry in the loaded module list, no file path on disk after injection.</li>
+      <li><span class="d">02</span> <b>hook installation.</b> obsidian hooks into the game's update loop and render pipeline. ESP and chams draw through the game's own renderer. weapon mods intercept fire events directly.</li>
+      <li><span class="d">03</span> <b>direct memory access.</b> no driver, no DeviceIoControl. obsidian reads and writes game structures from inside the process. lower latency, more data available.</li>
+      <li><span class="d">04</span> <b>offset updates.</b> after each Rust patch, updated offsets are pushed. the client loads them on inject, same as basalt.</li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="reqs" aria-labelledby="reqTitle">
+    <h2 class="prompt-head" id="reqTitle" data-reveal data-scramble>$ requirements</h2>
+    <ul class="specs" data-rise>
+      <li><span class="k">os</span><span class="v">Windows 10 or Windows 11, 64-bit</span></li>
+      <li><span class="k">game</span><span class="v">Rust (Steam)</span></li>
+      <li><span class="k">rights</span><span class="v">administrator</span></li>
+      <li><span class="k">anti-virus</span><span class="v">may need an exclusion for the injector</span></li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="pricing" aria-labelledby="obsPriceTitle">
+    <h2 class="prompt-head" id="obsPriceTitle" data-reveal data-scramble>$ pricing</h2>
+    <p class="sub" data-reveal>Pricing will be announced when obsidian is ready. Join the Discord for updates.</p>
+    <div class="tiers" data-rise>
+      <ul class="tier">
+        <li class="tier-name">1 day</li>
+        <li class="tier-price">TBD</li>
+        <li>1 PC</li>
+        <li>all features</li>
+        <li>all updates</li>
+        <li>instant email</li>
+        <li class="tier-buy"><span class="btn ghost disabled">coming soon</span></li>
+      </ul>
+      <ul class="tier featured">
+        <li class="tier-name">7 days</li>
+        <li class="tier-price">TBD</li>
+        <li>1 PC</li>
+        <li>all features</li>
+        <li>all updates</li>
+        <li>instant email</li>
+        <li class="tier-buy"><span class="btn disabled">coming soon</span></li>
+      </ul>
+      <ul class="tier">
+        <li class="tier-name">30 days</li>
+        <li class="tier-price">TBD</li>
+        <li>1 PC</li>
+        <li>all features</li>
+        <li>all updates</li>
+        <li>instant email</li>
+        <li class="tier-buy"><span class="btn ghost disabled">coming soon</span></li>
+      </ul>
+      <ul class="tier">
+        <li class="tier-name">permanent</li>
+        <li class="tier-price">TBD</li>
+        <li>1 PC</li>
+        <li>all features</li>
+        <li>all updates, forever</li>
+        <li>instant email</li>
+        <li class="tier-buy"><span class="btn ghost disabled">coming soon</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap" id="faq" aria-labelledby="faqTitle">
+    <h2 class="prompt-head" id="faqTitle" data-reveal data-scramble>$ questions</h2>
+    <div class="faq" data-rise>
+      <details open>
+        <summary>When does it release?</summary>
+        <p>No date announced. Obsidian is in early development. Join the Discord for updates.</p>
+      </details>
+      <details>
+        <summary>What is the difference between obsidian and basalt?</summary>
+        <p>Basalt is external: it reads memory from outside and draws on a separate overlay. Obsidian is internal: it injects into the game and renders through the game engine. Internal gives you chams, glow, world ESP and direct aim. External gives you a capture-proof overlay and a smaller detection surface.</p>
+      </details>
+      <details>
+        <summary>Can I use obsidian with slate?</summary>
+        <p>Yes. Slate changes your hardware identity. Obsidian provides in-game features. They are separate products with separate keys.</p>
+      </details>
+      <details>
+        <summary>Can I use obsidian with basalt?</summary>
+        <p>Running both at the same time is not recommended. Use one or the other per session.</p>
+      </details>
+      <details>
+        <summary>Will it be detected?</summary>
+        <p>Internal tools have a larger detection surface than external tools. Obsidian uses manual mapping and cleans up after injection. Detection status will be tracked on the status page once it goes live.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-bottom:64px">
+    <div class="cta" data-rise>
+      <h2>Need something now?</h2>
+      <p class="sub">Slate is live. Basalt is in development.</p>
+      <div class="install" style="margin-top:16px">
+        <a href="pricing.html" class="btn">get slate &rarr;</a>
+        <a href="basalt.html" class="btn ghost">see basalt &rarr;</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a href="index.html" class="brand"><span class="d">slate/</span>obsidian<span class="cur">_</span></a>
+      <p>Internal Rust cheat by Slate. DLL injection with in-game ESP, chams, glow, world ESP, aimbot, weapon mods and movement. Coming soon.</p>
+      <div class="pay" aria-label="Accepted payment methods">
+        <span>visa</span><span>mastercard</span><span>paypal</span><span>crypto</span><span>cash app</span><span>apple pay</span>
+      </div>
+    </div>
+    <nav class="foot-col" aria-label="Store">
+      <p>store</p>
+      <a href="products.html">products</a>
+      <a href="pricing.html">pricing</a>
+      <a href="checkout.html">buy a key</a>
+      <a href="games.html">supported games</a>
+      <a href="status.html">status</a>
+      <a href="reviews.html">reviews</a>
+    </nav>
+    <nav class="foot-col" aria-label="Support">
+      <p>support</p>
+      <a href="guide.html">install guide</a>
+      <a href="help.html">help &amp; faq</a>
+      <a href="help.html#refunds">refunds</a>
+      <a href="help.html#contact">contact</a>
+      <a href="terms.html">terms</a>
+      <a href="privacy.html">privacy</a>
+    </nav>
+    <nav class="foot-col" aria-label="Account">
+      <p>account</p>
+      <a href="login.html">my key</a>
+      <a href="checkout.html">new order</a>
+      <a href="help.html#refunds">resend key</a>
+      <a href="help.html#contact">open a ticket</a>
+    </nav>
+  </div>
+  <div class="foot-meta">
+    <p class="foot-legal">&copy; 2026 slate. Independent provider of gaming software, not affiliated with or endorsed by any game publisher or anti-cheat. All trademarks belong to their respective owners.</p>
+    <nav class="footline" aria-label="Legal"><a href="terms.html">terms</a> &middot; <a href="privacy.html">privacy</a> &middot; <a href="help.html#refunds">refunds</a> &middot; <a href="help.html#contact">support</a></nav>
+  </div>
+</footer>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<script src="assets/ascii3d.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
