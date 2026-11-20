@@ -113,11 +113,12 @@
   status = 302
   force = true
 
-# the installer. unguessable path, never indexed, never cached by a proxy.
+# the installer payload. served from this site so buyers do not need a GitHub
+# account; gated by the download function, never linked or indexed directly.
 [[headers]]
-  for = "/dl/*"
+  for = "/artifacts/*"
   [headers.values]
-    cache-control = "no-store"
+    cache-control = "public, max-age=3600"
     x-robots-tag = "noindex, nofollow"
     content-disposition = "attachment"
 
