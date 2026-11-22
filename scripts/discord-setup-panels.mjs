@@ -65,7 +65,7 @@ const args = process.argv.slice(2);
     const msg = await api('POST', `/channels/${VERIFY_CHANNEL}/messages`, {
       embeds: [{
         title: 'Verify Your Purchase',
-        description: 'Paste your slate license key to get the Verified Buyer role. This confirms you own a key without revealing it to anyone else.',
+        description: 'Paste your license key to get the Verified Buyer role. This confirms you own a key without revealing it to anyone else.',
         color: 0xffffff,
       }],
       components: [{

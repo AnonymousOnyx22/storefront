@@ -101,7 +101,7 @@ async function handlePurchaseButton(interaction) {
   await sendMessage(ch.id, {
     content: `<@${user.id}>`,
     embeds: [{
-      title: 'Purchase Slate',
+      title: 'Purchase',
       description: 'Select a tier below to get started. You will pay via PayPal and receive your key by email.',
       color: 0xffffff,
       timestamp: new Date().toISOString(),
@@ -291,7 +291,7 @@ async function handleVerifyStart() {
       components: [{
         type: 4,
         custom_id: 'key_input',
-        label: 'Slate License Key',
+        label: 'License Key',
         style: 1,
         placeholder: 'SLT-XXXX-XXXX-XXXX-XXXX',
         required: true,

@@ -6,12 +6,12 @@ import { randomBytes, createHmac, createHash, timingSafeEqual } from 'node:crypt
 import { getStore } from '@netlify/blobs';
 
 export const TIERS = {
-  // slate (hwid spoofer)
-  day:     { label: '1 day',     price: 6.99,  days: 1,    resets: Infinity, product: 'slate' },
-  week:    { label: '7 days',    price: 14.99, days: 7,    resets: Infinity, product: 'slate' },
-  month:   { label: '30 days',   price: 29.99, days: 30,   resets: Infinity, product: 'slate' },
-  quarter: { label: '90 days',   price: 59.99, days: 90,   resets: Infinity, product: 'slate' },
-  life:    { label: 'permanent', price: 99.99, days: null, resets: Infinity, product: 'slate' },
+  // onyx (hwid spoofer)
+  day:     { label: '1 day',     price: 6.99,  days: 1,    resets: Infinity, product: 'onyx' },
+  week:    { label: '7 days',    price: 14.99, days: 7,    resets: Infinity, product: 'onyx' },
+  month:   { label: '30 days',   price: 29.99, days: 30,   resets: Infinity, product: 'onyx' },
+  quarter: { label: '90 days',   price: 59.99, days: 90,   resets: Infinity, product: 'onyx' },
+  life:    { label: 'permanent', price: 99.99, days: null, resets: Infinity, product: 'onyx' },
   // basalt (rust external)
   'basalt-day':     { label: '1 day',     price: 9.99,  days: 1,    resets: Infinity, product: 'basalt' },
   'basalt-week':    { label: '7 days',    price: 24.99, days: 7,    resets: Infinity, product: 'basalt' },
@@ -19,7 +19,7 @@ export const TIERS = {
   'basalt-quarter': { label: '90 days',   price: 89.99, days: 90,   resets: Infinity, product: 'basalt' },
   'basalt-life':    { label: 'permanent', price: 149.99, days: null, resets: Infinity, product: 'basalt' },
   // retired: kept only so old records and admin history still resolve.
-  once:    { label: 'one-time spoof', price: 12, days: null, resets: 0, retired: true, product: 'slate' },
+  once:    { label: 'one-time spoof', price: 12, days: null, resets: 0, retired: true, product: 'onyx' },
 };
 
 const DAY = 864e5;
@@ -410,7 +410,7 @@ export const toCsv = (rows, cols) =>
    not just a modern mail client. */
 export function keyEmail(acct) {
   const t = TIERS[acct.tier];
-  const prod = t.product || 'slate';
+  const prod = t.product || 'onyx';
   const exp = expiresAt(acct);
   const expTxt = exp ? new Date(exp).toISOString().slice(0, 10) : 'never';
   const resets = acct.resets === null || acct.resets === Infinity ? 'unlimited' : String(acct.resets);
@@ -419,7 +419,7 @@ export function keyEmail(acct) {
   const help = `${siteUrl()}/help.html#contact`;
 
   const isBasalt = prod === 'basalt';
-  const prodName = isBasalt ? 'basalt' : 'slate';
+  const prodName = isBasalt ? 'basalt' : 'onyx';
 
   const text = isBasalt
 ? `your basalt key
@@ -444,7 +444,7 @@ revoked. open a ticket: ${help}
 
 basalt is by slate. windows 10 and 11, 64-bit.
 `
-: `your slate key
+: `your onyx key
 
 key       ${acct.key}
 tier      ${t.label}
@@ -452,7 +452,7 @@ expires   ${expTxt}
 resets    ${resets}
 
 set up:
-  1. download slate   ${dl}
+  1. download onyx   ${dl}
   2. run the installer and allow it
   3. paste the key above when the app asks
   4. press SPOOF MY PC, then restart
@@ -464,7 +464,7 @@ manage your key, resets, and the PC it is bound to:
 if the download link ever stops working, your key was refunded or
 revoked. open a ticket: ${help}
 
-slate is by slate. windows 10 and 11, 64-bit, uefi.
+onyx is by slate. windows 10 and 11, 64-bit, uefi.
 `;
 
   const mono = "ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace";
@@ -529,7 +529,7 @@ slate is by slate. windows 10 and 11, 64-bit, uefi.
                 ${step(2, 'run basalt.exe as administrator')}
                 ${step(3, 'paste the key above when prompted')}
                 ${step(4, 'open Rust, press INSERT to open the menu')}`
-                  : `${step(1, 'download slate')}
+                  : `${step(1, 'download onyx')}
                 ${step(2, 'run the installer and allow it')}
                 ${step(3, 'paste the key above when the app asks')}
                 ${step(4, 'press SPOOF MY PC, then restart')}`}

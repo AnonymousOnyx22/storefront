@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Storefront for Slate products (useslate.net). Static HTML pages served by Netlify, with serverless functions for payments, licensing, and Discord integration. Sells: Slate (HWID spoofer) and Basalt (Rust external).
+Storefront for Slate products (useslate.net). Static HTML pages served by Netlify, with serverless functions for payments, licensing, and Discord integration. Sells: Onyx (HWID spoofer), Basalt (Rust external), and Obsidian (Rust internal, coming soon).
 
 ## Run
 

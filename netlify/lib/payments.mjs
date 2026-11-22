@@ -67,8 +67,8 @@ const stripe = {
     p.set('line_items[0][quantity]', '1');
     p.set('line_items[0][price_data][currency]', 'usd');
     p.set('line_items[0][price_data][unit_amount]', String(t.price * 100));
-    p.set('line_items[0][price_data][product_data][name]', `slate ${t.label}`);
-    p.set('line_items[0][price_data][product_data][description]', `slate ${t.label} · 1 PC · new hardware identity`);
+    p.set('line_items[0][price_data][product_data][name]', `${t.product || 'onyx'} ${t.label}`);
+    p.set('line_items[0][price_data][product_data][description]', `${t.product || 'onyx'} ${t.label} · 1 PC · new hardware identity`);
     p.set('metadata[tier]', tier);
     p.set('metadata[email]', email);
     p.set('metadata[provider]', 'stripe');
@@ -106,7 +106,7 @@ const nowpayments = {
       price_amount: t.price,
       price_currency: 'usd',
       order_id: order,
-      order_description: `slate ${t.label}`,
+      order_description: `${t.product || 'onyx'} ${t.label}`,
       ipn_callback_url: `${origin}/.netlify/functions/payment-webhook`,
       success_url: `${origin}/checkout.html?paid=1`,
       cancel_url: `${origin}/checkout.html?cancel=1`,
@@ -144,7 +144,7 @@ const payop = {
     const order = newOrder(tier);
     const data = await post('https://api.payop.com/v1/invoices/create', JSON.stringify({
       publicKey: process.env.PAYOP_PUBLIC_KEY,
-      order: { id: order, amount: t.price, currency: 'USD', description: `slate ${t.label}` },
+      order: { id: order, amount: t.price, currency: 'USD', description: `${t.product || 'onyx'} ${t.label}` },
       payerEmail: email,
       language: 'en',
       resultUrl: `${origin}/checkout.html?paid=1`,
@@ -247,7 +247,7 @@ const paypal = {
       intent: 'CAPTURE',
       purchase_units: [{
         reference_id: order,
-        description: `slate ${t.label}`,
+        description: `${t.product || 'onyx'} ${t.label}`,
         amount: { currency_code: 'USD', value: t.price.toFixed(2) },
       }],
       payment_source: {

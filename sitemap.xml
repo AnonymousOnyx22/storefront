@@ -4,6 +4,7 @@
   <url><loc>https://useslate.net/products.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://useslate.net/pricing.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://useslate.net/basalt.html</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://useslate.net/obsidian.html</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://useslate.net/games.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://useslate.net/checkout.html</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://useslate.net/guide.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
