@@ -138,6 +138,66 @@
     <div class="bv-grid bv-grid-full" data-rise>
 
       <div class="bv-panel">
+        <div class="bv-title">ESP types <span class="d">enemy / NPC / teammate</span></div>
+        <div class="bv-viewport">
+          <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%"><style>text{font-family:'IBM Plex Mono',monospace}</style><rect width="760" height="380" fill="#080809"/>
+          <!-- Enemy: white, visible, 87m, 73% HP -->
+          <g transform="translate(150,195)">
+            <g fill="none" stroke="#fff" stroke-width="1.2">
+              <circle cx="0" cy="-55" r="6"/>
+              <polyline points="0,0 0,-12 0,-24 0,-34 0,-44 0,-55"/>
+              <polyline points="0,-34 -10,-36 -18,-32 -24,-15 -22,2"/>
+              <polyline points="0,-34 10,-36 18,-32 24,-15 22,2"/>
+              <polyline points="0,0 -8,5 -10,30 -11,55"/>
+              <polyline points="0,0 8,5 10,30 11,55"/>
+            </g>
+            <rect x="-24" y="-63" width="48" height="120" fill="none" stroke="#fff" stroke-width="1.5"/>
+            <rect x="-28" y="-63" width="2" height="120" fill="rgba(0,0,0,.7)"/>
+            <rect x="-28" y="-30.6" width="2" height="87.6" fill="#45BA00"/>
+            <text x="0" y="-72" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">rustplayer_041 <tspan fill="#8C8C8C" font-size="10" font-weight="400">87m</tspan></text>
+            <text x="0" y="68" text-anchor="middle" fill="#8C8C8C" font-size="10">AK-47</text>
+            <text x="0" y="82" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">enemy</text>
+          </g>
+          <!-- NPC: grey, 63m, full HP -->
+          <g transform="translate(380,195)">
+            <g fill="none" stroke="#8C8C8C" stroke-width="1.2">
+              <circle cx="0" cy="-55" r="6"/>
+              <polyline points="0,0 0,-12 0,-24 0,-34 0,-44 0,-55"/>
+              <polyline points="0,-34 -10,-36 -18,-32 -24,-15 -22,2"/>
+              <polyline points="0,-34 10,-36 18,-32 24,-15 22,2"/>
+              <polyline points="0,0 -8,5 -10,30 -11,55"/>
+              <polyline points="0,0 8,5 10,30 11,55"/>
+            </g>
+            <rect x="-24" y="-63" width="48" height="120" fill="none" stroke="#8C8C8C" stroke-width="1.5"/>
+            <rect x="-28" y="-63" width="2" height="120" fill="rgba(0,0,0,.7)"/>
+            <rect x="-28" y="-63" width="2" height="120" fill="#00FF00"/>
+            <text x="0" y="-72" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">scientist <tspan font-size="10" font-weight="400">63m</tspan></text>
+            <text x="0" y="68" text-anchor="middle" fill="#666" font-size="10">MP5</text>
+            <text x="0" y="82" text-anchor="middle" fill="#8C8C8C" font-size="9" font-weight="700">npc</text>
+          </g>
+          <!-- Teammate: cyan, 24m, full HP -->
+          <g transform="translate(610,195)">
+            <g fill="none" stroke="#4A9EFF" stroke-width="1.2">
+              <circle cx="0" cy="-55" r="6"/>
+              <polyline points="0,0 0,-12 0,-24 0,-34 0,-44 0,-55"/>
+              <polyline points="0,-34 -10,-36 -18,-32 -24,-15 -22,2"/>
+              <polyline points="0,-34 10,-36 18,-32 24,-15 22,2"/>
+              <polyline points="0,0 -8,5 -10,30 -11,55"/>
+              <polyline points="0,0 8,5 10,30 11,55"/>
+            </g>
+            <rect x="-24" y="-63" width="48" height="120" fill="none" stroke="#4A9EFF" stroke-width="1.5"/>
+            <rect x="-28" y="-63" width="2" height="120" fill="rgba(0,0,0,.7)"/>
+            <rect x="-28" y="-63" width="2" height="120" fill="#00FF00"/>
+            <text x="0" y="-72" text-anchor="middle" fill="#4A9EFF" font-size="11" font-weight="700">teammate_002 <tspan fill="#8C8C8C" font-size="10" font-weight="400">24m</tspan></text>
+            <text x="0" y="68" text-anchor="middle" fill="#8C8C8C" font-size="10">M249</text>
+            <text x="0" y="82" text-anchor="middle" fill="#4A9EFF" font-size="9" font-weight="700">team</text>
+          </g>
+          </svg>
+          <span class="bv-label">enemy = white &middot; NPC = grey &middot; team = cyan &middot; health bar colour from HP fraction</span>
+        </div>
+      </div>
+
+      <div class="bv-panel">
         <div class="bv-title">player ESP <span class="d">skeleton + box + health + distance</span></div>
         <div class="bv-viewport">
           <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%"><style>text{font-family:'IBM Plex Mono',monospace}</style><rect width="760" height="380" fill="#080809"/><line x1="0" y1="348" x2="760" y2="348" stroke="#111" stroke-width=".5"/><rect x="610" y="195" width="38" height="153" fill="none" stroke="#111" stroke-width=".5"/><rect x="38" y="235" width="28" height="113" fill="none" stroke="#111" stroke-width=".5"/>
