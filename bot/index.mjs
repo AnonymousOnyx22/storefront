@@ -1,43 +1,57 @@
-// slate admin bot. gateway bot that stays online, monitors site health,
-// logs moderation events, and posts audit entries to a log channel.
+// slate status bot. runs multiple watchers in one process, each with its own
+// discord gateway connection and presence. one service, multiple bot users.
 //
 // env:
-//   DISCORD_BOT_TOKEN        (required)
-//   DISCORD_GUILD_ID         server id
-//   DISCORD_STATUS_CHANNEL   channel for site up/down alerts
-//   DISCORD_LOG_CHANNEL      channel for audit/mod log embeds
-//   CHECK_URL                url to health-check (default https://useslate.net)
-//   CHECK_NAME               label for health checks (default "storefront")
-//   CHECK_MODE               "html" | "api" | "any"
-//   RENDER_EXTERNAL_URL      set by render; used for self-ping keep-alive
-//   SLATE_SITE_URL           fallback base url
+//   WATCHERS                  JSON array of watcher configs (see below)
+//   DISCORD_GUILD_ID          server id (shared)
+//   DISCORD_STATUS_CHANNEL    channel for site up/down alerts (shared, optional)
+//   DISCORD_LOG_CHANNEL       channel for audit/mod log embeds (shared, optional)
+//   RENDER_EXTERNAL_URL       set by render/railway; used for self-ping keep-alive
+//
+// WATCHERS format (JSON array, each entry):
+//   { "name": "storefront", "url": "https://useslate.net", "token": "...", "mode": "html" }
+//
+// legacy single-bot env vars still work if WATCHERS is not set:
+//   DISCORD_BOT_TOKEN, CHECK_URL, CHECK_NAME, CHECK_MODE
 
 import { WebSocket } from 'ws';
 import { createServer } from 'node:http';
 
-const TOKEN = process.env.DISCORD_BOT_TOKEN;
 const GUILD = process.env.DISCORD_GUILD_ID;
 const STATUS_CHANNEL = process.env.DISCORD_STATUS_CHANNEL;
 const LOG_CHANNEL = process.env.DISCORD_LOG_CHANNEL;
-const SITE = process.env.SLATE_SITE_URL || 'https://useslate.net';
 const CHECK_INTERVAL = 5 * 60 * 1000;
 const KEEPALIVE_INTERVAL = 4 * 60 * 1000;
 
-const NAME = process.env.CHECK_NAME || 'storefront';
-const URL = process.env.CHECK_URL || SITE;
-const MODE = process.env.CHECK_MODE || 'html';
+function parseWatchers() {
+  if (process.env.WATCHERS) {
+    try { return JSON.parse(process.env.WATCHERS); } catch (e) {
+      console.error('bad WATCHERS JSON:', e.message);
+      process.exit(1);
+    }
+  }
+  const token = process.env.DISCORD_BOT_TOKEN;
+  if (!token) { console.error('WATCHERS or DISCORD_BOT_TOKEN required'); process.exit(1); }
+  return [{
+    name: process.env.CHECK_NAME || 'storefront',
+    url: process.env.CHECK_URL || process.env.SLATE_SITE_URL || 'https://useslate.net',
+    token,
+    mode: process.env.CHECK_MODE || 'html',
+  }];
+}
 
-if (!TOKEN) { console.error('DISCORD_BOT_TOKEN required'); process.exit(1); }
+const watchers = parseWatchers();
+console.log(`[bot] ${watchers.length} watcher(s): ${watchers.map(w => w.name).join(', ')}`);
 
-// -- discord REST --
-const discordApi = async (method, path, body, _retries = 0) => {
-  const opts = { method, headers: { authorization: `Bot ${TOKEN}`, 'content-type': 'application/json' } };
+// -- discord REST (shared, uses per-call token) --
+const discordApi = async (token, method, path, body, _retries = 0) => {
+  const opts = { method, headers: { authorization: `Bot ${token}`, 'content-type': 'application/json' } };
   if (body) opts.body = JSON.stringify(body);
   const r = await fetch(`https://discord.com/api/v10${path}`, opts);
   if (r.status === 429 && _retries < 3) {
     const retry = (await r.json().catch(() => ({}))).retry_after || 2;
     await new Promise(res => setTimeout(res, retry * 1000 + 500));
-    return discordApi(method, path, body, _retries + 1);
+    return discordApi(token, method, path, body, _retries + 1);
   }
   if (r.status === 204) return null;
   if (!r.ok) {
@@ -49,10 +63,10 @@ const discordApi = async (method, path, body, _retries = 0) => {
   return text ? JSON.parse(text) : null;
 };
 
-// -- audit log --
+// -- audit log (uses first watcher's token) --
 const log = async (title, description, color = 0x8c8c8c, fields = []) => {
-  if (!LOG_CHANNEL) return;
-  await discordApi('POST', `/channels/${LOG_CHANNEL}/messages`, {
+  if (!LOG_CHANNEL || !watchers[0]) return;
+  await discordApi(watchers[0].token, 'POST', `/channels/${LOG_CHANNEL}/messages`, {
     embeds: [{
       title,
       description,
@@ -64,21 +78,21 @@ const log = async (title, description, color = 0x8c8c8c, fields = []) => {
 };
 
 // -- health check --
-const validate = (status, body) => {
-  if (MODE === 'api') {
+const validate = (mode, status, body) => {
+  if (mode === 'api') {
     if (status === 400) {
       try { return !!JSON.parse(body).error; } catch { return false; }
     }
     return status < 500;
   }
-  if (MODE === 'html') return status === 200 && body.includes('<html');
+  if (mode === 'html') return status === 200 && body.includes('<html');
   return status < 500;
 };
 
-const runCheck = async () => {
+const runCheck = async (url, mode) => {
   const t = Date.now();
   try {
-    const r = await fetch(URL, {
+    const r = await fetch(url, {
       method: 'GET',
       redirect: 'follow',
       signal: AbortSignal.timeout(12000),
@@ -87,64 +101,165 @@ const runCheck = async () => {
     const ms = Date.now() - t;
     if (r.status >= 500) return { ok: false, ms, detail: `HTTP ${r.status}` };
     const body = await r.text();
-    const passed = validate(r.status, body);
+    const passed = validate(mode, r.status, body);
     return { ok: passed, ms, detail: passed ? `${r.status}` : `${r.status} (bad body)` };
   } catch (err) {
     return { ok: false, ms: Date.now() - t, detail: err.code || err.message || 'timeout' };
   }
 };
 
-// -- gateway state --
-let ws = null;
-let heartbeatInterval = null;
-let seq = null;
-let sessionId = null;
-let resumeUrl = null;
-let lastStatus = null;
-let botUser = null;
-
-const sendPresence = (up) => {
-  if (!ws || ws.readyState !== WebSocket.OPEN) return;
-  ws.send(JSON.stringify({
-    op: 3,
-    d: {
-      since: null,
-      activities: [{
-        name: up ? `${NAME}: operational` : `${NAME}: down`,
-        type: 3,
-      }],
-      status: up ? 'online' : 'dnd',
-      afk: false,
-    },
-  }));
-};
-
-const postStatusUpdate = async (up, result) => {
-  if (!STATUS_CHANNEL) return;
-  const line = `${up ? '[UP]' : '[DOWN]'} **${NAME}** -- ${result.ms}ms${up ? '' : ' (' + result.detail + ')'}`;
-  await discordApi('POST', `/channels/${STATUS_CHANNEL}/messages`, {
-    embeds: [{
-      title: up ? `${NAME.toUpperCase()}: UP` : `${NAME.toUpperCase()}: DOWN`,
-      color: up ? 0x2ecc71 : 0xe74c3c,
-      description: line,
-      footer: { text: URL },
-      timestamp: new Date().toISOString(),
-    }],
-  });
-};
-
-const checkAndUpdate = async () => {
-  const result = await runCheck();
-  sendPresence(result.ok);
-
-  if (lastStatus !== null && lastStatus !== result.ok) {
-    await postStatusUpdate(result.ok, result);
+// -- per-watcher gateway state --
+class Watcher {
+  constructor(config) {
+    this.name = config.name;
+    this.url = config.url;
+    this.token = config.token;
+    this.mode = config.mode || 'html';
+    this.ws = null;
+    this.heartbeatInterval = null;
+    this.seq = null;
+    this.sessionId = null;
+    this.resumeUrl = null;
+    this.lastStatus = null;
+    this.botUser = null;
   }
-  lastStatus = result.ok;
-  console.log(`[${new Date().toISOString()}] ${NAME} ${result.ok ? 'UP' : 'DOWN'} ${result.ms}ms`);
-};
 
-// -- event handlers --
+  sendPresence(up) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+    this.ws.send(JSON.stringify({
+      op: 3,
+      d: {
+        since: null,
+        activities: [{
+          name: up ? `${this.name}: operational` : `${this.name}: down`,
+          type: 3,
+        }],
+        status: up ? 'online' : 'dnd',
+        afk: false,
+      },
+    }));
+  }
+
+  async postStatusUpdate(up, result) {
+    if (!STATUS_CHANNEL) return;
+    const line = `${up ? '[UP]' : '[DOWN]'} **${this.name}** -- ${result.ms}ms${up ? '' : ' (' + result.detail + ')'}`;
+    await discordApi(this.token, 'POST', `/channels/${STATUS_CHANNEL}/messages`, {
+      embeds: [{
+        title: up ? `${this.name.toUpperCase()}: UP` : `${this.name.toUpperCase()}: DOWN`,
+        color: up ? 0x2ecc71 : 0xe74c3c,
+        description: line,
+        footer: { text: this.url },
+        timestamp: new Date().toISOString(),
+      }],
+    });
+  }
+
+  async checkAndUpdate() {
+    const result = await runCheck(this.url, this.mode);
+    this.sendPresence(result.ok);
+
+    if (this.lastStatus !== null && this.lastStatus !== result.ok) {
+      await this.postStatusUpdate(result.ok, result);
+    }
+    this.lastStatus = result.ok;
+    console.log(`[${this.name}] ${result.ok ? 'UP' : 'DOWN'} ${result.ms}ms`);
+  }
+
+  heartbeat() {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({ op: 1, d: this.seq }));
+    }
+  }
+
+  identify() {
+    this.ws.send(JSON.stringify({
+      op: 2,
+      d: {
+        token: this.token,
+        intents: (1 << 0) | (1 << 2) | (1 << 9),
+        properties: { os: 'linux', browser: 'slate-bot', device: 'slate-bot' },
+        presence: {
+          activities: [{ name: `${this.name}: starting...`, type: 3 }],
+          status: 'idle',
+          afk: false,
+        },
+      },
+    }));
+  }
+
+  connect(url) {
+    const gateway = url || 'wss://gateway.discord.gg/?v=10&encoding=json';
+    console.log(`[${this.name}] connecting...`);
+    this.ws = new WebSocket(gateway);
+
+    this.ws.on('message', async (raw) => {
+      const msg = JSON.parse(raw);
+      if (msg.s) this.seq = msg.s;
+
+      switch (msg.op) {
+        case 10: {
+          const interval = msg.d.heartbeat_interval;
+          if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+          this.heartbeatInterval = setInterval(() => this.heartbeat(), interval);
+          this.heartbeat();
+          if (this.sessionId && this.resumeUrl) {
+            this.ws.send(JSON.stringify({ op: 6, d: { token: this.token, session_id: this.sessionId, seq: this.seq } }));
+          } else {
+            this.identify();
+          }
+          break;
+        }
+        case 11: break;
+        case 7: this.ws.close(); break;
+        case 9:
+          this.sessionId = null;
+          await new Promise(r => setTimeout(r, 3000));
+          this.identify();
+          break;
+        case 0: {
+          const t = msg.t;
+          const d = msg.d;
+          if (t === 'READY') {
+            this.sessionId = d.session_id;
+            this.resumeUrl = d.resume_gateway_url;
+            this.botUser = d.user;
+            console.log(`[${this.name}] connected as ${d.user.username}`);
+            await this.checkAndUpdate();
+          }
+          // only the first watcher handles server events (audit log)
+          if (this === watchers[0]?._instance) {
+            if (t === 'GUILD_MEMBER_ADD') await handleMemberAdd(d).catch(e => console.error('log error:', e.message));
+            if (t === 'GUILD_MEMBER_REMOVE') await handleMemberRemove(d).catch(e => console.error('log error:', e.message));
+            if (t === 'GUILD_BAN_ADD') await handleBanAdd(d).catch(e => console.error('log error:', e.message));
+            if (t === 'GUILD_BAN_REMOVE') await handleBanRemove(d).catch(e => console.error('log error:', e.message));
+            if (t === 'MESSAGE_DELETE') await handleMessageDelete(d).catch(e => console.error('log error:', e.message));
+            if (t === 'AUTO_MODERATION_ACTION_EXECUTION') await handleAutoModExecution(d).catch(e => console.error('log error:', e.message));
+          }
+          break;
+        }
+      }
+    });
+
+    this.ws.on('close', (code) => {
+      if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+      const fatal = [4004, 4010, 4011, 4012, 4013, 4014].includes(code);
+      if (fatal) {
+        console.error(`[${this.name}] fatal close code ${code}, not reconnecting`);
+        return;
+      }
+      const resumable = code !== 4007 && code !== 4009 && this.sessionId;
+      if (!resumable) { this.sessionId = null; this.resumeUrl = null; }
+      console.log(`[${this.name}] disconnected (${code}), reconnecting in 5s...`);
+      setTimeout(() => this.connect(resumable ? this.resumeUrl : null), 5000);
+    });
+
+    this.ws.on('error', (err) => {
+      console.error(`[${this.name}] ws error:`, err.message);
+    });
+  }
+}
+
+// -- event handlers (audit log, run by first watcher only) --
 const handleMemberAdd = async (d) => {
   const tag = d.user?.username || 'unknown';
   const id = d.user?.id || '?';
@@ -209,138 +324,37 @@ const handleAutoModExecution = async (d) => {
   await log('AutoMod Action', `AutoMod triggered on ${user}.`, 0xffa500, fields);
 };
 
-// -- gateway --
-// intents:
-//   GUILDS (0), GUILD_MEMBERS (1), GUILD_MODERATION (2),
-//   GUILD_MESSAGES (9), MESSAGE_CONTENT (15),
-//   AUTO_MODERATION_CONFIGURATION (20), AUTO_MODERATION_EXECUTION (21)
-// GUILDS (0), GUILD_MODERATION (2), GUILD_MESSAGES (9)
-const INTENTS = (1 << 0) | (1 << 2) | (1 << 9);
-
-const heartbeat = () => {
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify({ op: 1, d: seq }));
-  }
-};
-
-const identify = () => {
-  ws.send(JSON.stringify({
-    op: 2,
-    d: {
-      token: TOKEN,
-      intents: INTENTS,
-      properties: { os: 'linux', browser: 'slate-bot', device: 'slate-bot' },
-      presence: {
-        activities: [{ name: 'Watching over Slate', type: 3 }],
-        status: 'online',
-        afk: false,
-      },
-    },
-  }));
-};
-
-const connect = (url) => {
-  const gateway = url || 'wss://gateway.discord.gg/?v=10&encoding=json';
-  console.log(`[admin] connecting to ${gateway.slice(0, 40)}...`);
-  ws = new WebSocket(gateway);
-
-  ws.on('message', async (raw) => {
-    const msg = JSON.parse(raw);
-    if (msg.s) seq = msg.s;
-
-    switch (msg.op) {
-      case 10: {
-        const interval = msg.d.heartbeat_interval;
-        if (heartbeatInterval) clearInterval(heartbeatInterval);
-        heartbeatInterval = setInterval(heartbeat, interval);
-        heartbeat();
-        if (sessionId && resumeUrl) {
-          ws.send(JSON.stringify({ op: 6, d: { token: TOKEN, session_id: sessionId, seq } }));
-        } else {
-          identify();
-        }
-        break;
-      }
-
-      case 11: break;
-
-      case 7:
-        ws.close();
-        break;
-
-      case 9:
-        sessionId = null;
-        await new Promise(r => setTimeout(r, 3000));
-        identify();
-        break;
-
-      case 0: {
-        const t = msg.t;
-        const d = msg.d;
-
-        if (t === 'READY') {
-          sessionId = d.session_id;
-          resumeUrl = d.resume_gateway_url;
-          botUser = d.user;
-          console.log(`[admin] connected as ${d.user.username}`);
-          await checkAndUpdate();
-        }
-
-        if (t === 'GUILD_MEMBER_ADD') await handleMemberAdd(d).catch(e => console.error('log error:', e.message));
-        if (t === 'GUILD_MEMBER_REMOVE') await handleMemberRemove(d).catch(e => console.error('log error:', e.message));
-        if (t === 'GUILD_BAN_ADD') await handleBanAdd(d).catch(e => console.error('log error:', e.message));
-        if (t === 'GUILD_BAN_REMOVE') await handleBanRemove(d).catch(e => console.error('log error:', e.message));
-        if (t === 'MESSAGE_DELETE') await handleMessageDelete(d).catch(e => console.error('log error:', e.message));
-        if (t === 'AUTO_MODERATION_ACTION_EXECUTION') await handleAutoModExecution(d).catch(e => console.error('log error:', e.message));
-
-        break;
-      }
-    }
-  });
-
-  ws.on('close', (code) => {
-    if (heartbeatInterval) clearInterval(heartbeatInterval);
-    const fatal = [4004, 4010, 4011, 4012, 4013, 4014].includes(code);
-    if (fatal) {
-      console.error(`[admin] fatal close code ${code}, not reconnecting`);
-      process.exit(1);
-    }
-    const resumable = code !== 4007 && code !== 4009 && sessionId;
-    if (!resumable) { sessionId = null; resumeUrl = null; }
-    console.log(`[admin] disconnected (${code}), reconnecting in 5s...`);
-    setTimeout(() => connect(resumable ? resumeUrl : null), 5000);
-  });
-
-  ws.on('error', (err) => {
-    console.error(`[admin] ws error:`, err.message);
-  });
-};
+// -- start all watchers --
+const instances = watchers.map((config, i) => {
+  const w = new Watcher(config);
+  config._instance = w;
+  // stagger connections so we don't hit discord's identify rate limit
+  setTimeout(() => w.connect(), i * 6000);
+  setInterval(() => w.checkAndUpdate(), CHECK_INTERVAL);
+  return w;
+});
 
 // -- keep-alive self-ping --
-// render free tier sleeps after 15 min of no inbound requests.
-// ping our own health endpoint every 4 min to prevent that.
-const startKeepAlive = () => {
-  const extUrl = process.env.RENDER_EXTERNAL_URL;
-  if (!extUrl) {
-    console.log('[admin] RENDER_EXTERNAL_URL not set, skipping self-ping keep-alive');
-    return;
-  }
-  console.log(`[admin] keep-alive pinging ${extUrl} every ${KEEPALIVE_INTERVAL / 1000}s`);
+const extUrl = process.env.RENDER_EXTERNAL_URL || process.env.RAILWAY_PUBLIC_DOMAIN;
+if (extUrl) {
+  const pingUrl = extUrl.startsWith('http') ? extUrl : `https://${extUrl}`;
+  console.log(`[bot] keep-alive pinging ${pingUrl} every ${KEEPALIVE_INTERVAL / 1000}s`);
   setInterval(async () => {
-    try {
-      await fetch(extUrl, { signal: AbortSignal.timeout(10000) });
-    } catch {}
+    try { await fetch(pingUrl, { signal: AbortSignal.timeout(10000) }); } catch {}
   }, KEEPALIVE_INTERVAL);
-};
+} else {
+  console.log('[bot] no external URL set, skipping self-ping keep-alive');
+}
 
 // -- http health endpoint --
 const PORT = process.env.PORT || 3000;
 createServer((req, res) => {
-  const status = lastStatus === null ? 'starting' : lastStatus ? 'up' : 'down';
+  const status = instances.map(w => ({
+    name: w.name,
+    url: w.url,
+    status: w.lastStatus === null ? 'starting' : w.lastStatus ? 'up' : 'down',
+    bot: w.botUser?.username || null,
+  }));
   res.writeHead(200, { 'content-type': 'application/json' });
-  res.end(JSON.stringify({ name: NAME, status, bot: botUser?.username || null }));
-}).listen(PORT, () => console.log(`[admin] http health on :${PORT}`));
-
-connect();
-startKeepAlive();
-setInterval(checkAndUpdate, CHECK_INTERVAL);
+  res.end(JSON.stringify(status));
+}).listen(PORT, () => console.log(`[bot] http health on :${PORT}`));
