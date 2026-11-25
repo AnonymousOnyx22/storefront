@@ -1188,4 +1188,229 @@ per key     $${(PRICE[plan] * disc).toFixed(2)}`;
 
   render();
 })();
+
+/* ============ ESP 3D ORBIT RENDERER ============ */
+(function espOrbit() {
+  var NS = 'http://www.w3.org/2000/svg';
+  var wrap = document.getElementById('espCards');
+  if (!wrap) return;
+
+  // Rust sprint cycle -- 4 keyframes, 20 bones in 3D (x=right, y=up, z=forward)
+  // Rust-specific: right arm raised holding rifle, left arm pumps with run
+  // Slight forward lean on torso, responsive stride
+  // 0=hips 1=spine 2=chest 3=upperChest 4=neck 5=head
+  // 6=L.shoulder 7=L.upperArm 8=L.forearm 9=L.hand
+  // 10=R.shoulder 11=R.upperArm 12=R.forearm 13=R.hand
+  // 14=L.upperLeg 15=L.lowerLeg 16=L.foot
+  // 17=R.upperLeg 18=R.lowerLeg 19=R.foot
+  var K = [
+    // Frame 0: right foot forward contact, left foot back
+    [[0,0,0],[0,13,-4],[0,25,-7],[0,35,-9],[0,44,-10],[0,53,-10],
+     [8,33,-10],[12,28,6],[10,20,16],[6,14,14],
+     [-8,33,-10],[-10,38,-6],[-8,30,-16],[-5,22,-18],
+     [6,-3,20],[7,-22,34],[6,-44,26],
+     [-6,-3,-18],[-7,-24,-30],[-6,-44,-16]],
+    // Frame 1: passing -- left knee drives up, body rises
+    [[0,4,0],[0,17,-4],[0,29,-7],[0,39,-9],[0,48,-10],[0,57,-10],
+     [8,37,-10],[12,34,10],[10,26,20],[6,20,18],
+     [-8,37,-10],[-10,40,-10],[-8,32,-20],[-5,24,-22],
+     [6,4,4],[7,-2,-10],[6,-14,-4],
+     [-6,-1,-4],[-7,-20,0],[-6,-42,4]],
+    // Frame 2: left foot forward contact, right foot back (mirror)
+    [[0,0,0],[0,13,-4],[0,25,-7],[0,35,-9],[0,44,-10],[0,53,-10],
+     [8,33,-10],[12,34,-2],[10,26,8],[6,20,6],
+     [-8,33,-10],[-10,32,2],[-8,24,12],[-5,16,10],
+     [6,-3,-18],[7,-24,-30],[6,-44,-16],
+     [-6,-3,20],[-7,-22,34],[-6,-44,26]],
+    // Frame 3: passing -- right knee drives up, body rises
+    [[0,4,0],[0,17,-4],[0,29,-7],[0,39,-9],[0,48,-10],[0,57,-10],
+     [8,37,-10],[12,36,4],[10,28,14],[6,22,12],
+     [-8,37,-10],[-10,36,-4],[-8,28,-14],[-5,20,-16],
+     [6,-1,-4],[7,-20,0],[6,-42,4],
+     [-6,4,4],[-7,-2,-10],[-6,-14,-4]]
+  ];
+
+  var LINKS = [
+    [0,1],[1,2],[2,3],[3,4],[4,5],
+    [3,6],[6,7],[7,8],[8,9],
+    [3,10],[10,11],[11,12],[12,13],
+    [0,14],[14,15],[15,16],
+    [0,17],[17,18],[18,19]
+  ];
+
+  var FOV = 200;
+  var SCALE = 1.5;
+  var GROUND_Y = 220;
+  var CAM_ANGLE = 1.0;
+
+  function proj(bone, cx, cy) {
+    var x = bone[0] * SCALE, y = bone[1] * SCALE, z = bone[2] * SCALE;
+    var c = Math.cos(CAM_ANGLE), s = Math.sin(CAM_ANGLE);
+    var rx = x * c + z * s;
+    var rz = -x * s + z * c;
+    var sc = FOV / (FOV + rz);
+    return { x: cx + rx * sc, y: cy - y * sc, s: sc };
+  }
+
+  var configs = [
+    { col: '#fff',     name: 'rustplayer_041', dist: '87m',  weap: 'AK-47', flag: 'enemy',    hp: 0.71 },
+    { col: '#8C8C8C',  name: 'scientist',      dist: '63m',  weap: 'MP5',   flag: 'npc',      hp: 1.0 },
+    { col: '#4A9EFF',  name: 'teammate_002',    dist: '24m',  weap: 'M249',  flag: 'team',     hp: 1.0 }
+  ];
+
+  var svgs = wrap.querySelectorAll('svg');
+  var renderers = [];
+
+  function mkEl(tag, attrs, parent) {
+    var el = document.createElementNS(NS, tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    parent.appendChild(el);
+    return el;
+  }
+
+  svgs.forEach(function (svg, i) {
+    var cfg = configs[i];
+    var groundG = svg.querySelector('.esp-ground');
+    var skelG = svg.querySelector('.esp-skeleton');
+    var boxG = svg.querySelector('.esp-box');
+    var healthG = svg.querySelector('.esp-health');
+    var nameG = svg.querySelector('.esp-name');
+    var distG = svg.querySelector('.esp-distance');
+    var weapG = svg.querySelector('.esp-weapon');
+    var flagG = svg.querySelector('.esp-flags');
+
+    // perspective ground grid: horizon line + scrolling vertical hash marks
+    mkEl('line', { x1: 0, y1: GROUND_Y, x2: 240, y2: GROUND_Y, stroke: '#222', 'stroke-width': '1' }, groundG);
+    var gMarks = [];
+    for (var m = 0; m < 12; m++) {
+      gMarks.push(mkEl('line', { y1: GROUND_Y, y2: GROUND_Y + 6, stroke: '#2a2a2a', 'stroke-width': '1' }, groundG));
+    }
+
+    var lines = LINKS.map(function () {
+      return mkEl('line', { stroke: cfg.col, 'stroke-width': '1.5', fill: 'none' }, skelG);
+    });
+    var head = mkEl('circle', { r: '6', fill: 'none', stroke: cfg.col, 'stroke-width': '1.5' }, skelG);
+    var boxR = mkEl('rect', { fill: 'none', stroke: cfg.col, 'stroke-width': '1.5' }, boxG);
+    var hpBg = mkEl('rect', { fill: 'rgba(0,0,0,.7)' }, healthG);
+    var hpR = Math.round(255 * (1 - cfg.hp)), hpG = Math.round(255 * cfg.hp);
+    var hpFill = mkEl('rect', { fill: 'rgb(' + hpR + ',' + hpG + ',0)' }, healthG);
+    var nameT = mkEl('text', { 'text-anchor': 'middle', fill: cfg.col, 'font-size': '11', 'font-weight': '700', 'font-family': "'IBM Plex Mono',monospace" }, nameG);
+    nameT.textContent = cfg.name;
+    var distT = mkEl('text', { 'text-anchor': 'middle', fill: '#8C8C8C', 'font-size': '10', 'font-family': "'IBM Plex Mono',monospace" }, distG);
+    distT.textContent = cfg.dist;
+    var weapT = mkEl('text', { 'text-anchor': 'middle', fill: '#666', 'font-size': '10', 'font-family': "'IBM Plex Mono',monospace" }, weapG);
+    weapT.textContent = cfg.weap;
+    var flagT = mkEl('text', { 'text-anchor': 'middle', fill: cfg.col, 'font-size': '10', 'font-family': "'IBM Plex Mono',monospace" }, flagG);
+    flagT.textContent = cfg.flag;
+
+    renderers.push({ lines: lines, head: head, boxR: boxR, hpBg: hpBg, hpFill: hpFill, nameT: nameT, distT: distT, weapT: weapT, flagT: flagT, gMarks: gMarks, cfg: cfg });
+  });
+
+  function lerpBones(t) {
+    var fi = Math.floor(t) % 4;
+    var ni = (fi + 1) % 4;
+    var raw = t - Math.floor(t);
+    var f = (1 - Math.cos(raw * Math.PI)) / 2;
+    var out = [];
+    for (var b = 0; b < 20; b++) {
+      out.push([
+        K[fi][b][0] * (1 - f) + K[ni][b][0] * f,
+        K[fi][b][1] * (1 - f) + K[ni][b][1] * f,
+        K[fi][b][2] * (1 - f) + K[ni][b][2] * f
+      ]);
+    }
+    return out;
+  }
+
+  var startT = Date.now();
+
+  function frame() {
+    var now = Date.now();
+    var elapsed = (now - startT) / 1000;
+    var runT = (now / 300) % 4;
+    var bones = lerpBones(runT);
+
+    // figure walks across card and loops
+    var walkX = ((elapsed * 28) % 280) - 20;
+
+    renderers.forEach(function (r) {
+      var cx = walkX;
+      var cy = GROUND_Y;
+
+      // scrolling ground marks
+      var markSpacing = 24;
+      var markOffset = (elapsed * 28) % markSpacing;
+      for (var m = 0; m < r.gMarks.length; m++) {
+        var mx = m * markSpacing - markOffset;
+        r.gMarks[m].setAttribute('x1', mx.toFixed(1));
+        r.gMarks[m].setAttribute('x2', mx.toFixed(1));
+      }
+
+      var pts = bones.map(function (b) { return proj(b, cx, cy); });
+
+      LINKS.forEach(function (lk, li) {
+        var pa = pts[lk[0]], pb = pts[lk[1]];
+        r.lines[li].setAttribute('x1', pa.x.toFixed(1));
+        r.lines[li].setAttribute('y1', pa.y.toFixed(1));
+        r.lines[li].setAttribute('x2', pb.x.toFixed(1));
+        r.lines[li].setAttribute('y2', pb.y.toFixed(1));
+      });
+
+      var hp = pts[5];
+      r.head.setAttribute('cx', hp.x.toFixed(1));
+      r.head.setAttribute('cy', hp.y.toFixed(1));
+      r.head.setAttribute('r', (6 * hp.s).toFixed(1));
+
+      var headP = pts[5], footL = pts[16], footR = pts[19];
+      var footY = Math.max(footL.y, footR.y);
+      var headY = headP.y - 6 * headP.s;
+      var figCx = (headP.x + (footL.x + footR.x) / 2) / 2;
+      var bh = footY - headY + 6;
+      var bw = bh * 0.4;
+
+      r.boxR.setAttribute('x', (figCx - bw / 2).toFixed(1));
+      r.boxR.setAttribute('y', (headY - 3).toFixed(1));
+      r.boxR.setAttribute('width', bw.toFixed(1));
+      r.boxR.setAttribute('height', (bh + 6).toFixed(1));
+
+      var hbX = figCx - bw / 2 - 5;
+      var hbTop = headY - 3;
+      var hbH = bh + 6;
+      r.hpBg.setAttribute('x', hbX.toFixed(1));
+      r.hpBg.setAttribute('y', hbTop.toFixed(1));
+      r.hpBg.setAttribute('width', '2.5');
+      r.hpBg.setAttribute('height', hbH.toFixed(1));
+      var fillH = hbH * r.cfg.hp;
+      r.hpFill.setAttribute('x', hbX.toFixed(1));
+      r.hpFill.setAttribute('y', (hbTop + hbH - fillH).toFixed(1));
+      r.hpFill.setAttribute('width', '2.5');
+      r.hpFill.setAttribute('height', fillH.toFixed(1));
+
+      r.nameT.setAttribute('x', figCx.toFixed(1));
+      r.nameT.setAttribute('y', (headY - 12).toFixed(1));
+      r.distT.setAttribute('x', figCx.toFixed(1));
+      r.distT.setAttribute('y', (footY + 18).toFixed(1));
+      r.weapT.setAttribute('x', figCx.toFixed(1));
+      r.weapT.setAttribute('y', (footY + 32).toFixed(1));
+      r.flagT.setAttribute('x', figCx.toFixed(1));
+      r.flagT.setAttribute('y', (footY + 46).toFixed(1));
+    });
+
+    requestAnimationFrame(frame);
+  }
+
+  frame();
+
+  // Toggle buttons
+  document.querySelectorAll('.esp-tog').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btn.classList.toggle('on');
+      var feat = btn.dataset.feat;
+      var show = btn.classList.contains('on');
+      wrap.querySelectorAll('.esp-' + feat).forEach(function (el) {
+        el.style.display = show ? '' : 'none';
+      });
+    });
+  });
+})();
 })();

@@ -37,7 +37,7 @@
       <span class="tb-sep">|</span>
       <span class="d">existing user?</span>
       <a href="login.html">sign in</a>
-      <a href="checkout.html" class="tb-cta">get a key &rarr;</a>
+      <span class="tb-cta" style="opacity:.4;pointer-events:none">in development</span>
     </span>
   </div>
 </div>
@@ -48,9 +48,9 @@
       <a href="index.html" class="brand"><span class="d">slate/</span>basalt<span class="cur">_</span></a>
       <div class="brand-menu">
         <p class="bm-head">slate projects</p>
-        <a class="bm-item" href="index.html"><b>onyx</b><span>hwid spoofer</span><em class="bm-live">live</em></a>
+        <a class="bm-item" href="index.html"><b>onyx</b><span>hwid spoofer</span><em>in development</em></a>
         <a class="bm-item" href="basalt.html"><b>basalt</b><span>rust external</span><em>in development</em></a>
-        <a class="bm-item" href="obsidian.html"><b>obsidian</b><span>rust internal</span><em>coming soon</em></a>
+        <a class="bm-item" href="obsidian.html"><b>obsidian</b><span>rust internal</span><em>in development</em></a>
       </div>
     </div>
     <ul class="links dots">
@@ -102,7 +102,7 @@
           <span class="badge">capture-proof overlay</span>
         </div>
         <div class="install">
-          <span class="btn disabled">coming soon</span>
+          <span class="btn disabled">in development</span>
           <a href="#features" class="btn ghost">see features</a>
         </div>
         <p class="ticker">rust external by slate<br>DX11 overlay &middot; ImGui menu &middot; auto offset updates</p>
@@ -135,157 +135,55 @@
       <li><span class="k">offsets</span><span class="v">auto-updated after each Rust patch via Il2CppDumper pass</span></li>
     </ul>
 
-    <div class="bv-grid bv-grid-full" data-rise>
-
+    <div class="bv-grid bv-grid-thirds" id="espCards" data-rise>
       <div class="bv-panel">
-        <div class="bv-title">ESP types <span class="d">enemy / NPC / teammate</span></div>
-        <div class="bv-viewport">
-          <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%"><style>text{font-family:'IBM Plex Mono',monospace}</style><rect width="760" height="380" fill="#080809"/>
-          <!-- Enemy: white, visible, 87m, 73% HP -->
-          <g transform="translate(150,195)">
-            <g fill="none" stroke="#fff" stroke-width="1.2">
-              <circle cx="0" cy="-55" r="6"/>
-              <polyline points="0,0 0,-12 0,-24 0,-34 0,-44 0,-55"/>
-              <polyline points="0,-34 -10,-36 -18,-32 -24,-15 -22,2"/>
-              <polyline points="0,-34 10,-36 18,-32 24,-15 22,2"/>
-              <polyline points="0,0 -8,5 -10,30 -11,55"/>
-              <polyline points="0,0 8,5 10,30 11,55"/>
-            </g>
-            <rect x="-24" y="-63" width="48" height="120" fill="none" stroke="#fff" stroke-width="1.5"/>
-            <rect x="-28" y="-63" width="2" height="120" fill="rgba(0,0,0,.7)"/>
-            <rect x="-28" y="-30.6" width="2" height="87.6" fill="#45BA00"/>
-            <text x="0" y="-72" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">rustplayer_041 <tspan fill="#8C8C8C" font-size="10" font-weight="400">87m</tspan></text>
-            <text x="0" y="68" text-anchor="middle" fill="#8C8C8C" font-size="10">AK-47</text>
-            <text x="0" y="82" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">enemy</text>
-          </g>
-          <!-- NPC: grey, 63m, full HP -->
-          <g transform="translate(380,195)">
-            <g fill="none" stroke="#8C8C8C" stroke-width="1.2">
-              <circle cx="0" cy="-55" r="6"/>
-              <polyline points="0,0 0,-12 0,-24 0,-34 0,-44 0,-55"/>
-              <polyline points="0,-34 -10,-36 -18,-32 -24,-15 -22,2"/>
-              <polyline points="0,-34 10,-36 18,-32 24,-15 22,2"/>
-              <polyline points="0,0 -8,5 -10,30 -11,55"/>
-              <polyline points="0,0 8,5 10,30 11,55"/>
-            </g>
-            <rect x="-24" y="-63" width="48" height="120" fill="none" stroke="#8C8C8C" stroke-width="1.5"/>
-            <rect x="-28" y="-63" width="2" height="120" fill="rgba(0,0,0,.7)"/>
-            <rect x="-28" y="-63" width="2" height="120" fill="#00FF00"/>
-            <text x="0" y="-72" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">scientist <tspan font-size="10" font-weight="400">63m</tspan></text>
-            <text x="0" y="68" text-anchor="middle" fill="#666" font-size="10">MP5</text>
-            <text x="0" y="82" text-anchor="middle" fill="#8C8C8C" font-size="9" font-weight="700">npc</text>
-          </g>
-          <!-- Teammate: cyan, 24m, full HP -->
-          <g transform="translate(610,195)">
-            <g fill="none" stroke="#4A9EFF" stroke-width="1.2">
-              <circle cx="0" cy="-55" r="6"/>
-              <polyline points="0,0 0,-12 0,-24 0,-34 0,-44 0,-55"/>
-              <polyline points="0,-34 -10,-36 -18,-32 -24,-15 -22,2"/>
-              <polyline points="0,-34 10,-36 18,-32 24,-15 22,2"/>
-              <polyline points="0,0 -8,5 -10,30 -11,55"/>
-              <polyline points="0,0 8,5 10,30 11,55"/>
-            </g>
-            <rect x="-24" y="-63" width="48" height="120" fill="none" stroke="#4A9EFF" stroke-width="1.5"/>
-            <rect x="-28" y="-63" width="2" height="120" fill="rgba(0,0,0,.7)"/>
-            <rect x="-28" y="-63" width="2" height="120" fill="#00FF00"/>
-            <text x="0" y="-72" text-anchor="middle" fill="#4A9EFF" font-size="11" font-weight="700">teammate_002 <tspan fill="#8C8C8C" font-size="10" font-weight="400">24m</tspan></text>
-            <text x="0" y="68" text-anchor="middle" fill="#8C8C8C" font-size="10">M249</text>
-            <text x="0" y="82" text-anchor="middle" fill="#4A9EFF" font-size="9" font-weight="700">team</text>
+        <div class="bv-title">enemy <span class="d">visible player</span></div>
+        <div class="bv-vp-card bv-vp-enemy">
+          <svg viewBox="0 0 240 290" xmlns="http://www.w3.org/2000/svg"><style>text{font-family:'IBM Plex Mono',monospace}</style>
+          <defs><clipPath id="cardClip0"><rect x="0" y="0" width="240" height="290"/></clipPath></defs>
+          <g clip-path="url(#cardClip0)">
+          <g class="esp-ground"></g>
+          <g class="esp-skeleton"></g><g class="esp-box"></g><g class="esp-health"></g>
+          <g class="esp-name"></g><g class="esp-distance"></g><g class="esp-weapon"></g><g class="esp-flags"></g>
           </g>
           </svg>
-          <span class="bv-label">enemy = white &middot; NPC = grey &middot; team = cyan &middot; health bar colour from HP fraction</span>
         </div>
       </div>
-
       <div class="bv-panel">
-        <div class="bv-title">player ESP <span class="d">skeleton + box + health + distance</span></div>
-        <div class="bv-viewport">
-          <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%"><style>text{font-family:'IBM Plex Mono',monospace}</style><rect width="760" height="380" fill="#080809"/><line x1="0" y1="348" x2="760" y2="348" stroke="#111" stroke-width=".5"/><rect x="610" y="195" width="38" height="153" fill="none" stroke="#111" stroke-width=".5"/><rect x="38" y="235" width="28" height="113" fill="none" stroke="#111" stroke-width=".5"/>
-          <!-- crosshair -->
-          <line x1="372" y1="190" x2="388" y2="190" stroke="#fff" stroke-width="1.5" opacity=".5"/><line x1="380" y1="182" x2="380" y2="198" stroke="#fff" stroke-width="1.5" opacity=".5"/>
-          <!-- Player 1: visible, 87m, close -->
-          <g transform="translate(160,52)"><g fill="none" stroke="#fff" stroke-width="1.2"><circle cx="0" cy="0" r="6.5"/><polyline points="0,10 0,18 0,29 0,42 0,55"/><polyline points="0,18 -17,18 -25,36 -23,55 -18,68"/><polyline points="0,18 17,18 25,36 23,55 18,68"/><polyline points="0,55 -9,55 -12,85 -13,115"/><polyline points="0,55 9,55 12,85 13,115"/></g><rect x="-25" y="-9" width="50" height="127" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="-29" y="-9" width="2.5" height="127" fill="rgba(0,0,0,.7)"/><rect x="-29" y="1.2" width="2.5" height="116.8" fill="#35D06A"/><text x="0" y="-16" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">rustplayer_041 <tspan fill="#8C8C8C" font-size="10" font-weight="400">87m</tspan></text><text x="0" y="130" text-anchor="middle" fill="#8C8C8C" font-size="10">AK-47</text><text x="0" y="143" text-anchor="middle" fill="#666" font-size="9">enemy</text></g>
-          <!-- Player 2: hidden, 214m -->
-          <g transform="translate(420,95)"><g fill="none" stroke="#8C8C8C" stroke-width="1.1"><circle cx="0" cy="0" r="5.5"/><polyline points="0,9 0,15 0,24 0,35 0,46"/><polyline points="0,15 -14,15 -20,30 -18,45 -15,56"/><polyline points="0,15 14,15 20,30 18,45 15,56"/><polyline points="0,46 -8,46 -10,70 -11,95"/><polyline points="0,46 8,46 10,70 11,95"/></g><rect x="-21" y="-7" width="42" height="105" fill="none" stroke="#8C8C8C" stroke-width="1.5" stroke-dasharray="5,3"/><rect x="-25" y="-7" width="2" height="105" fill="rgba(0,0,0,.7)"/><rect x="-25" y="40.3" width="2" height="57.8" fill="#E8A838"/><text x="0" y="-14" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">rustplayer_108 <tspan font-size="10" font-weight="400">214m</tspan></text><text x="0" y="108" text-anchor="middle" fill="#8C8C8C" font-size="10">Thompson</text><text x="0" y="121" text-anchor="middle" fill="#E8A838" font-size="9">wounded</text></g>
-          <!-- Player 3: teammate, 24m -->
-          <g transform="translate(600,68)"><g fill="none" stroke="#4A9EFF" stroke-width="1.2"><circle cx="0" cy="0" r="6"/><polyline points="0,10 0,17 0,27 0,39 0,51"/><polyline points="0,17 -15,17 -22,33 -20,49 -17,62"/><polyline points="0,17 15,17 22,33 20,49 17,62"/><polyline points="0,51 -8,51 -11,78 -12,104"/><polyline points="0,51 8,51 11,78 12,104"/></g><rect x="-23" y="-8" width="46" height="115" fill="none" stroke="#4A9EFF" stroke-width="1.5"/><rect x="-27" y="-8" width="2.5" height="115" fill="rgba(0,0,0,.7)"/><rect x="-27" y="-8" width="2.5" height="115" fill="#35D06A"/><text x="0" y="-15" text-anchor="middle" fill="#4A9EFF" font-size="11" font-weight="700">teammate_002 <tspan fill="#8C8C8C" font-size="10" font-weight="400">24m</tspan></text><text x="0" y="118" text-anchor="middle" fill="#8C8C8C" font-size="10">M249</text><text x="0" y="131" text-anchor="middle" fill="#4A9EFF" font-size="9">team</text></g>
-          <!-- Player 4: far, 340m, low HP -->
-          <g transform="translate(305,170)"><g fill="none" stroke="#8C8C8C" stroke-width=".9" transform="scale(.6)"><circle cx="0" cy="0" r="5"/><polyline points="0,8 0,14 0,22 0,32 0,42"/><polyline points="0,14 -13,14 -19,28 -17,42 -14,52"/><polyline points="0,14 13,14 19,28 17,42 14,52"/><polyline points="0,42 -7,42 -9,65 -10,88"/><polyline points="0,42 7,42 9,65 10,88"/></g><rect x="-12" y="-4" width="24" height="56" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3,2"/><rect x="-15" y="-4" width="1.5" height="56" fill="rgba(0,0,0,.7)"/><rect x="-15" y="36" width="1.5" height="16" fill="#D04035"/><text x="0" y="-10" text-anchor="middle" fill="#666" font-size="9">rustplayer_339 <tspan>340m</tspan></text><text x="0" y="60" text-anchor="middle" fill="#666" font-size="8">Bow</text></g>
+        <div class="bv-title">NPC <span class="d">scientist</span></div>
+        <div class="bv-vp-card bv-vp-npc">
+          <svg viewBox="0 0 240 290" xmlns="http://www.w3.org/2000/svg"><style>text{font-family:'IBM Plex Mono',monospace}</style>
+          <defs><clipPath id="cardClip1"><rect x="0" y="0" width="240" height="290"/></clipPath></defs>
+          <g clip-path="url(#cardClip1)">
+          <g class="esp-ground"></g>
+          <g class="esp-skeleton"></g><g class="esp-box"></g><g class="esp-health"></g>
+          <g class="esp-name"></g><g class="esp-distance"></g><g class="esp-weapon"></g><g class="esp-flags"></g>
+          </g>
           </svg>
-          <span class="bv-label">visible = solid &middot; hidden = dashed &middot; team = cyan &middot; health bar on left</span>
         </div>
       </div>
-
       <div class="bv-panel">
-        <div class="bv-title">NPC ESP <span class="d">scientists + animals + skeleton</span></div>
-        <div class="bv-viewport">
-          <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%"><style>text{font-family:'IBM Plex Mono',monospace}</style><rect width="760" height="380" fill="#080809"/><line x1="0" y1="348" x2="760" y2="348" stroke="#111" stroke-width=".5"/><rect x="500" y="260" width="50" height="88" fill="none" stroke="#111" stroke-width=".5"/>
-          <!-- crosshair -->
-          <line x1="372" y1="190" x2="388" y2="190" stroke="#fff" stroke-width="1.5" opacity=".5"/><line x1="380" y1="182" x2="380" y2="198" stroke="#fff" stroke-width="1.5" opacity=".5"/>
-          <!-- Scientist 1: 63m -->
-          <g transform="translate(170,55)"><g fill="none" stroke="#8C8C8C" stroke-width="1.1"><circle cx="0" cy="0" r="5.5"/><polyline points="0,9 0,15 0,24 0,35 0,46"/><polyline points="0,15 -14,15 -20,30 -18,45 -15,56"/><polyline points="0,15 14,15 20,30 18,45 15,56"/><polyline points="0,46 -8,46 -10,70 -11,95"/><polyline points="0,46 8,46 10,70 11,95"/></g><rect x="-21" y="-8" width="42" height="106" fill="none" stroke="#8C8C8C" stroke-width="1.5"/><rect x="-25" y="-8" width="2" height="106" fill="rgba(0,0,0,.7)"/><rect x="-25" y="-8" width="2" height="106" fill="#35D06A"/><text x="0" y="-15" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">scientist <tspan font-size="10" font-weight="400">63m</tspan></text><text x="0" y="109" text-anchor="middle" fill="#666" font-size="10">MP5</text></g>
-          <!-- Heavy Scientist: 128m -->
-          <g transform="translate(460,48)"><g fill="none" stroke="#8C8C8C" stroke-width="1.1"><circle cx="0" cy="0" r="5"/><polyline points="0,8 0,14 0,22 0,32 0,42"/><polyline points="0,14 -13,14 -19,28 -17,42 -14,52"/><polyline points="0,14 13,14 19,28 17,42 14,52"/><polyline points="0,42 -7,42 -9,65 -10,88"/><polyline points="0,42 7,42 9,65 10,88"/></g><rect x="-19" y="-7" width="38" height="98" fill="none" stroke="#8C8C8C" stroke-width="1.5"/><rect x="-23" y="-7" width="2" height="98" fill="rgba(0,0,0,.7)"/><rect x="-23" y="12.6" width="2" height="78.4" fill="#35D06A"/><text x="0" y="-14" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">heavy scientist <tspan font-size="10" font-weight="400">128m</tspan></text><text x="0" y="101" text-anchor="middle" fill="#666" font-size="10">LR-300</text></g>
-          <!-- Tunnel dweller: 34m -->
-          <g transform="translate(310,180)"><g fill="none" stroke="#8C8C8C" stroke-width="1.1"><circle cx="0" cy="0" r="5"/><polyline points="0,8 0,14 0,22 0,32 0,42"/><polyline points="0,14 -13,14 -19,28 -17,42 -14,52"/><polyline points="0,14 13,14 19,28 17,42 14,52"/><polyline points="0,42 -7,42 -9,65 -10,88"/><polyline points="0,42 7,42 9,65 10,88"/></g><rect x="-19" y="-7" width="38" height="98" fill="none" stroke="#8C8C8C" stroke-width="1.5"/><rect x="-23" y="-7" width="2" height="98" fill="rgba(0,0,0,.7)"/><rect x="-23" y="30.2" width="2" height="60.8" fill="#E8A838"/><text x="0" y="-14" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">tunnel dweller <tspan font-size="10" font-weight="400">34m</tspan></text></g>
-          <!-- Bear: 91m (wider, shorter box, no skeleton) -->
-          <g transform="translate(130,265)"><rect x="-32" y="0" width="64" height="36" fill="none" stroke="#8C8C8C" stroke-width="1.5"/><rect x="-36" y="0" width="2" height="36" fill="rgba(0,0,0,.7)"/><rect x="-36" y="0" width="2" height="36" fill="#35D06A"/><text x="0" y="-7" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">bear <tspan font-size="10" font-weight="400">91m</tspan></text></g>
-          <!-- Wolf: 145m -->
-          <g transform="translate(440,278)"><rect x="-26" y="0" width="52" height="28" fill="none" stroke="#8C8C8C" stroke-width="1.5"/><rect x="-30" y="0" width="2" height="28" fill="rgba(0,0,0,.7)"/><rect x="-30" y="8.4" width="2" height="19.6" fill="#E8A838"/><text x="0" y="-7" text-anchor="middle" fill="#8C8C8C" font-size="11" font-weight="700">wolf <tspan font-size="10" font-weight="400">145m</tspan></text></g>
+        <div class="bv-title">teammate <span class="d">friendly player</span></div>
+        <div class="bv-vp-card bv-vp-team">
+          <svg viewBox="0 0 240 290" xmlns="http://www.w3.org/2000/svg"><style>text{font-family:'IBM Plex Mono',monospace}</style>
+          <defs><clipPath id="cardClip2"><rect x="0" y="0" width="240" height="290"/></clipPath></defs>
+          <g clip-path="url(#cardClip2)">
+          <g class="esp-ground"></g>
+          <g class="esp-skeleton"></g><g class="esp-box"></g><g class="esp-health"></g>
+          <g class="esp-name"></g><g class="esp-distance"></g><g class="esp-weapon"></g><g class="esp-flags"></g>
+          </g>
           </svg>
-          <span class="bv-label">NPC = grey border &middot; animals = box only &middot; independent render distance</span>
         </div>
       </div>
-
-      <div class="bv-panel">
-        <div class="bv-title">aimbot <span class="d">FOV circle + target lock + silent aim</span></div>
-        <div class="bv-viewport bv-vp-aim">
-          <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%"><style>text{font-family:'IBM Plex Mono',monospace}</style><rect width="760" height="380" fill="#080809"/><line x1="0" y1="348" x2="760" y2="348" stroke="#111" stroke-width=".5"/>
-          <!-- FOV circle -->
-          <circle cx="380" cy="190" r="140" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
-          <!-- crosshair -->
-          <line x1="372" y1="190" x2="388" y2="190" stroke="#fff" stroke-width="1.5"/><line x1="380" y1="182" x2="380" y2="198" stroke="#fff" stroke-width="1.5"/>
-          <!-- Target: rustplayer_077, 112m, inside FOV, locked -->
-          <g transform="translate(400,100)"><g fill="none" stroke="#fff" stroke-width="1.2"><circle cx="0" cy="0" r="5.5"/><polyline points="0,9 0,15 0,24 0,35 0,46"/><polyline points="0,15 -14,15 -20,30 -18,45 -15,56"/><polyline points="0,15 14,15 20,30 18,45 15,56"/><polyline points="0,46 -8,46 -10,70 -11,95"/><polyline points="0,46 8,46 10,70 11,95"/></g><rect x="-21" y="-8" width="42" height="106" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="-25" y="-8" width="2" height="106" fill="rgba(0,0,0,.7)"/><rect x="-25" y="19.6" width="2" height="78.4" fill="#E8A838"/>
-          <!-- bone dot on head -->
-          <circle cx="0" cy="0" r="3" fill="#D04035"/>
-          <!-- target line from crosshair to head -->
-          <line x1="-20" y1="90" x2="0" y2="0" stroke="#D04035" stroke-width="1" stroke-dasharray="4,3" opacity=".8"/>
-          <text x="0" y="-15" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">rustplayer_077 <tspan fill="#8C8C8C" font-size="10" font-weight="400">112m</tspan></text><text x="0" y="109" text-anchor="middle" fill="#8C8C8C" font-size="10">Custom SMG</text></g>
-          <!-- Secondary target: outside FOV edge, dimmer -->
-          <g transform="translate(580,210)" opacity=".5"><g fill="none" stroke="#8C8C8C" stroke-width="1" transform="scale(.7)"><circle cx="0" cy="0" r="5"/><polyline points="0,8 0,14 0,22 0,32 0,42"/><polyline points="0,14 -13,14 -19,28 -17,42 -14,52"/><polyline points="0,14 13,14 19,28 17,42 14,52"/><polyline points="0,42 -7,42 -9,65 -10,88"/><polyline points="0,42 7,42 9,65 10,88"/></g><rect x="-14" y="-4" width="28" height="64" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="4,2"/><text x="0" y="-10" text-anchor="middle" fill="#666" font-size="9">rustplayer_201 <tspan>198m</tspan></text></g>
-          <!-- aim info panel -->
-          <g transform="translate(80,260)"><rect x="0" y="0" width="140" height="80" fill="rgba(0,0,0,.8)" stroke="#2A2A2A" stroke-width="1"/><text x="12" y="20" fill="#35D06A" font-size="11" font-weight="700">SILENT AIM</text><text x="12" y="37" fill="#8C8C8C" font-size="10">bone: head</text><text x="12" y="52" fill="#8C8C8C" font-size="10">chance: 80%</text><text x="12" y="69" fill="#D04035" font-size="11" font-weight="700">LOCKED</text></g>
-          </svg>
-          <span class="bv-label">FOV circle = aim cone &middot; red dot = locked bone &middot; silent = no mouse movement</span>
-        </div>
-      </div>
-
-      <div class="bv-panel">
-        <div class="bv-title">overlay + crosshair <span class="d">capture-excluded DX11 window</span></div>
-        <div class="bv-viewport bv-vp-overlay">
-          <div class="bv-overlay-demo">
-            <div class="bv-overlay-label">game window (fullscreen)</div>
-            <div class="bv-overlay-box">
-              <div class="bv-overlay-inner">
-                <span>DX11 overlay</span>
-                <span class="d">WDA_EXCLUDEFROMCAPTURE</span>
-              </div>
-            </div>
-            <div class="bv-overlay-obs">
-              <div class="bv-obs-head">OBS / Discord / screenshot</div>
-              <div class="bv-obs-body">
-                <span class="bv-obs-x">overlay not visible</span>
-                <span class="d">only the game is captured</span>
-              </div>
-            </div>
-          </div>
-          <div class="bv-crosshair bv-crosshair-custom"></div>
-          <div class="bv-ch-label">custom crosshair<br><span class="d">style: cross &middot; size: 8px &middot; colour: #35D06A</span></div>
-          <span class="bv-label">overlay sits on top but is invisible to any capture</span>
-        </div>
-      </div>
-
+    </div>
+    <div class="esp-toggles" data-rise>
+      <span class="esp-tog on" data-feat="skeleton">skeleton</span>
+      <span class="esp-tog on" data-feat="box">box</span>
+      <span class="esp-tog on" data-feat="health">health</span>
+      <span class="esp-tog on" data-feat="name">name</span>
+      <span class="esp-tog on" data-feat="distance">distance</span>
+      <span class="esp-tog on" data-feat="weapon">weapon</span>
+      <span class="esp-tog on" data-feat="flags">flags</span>
     </div>
   </section>
 
@@ -373,7 +271,7 @@
         <li>all features</li>
         <li>all updates</li>
         <li>instant email</li>
-        <li class="tier-buy"><span class="btn ghost disabled">coming soon</span></li>
+        <li class="tier-buy"><span class="btn ghost disabled">in development</span></li>
       </ul>
       <ul class="tier featured">
         <li class="tier-name">7 days <span class="dim">// most popular</span></li>
@@ -382,7 +280,7 @@
         <li>all features</li>
         <li>all updates</li>
         <li>instant email</li>
-        <li class="tier-buy"><span class="btn disabled">coming soon</span></li>
+        <li class="tier-buy"><span class="btn disabled">in development</span></li>
       </ul>
       <ul class="tier">
         <li class="tier-name">30 days</li>
@@ -391,7 +289,7 @@
         <li>all features</li>
         <li>all updates</li>
         <li>instant email</li>
-        <li class="tier-buy"><span class="btn ghost disabled">coming soon</span></li>
+        <li class="tier-buy"><span class="btn ghost disabled">in development</span></li>
       </ul>
       <ul class="tier">
         <li class="tier-name">90 days</li>
@@ -400,7 +298,7 @@
         <li>all features</li>
         <li>all updates</li>
         <li>instant email</li>
-        <li class="tier-buy"><span class="btn ghost disabled">coming soon</span></li>
+        <li class="tier-buy"><span class="btn ghost disabled">in development</span></li>
       </ul>
       <ul class="tier">
         <li class="tier-name">permanent <span class="dim">// best value</span></li>
@@ -409,7 +307,7 @@
         <li>all features</li>
         <li>all updates, forever</li>
         <li>instant email</li>
-        <li class="tier-buy"><span class="btn ghost disabled">coming soon</span></li>
+        <li class="tier-buy"><span class="btn ghost disabled">in development</span></li>
       </ul>
     </div>
     <p class="note" data-rise style="margin-top:16px">basalt is in active development. join the discord for release announcements. <a href="products.html">all products &rarr;</a></p>
@@ -443,11 +341,8 @@
 
   <section class="wrap" style="padding-bottom:64px">
     <div class="cta" data-rise>
-      <h2>Need a spoofer now?</h2>
-      <p class="sub">Onyx is live. New hardware identity in one click.</p>
-      <div class="install" style="margin-top:16px">
-        <a href="pricing.html" class="btn">get onyx &rarr;</a>
-      </div>
+      <h2>All products in development</h2>
+      <p class="sub">Basalt, Onyx and Obsidian are all currently being built.</p>
     </div>
   </section>
 </main>
@@ -465,7 +360,7 @@
       <p>store</p>
       <a href="products.html">products</a>
       <a href="pricing.html">pricing</a>
-      <a href="checkout.html">buy a key</a>
+      <span class="d">in development</span>
       <a href="games.html">supported games</a>
       <a href="status.html">status</a>
       <a href="reviews.html">reviews</a>
@@ -482,7 +377,7 @@
     <nav class="foot-col" aria-label="Account">
       <p>account</p>
       <a href="login.html">my key</a>
-      <a href="checkout.html">new order</a>
+      <span class="d">in development</span>
       <a href="help.html#refunds">resend key</a>
       <a href="help.html#contact">open a ticket</a>
     </nav>
